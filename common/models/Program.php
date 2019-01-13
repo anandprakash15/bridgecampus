@@ -1,0 +1,100 @@
+<?php
+
+namespace common\models;
+
+use Yii;
+
+/**
+ * This is the model class for table "program".
+ *
+ * @property int $id
+ * @property string $name
+ * @property int $sortno
+ * @property int $status
+ * @property string $createdDate
+ * @property string $updatedDate
+ * @property int $createdBy
+ * @property int $updatedBy
+ * @property string $description
+ *
+ * @property Courses[] $courses
+ * @property ExamCategory[] $examCategories
+ * @property User $createdBy0
+ * @property User $updatedBy0
+ */
+class Program extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'program';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'sortno', 'status', 'createdDate', 'createdBy', 'updatedBy', 'description'], 'required'],
+            [['sortno', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['createdDate', 'updatedDate'], 'safe'],
+            [['description'], 'string'],
+            [['name'], 'string', 'max' => 200],
+            [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
+            [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Name',
+            'sortno' => 'Sortno',
+            'status' => 'Status',
+            'createdDate' => 'Created Date',
+            'updatedDate' => 'Updated Date',
+            'createdBy' => 'Created By',
+            'updatedBy' => 'Updated By',
+            'description' => 'Description',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourses()
+    {
+        return $this->hasMany(Courses::className(), ['programID' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExamCategories()
+    {
+        return $this->hasMany(ExamCategory::className(), ['programID' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCreatedBy0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'createdBy']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedBy0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updatedBy']);
+    }
+}
