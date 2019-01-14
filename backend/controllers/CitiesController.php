@@ -87,6 +87,8 @@ class CitiesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', "Your message to display.");
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

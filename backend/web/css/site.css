@@ -113,3 +113,8 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.form-horizontal .form-group {
+    margin-right:0px !important;
+    margin-left: 0px !important;
+}

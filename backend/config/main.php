@@ -1,5 +1,7 @@
 <?php
+ require __DIR__ . '/../../common/config/container.php';
 $params = array_merge(
+
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
     require __DIR__ . '/params.php',
@@ -10,11 +12,20 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','controller'],
     'modules' => [],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+        ],
+        'controller' => [
+            'class'=>'backend\components\Controller',
+        ],
+        'message' => [
+            'class'=>'common\components\Message',
+        ],
+        'myhelper' => [
+            'class'=>'common\components\MyHelpers',
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -42,6 +53,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ['class' => 'common\components\CustomUrlRule', 'pattern' => '...', 'route' => 'site/index'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'user',  'pluralize'=>false],
             ],
         ],
         

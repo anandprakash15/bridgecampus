@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Cities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cities-view">
-
+    <?php echo Yii::$app->message->display(); ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
