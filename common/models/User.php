@@ -72,7 +72,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
-
+    public $confirmpassword;
 
     /**
      * {@inheritdoc}
@@ -85,12 +85,12 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    /*public function behaviors()
     {
         return [
             TimestampBehavior::className(),
         ];
-    }
+    }*/
 
     /**
      * {@inheritdoc}
@@ -98,7 +98,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['fullname', 'gender', 'mobile', 'email', 'password', 'auth_key', 'roleID', 'createdBy', 'createdDate', 'status'], 'required'],
+            [['fullname', 'gender', 'mobile', 'email'], 'required'],
             [['collegeID', 'programID', 'roleID', 'createdBy', 'status'], 'integer'],
             [['password_reset_date', 'createdDate', 'updatedDate'], 'safe'],
             [['fullname', 'city', 'country'], 'string', 'max' => 50],
@@ -106,10 +106,44 @@ class User extends ActiveRecord implements IdentityInterface
             [['mobile'], 'string', 'max' => 15],
             [['email', 'higestEduction', 'auth_key', 'password_reset_token'], 'string', 'max' => 100],
             [['password'], 'string', 'max' => 200],
+            ['confirmpassword', 'compare', 'compareAttribute' => 'password'],
+            ['email','email'],
+            ['email', 'emailunique'],
             [['state'], 'string', 'max' => 300],
             [['pincode'], 'string', 'max' => 20],
             [['roleID'], 'exist', 'skipOnError' => true, 'targetClass' => Role::className(), 'targetAttribute' => ['roleID' => 'id']],
         ];
+    }
+
+    public function emailunique($attribute,$params)
+    {
+        $check = '';
+        if(!$this->isNewRecord){
+            $userid = $this->id;
+            $check = User::find()->where(['email'=>$this->email])->andWhere(['<>','id',$userid])->andWhere(['<>','status',2])->one();
+        }else{
+            if(!isset($_GET['token'])){
+                $check = User::find()->where(['email'=>$this->email])->andWhere(['<>','status',2])->one();
+            }
+        }
+        if(!empty($check)){
+            $this->addError($attribute, $this->email.' This email address has already been taken');
+        }
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+               // $this->updatedBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+                $this->password = Yii::$app->security->generatePasswordHash($this->password);
+            }
+            return true;
+        }
+        //$this->updatedBy = \Yii::$app->user->identity->id;
+        return false;
     }
 
     public function attributeLabels()

@@ -108,6 +108,7 @@ AppAsset::register($this);
             ['label' => '<i class="fa fa-book" aria-hidden="true"></i> <span>Courses</span>', 'url' => ['/courses/index']],
             ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>University</span>', 'url' => ['/university/index']],
             ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>Colleges</span>', 'url' => ['/site/index']],
+            ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>User</span>', 'url' => ['/user/index']],
             [
               'label' => 'Master',
               'url' => ['#'],

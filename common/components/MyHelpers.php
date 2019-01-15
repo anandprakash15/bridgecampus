@@ -10,7 +10,8 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\ActiveForm;
 use common\components\CustomUrlRule;
 use yii\db\Query;
-
+use common\models\Program;
+use common\models\Role;
 
  class MyHelpers extends Component{
 
@@ -56,6 +57,23 @@ use yii\db\Query;
         return [1 => 'Active', 0=>'Inactive'];
     }
 
+    public static function getGender()
+    {
+        return ['M' => 'Male', 'F'=>'Female'];
+    }
+
+    public function getProgram(){
+        $result = '';
+        $model = Program::find()
+        ->where(['status'=>1])
+        ->all();
+        if(!empty($model)){
+            $result = ArrayHelper::map($model, 'id', 'name');
+        }
+
+        return $result;
+    }
+
 
     public function getCreatenew($allowbyrole,$url = null, $label='Create New')
     {
@@ -68,4 +86,10 @@ use yii\db\Query;
         } 
       }
     }
+
+    public function getRole()
+    {
+      return  ArrayHelper::map(Role::find()->where(['not in','id', [1]])->all(), 'id', 'name');
+    }
+
 }
