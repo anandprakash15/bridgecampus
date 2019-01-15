@@ -1,5 +1,64 @@
 [
     {
+        "name": "2amigos/yii2-ckeditor-widget",
+        "version": "2.1.0",
+        "version_normalized": "2.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/2amigos/yii2-ckeditor-widget.git",
+            "reference": "2ba96ec670d0745b5616d2aa94d720cc7288bc08"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/2amigos/yii2-ckeditor-widget/zipball/2ba96ec670d0745b5616d2aa94d720cc7288bc08",
+            "reference": "2ba96ec670d0745b5616d2aa94d720cc7288bc08",
+            "shasum": ""
+        },
+        "require": {
+            "ckeditor/ckeditor": "~4.7.0+full",
+            "yiisoft/yii2": "^2.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2017-06-12T18:51:26+00:00",
+        "type": "yii2-extension",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "dosamigos\\ckeditor\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "2amigOS! Consulting Group",
+                "email": "hola@2amigos.us",
+                "homepage": "http://2amigos.us",
+                "role": "Developer"
+            }
+        ],
+        "description": "CKEditor widget for Yii2.",
+        "homepage": "http://yiiwheels.com/extension/ckeditor-widget",
+        "keywords": [
+            "2amigos",
+            "CKEditor",
+            "extension",
+            "widget",
+            "yii",
+            "yii 2",
+            "yii2"
+        ]
+    },
+    {
         "name": "behat/gherkin",
         "version": "v4.5.1",
         "version_normalized": "4.5.1.0",
@@ -25,7 +84,7 @@
         "suggest": {
             "symfony/yaml": "If you want to parse features, represented in YAML files"
         },
-        "time": "2017-08-30 11:04:43",
+        "time": "2017-08-30T11:04:43+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -237,7 +296,7 @@
             "facebook/xhprof": "*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2017-07-16 21:13:23",
+        "time": "2017-07-16T21:13:23+00:00",
         "bin": [
             "bin/markdown"
         ],
@@ -273,6 +332,49 @@
             "gfm",
             "markdown",
             "markdown-extra"
+        ]
+    },
+    {
+        "name": "ckeditor/ckeditor",
+        "version": "4.7.3",
+        "version_normalized": "4.7.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ckeditor/ckeditor-releases.git",
+            "reference": "97b8f412f6b36985c734daf0717e81009a885dba"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/97b8f412f6b36985c734daf0717e81009a885dba",
+            "reference": "97b8f412f6b36985c734daf0717e81009a885dba",
+            "shasum": ""
+        },
+        "time": "2017-09-13T13:09:47+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+",
+            "LGPL-2.1+",
+            "MPL-1.1+"
+        ],
+        "authors": [
+            {
+                "name": "CKSource",
+                "homepage": "http://cksource.com"
+            }
+        ],
+        "description": "JavaScript WYSIWYG web text editor.",
+        "homepage": "http://ckeditor.com",
+        "keywords": [
+            "CKEditor",
+            "editor",
+            "fckeditor",
+            "html",
+            "javascript",
+            "richtext",
+            "text",
+            "wysiwyg"
         ]
     },
     {
@@ -330,7 +432,7 @@
             "stecman/symfony-console-completion": "For BASH autocompletion",
             "symfony/phpunit-bridge": "For phpunit-bridge support"
         },
-        "time": "2018-02-27 00:17:07",
+        "time": "2018-02-27T00:17:07+00:00",
         "bin": [
             "codecept"
         ],
@@ -394,7 +496,7 @@
             "codeception/specify": "*",
             "vlucas/phpdotenv": "^2.4"
         },
-        "time": "2018-03-16 10:17:47",
+        "time": "2018-03-16T10:17:47+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -435,7 +537,7 @@
         "require-dev": {
             "phpunit/phpunit": ">=4.8 <8.0"
         },
-        "time": "2018-02-18 13:56:56",
+        "time": "2018-02-18T13:56:56+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -467,7 +569,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2017-01-09 10:58:51",
+        "time": "2017-01-09T10:58:51+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -512,7 +614,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.0"
         },
-        "time": "2015-06-14 21:17:01",
+        "time": "2015-06-14T21:17:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -561,7 +663,7 @@
         "require": {
             "php": ">=5.3.2"
         },
-        "time": "2014-09-09 13:34:57",
+        "time": "2014-09-09T13:34:57+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -626,7 +728,7 @@
         "suggest": {
             "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
         },
-        "time": "2017-11-15 23:40:40",
+        "time": "2017-11-15T23:40:40+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -679,7 +781,7 @@
         "require-dev": {
             "simpletest/simpletest": "^1.1"
         },
-        "time": "2018-02-23 01:58:20",
+        "time": "2018-02-23T01:58:20+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -730,7 +832,7 @@
             "phpunit/phpunit": "^4.0 || ^5.0",
             "squizlabs/php_codesniffer": "^1.5"
         },
-        "time": "2017-08-15 16:48:10",
+        "time": "2017-08-15T16:48:10+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -784,7 +886,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2017-03-20 17:10:46",
+        "time": "2017-03-20T17:10:46+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -841,7 +943,7 @@
             "reference": "80ea0aae52406911519c602978e4e51150c7bab7",
             "shasum": ""
         },
-        "time": "2019-01-03 02:58:32",
+        "time": "2019-01-03T02:58:32+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -896,7 +998,7 @@
             "reference": "7b48a78bda1ded89a55790f4f65bb50c670653d7",
             "shasum": ""
         },
-        "time": "2018-10-04 08:55:01",
+        "time": "2018-10-04T08:55:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -942,7 +1044,7 @@
             "reference": "1349e7f5816a65e89bc227098386aac5b2c89363",
             "shasum": ""
         },
-        "time": "2017-08-01 11:43:55",
+        "time": "2017-08-01T11:43:55+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -994,7 +1096,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=2.0.0"
         },
-        "time": "2018-10-09 08:08:51",
+        "time": "2018-10-09T08:08:51+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1050,7 +1152,7 @@
         "suggest": {
             "kartik-v/yii2-mpdf": "For exporting grids to PDF"
         },
-        "time": "2019-01-10 11:58:14",
+        "time": "2019-01-10T11:58:14+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1102,7 +1204,7 @@
             "yiisoft/yii2-bootstrap": "for Krajee extensions to work with Bootstrap 3.x version",
             "yiisoft/yii2-bootstrap4": "for Krajee extensions to work with Bootstrap 4.x version"
         },
-        "time": "2018-12-04 03:40:27",
+        "time": "2018-12-04T03:40:27+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1155,7 +1257,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=1.9.8"
         },
-        "time": "2018-09-27 17:51:42",
+        "time": "2018-09-27T17:51:42+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1209,7 +1311,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-09 04:56:27",
+        "time": "2014-11-09T04:56:27+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1260,7 +1362,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2017-03-10 17:08:52",
+        "time": "2017-03-10T17:08:52+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1317,7 +1419,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=1.9"
         },
-        "time": "2018-09-12 03:12:07",
+        "time": "2018-09-12T03:12:07+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1373,7 +1475,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=2.0.0"
         },
-        "time": "2018-10-09 11:34:49",
+        "time": "2018-10-09T11:34:49+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1429,7 +1531,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=2.0.0"
         },
-        "time": "2018-10-09 11:39:13",
+        "time": "2018-10-09T11:39:13+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1486,7 +1588,7 @@
             "kartik-v/dependent-dropdown": "~1.4",
             "kartik-v/yii2-krajee-base": ">=2.0.0"
         },
-        "time": "2018-10-09 11:43:32",
+        "time": "2018-10-09T11:43:32+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1542,7 +1644,7 @@
             "kartik-v/bootstrap-fileinput": "~4.4",
             "kartik-v/yii2-krajee-base": ">=1.9"
         },
-        "time": "2018-09-19 13:09:42",
+        "time": "2018-09-19T13:09:42+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1598,7 +1700,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2015-05-03 08:23:04",
+        "time": "2015-05-03T08:23:04+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1649,7 +1751,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=1.9"
         },
-        "time": "2018-09-07 10:05:08",
+        "time": "2018-09-07T10:05:08+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1706,7 +1808,7 @@
             "kartik-v/bootstrap-star-rating": "~4.0",
             "kartik-v/yii2-krajee-base": ">=1.9"
         },
-        "time": "2018-09-16 09:30:44",
+        "time": "2018-09-16T09:30:44+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1763,7 +1865,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=1.9"
         },
-        "time": "2018-09-07 08:11:16",
+        "time": "2018-09-07T08:11:16+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1818,7 +1920,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-09 08:07:23",
+        "time": "2014-11-09T08:07:23+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1869,7 +1971,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=2.0.0"
         },
-        "time": "2018-10-09 11:54:03",
+        "time": "2018-10-09T11:54:03+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1924,7 +2026,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2016-01-10 16:47:35",
+        "time": "2016-01-10T16:47:35+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1976,7 +2078,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=2.0.0"
         },
-        "time": "2018-10-09 11:58:19",
+        "time": "2018-10-09T11:58:19+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -2032,7 +2134,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=1.9"
         },
-        "time": "2018-09-05 11:59:34",
+        "time": "2018-09-05T11:59:34+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -2089,7 +2191,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": ">=2.0.0"
         },
-        "time": "2018-10-09 12:02:22",
+        "time": "2018-10-09T12:02:22+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -2162,7 +2264,7 @@
             "kartik-v/yii2-widget-touchspin": "*",
             "kartik-v/yii2-widget-typeahead": "*"
         },
-        "time": "2018-10-09 17:40:19",
+        "time": "2018-10-09T17:40:19+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -2196,6 +2298,222 @@
         ]
     },
     {
+        "name": "markbaker/complex",
+        "version": "1.4.7",
+        "version_normalized": "1.4.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/MarkBaker/PHPComplex.git",
+            "reference": "1ea674a8308baf547cbcbd30c5fcd6d301b7c000"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/MarkBaker/PHPComplex/zipball/1ea674a8308baf547cbcbd30c5fcd6d301b7c000",
+            "reference": "1ea674a8308baf547cbcbd30c5fcd6d301b7c000",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6.0|^7.0.0"
+        },
+        "require-dev": {
+            "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+            "phpcompatibility/php-compatibility": "^8.0",
+            "phpdocumentor/phpdocumentor": "2.*",
+            "phploc/phploc": "2.*",
+            "phpmd/phpmd": "2.*",
+            "phpunit/phpunit": "^4.8.35|^5.4.0",
+            "sebastian/phpcpd": "2.*",
+            "squizlabs/php_codesniffer": "^3.3.0"
+        },
+        "time": "2018-10-13T23:28:42+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Complex\\": "classes/src/"
+            },
+            "files": [
+                "classes/src/functions/abs.php",
+                "classes/src/functions/acos.php",
+                "classes/src/functions/acosh.php",
+                "classes/src/functions/acot.php",
+                "classes/src/functions/acoth.php",
+                "classes/src/functions/acsc.php",
+                "classes/src/functions/acsch.php",
+                "classes/src/functions/argument.php",
+                "classes/src/functions/asec.php",
+                "classes/src/functions/asech.php",
+                "classes/src/functions/asin.php",
+                "classes/src/functions/asinh.php",
+                "classes/src/functions/atan.php",
+                "classes/src/functions/atanh.php",
+                "classes/src/functions/conjugate.php",
+                "classes/src/functions/cos.php",
+                "classes/src/functions/cosh.php",
+                "classes/src/functions/cot.php",
+                "classes/src/functions/coth.php",
+                "classes/src/functions/csc.php",
+                "classes/src/functions/csch.php",
+                "classes/src/functions/exp.php",
+                "classes/src/functions/inverse.php",
+                "classes/src/functions/ln.php",
+                "classes/src/functions/log2.php",
+                "classes/src/functions/log10.php",
+                "classes/src/functions/negative.php",
+                "classes/src/functions/pow.php",
+                "classes/src/functions/rho.php",
+                "classes/src/functions/sec.php",
+                "classes/src/functions/sech.php",
+                "classes/src/functions/sin.php",
+                "classes/src/functions/sinh.php",
+                "classes/src/functions/sqrt.php",
+                "classes/src/functions/tan.php",
+                "classes/src/functions/tanh.php",
+                "classes/src/functions/theta.php",
+                "classes/src/operations/add.php",
+                "classes/src/operations/subtract.php",
+                "classes/src/operations/multiply.php",
+                "classes/src/operations/divideby.php",
+                "classes/src/operations/divideinto.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mark Baker",
+                "email": "mark@lange.demon.co.uk"
+            }
+        ],
+        "description": "PHP Class for working with complex numbers",
+        "homepage": "https://github.com/MarkBaker/PHPComplex",
+        "keywords": [
+            "complex",
+            "mathematics"
+        ]
+    },
+    {
+        "name": "markbaker/matrix",
+        "version": "1.1.4",
+        "version_normalized": "1.1.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/MarkBaker/PHPMatrix.git",
+            "reference": "6ea97472b5baf12119b4f31f802835b820dd6d64"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/MarkBaker/PHPMatrix/zipball/6ea97472b5baf12119b4f31f802835b820dd6d64",
+            "reference": "6ea97472b5baf12119b4f31f802835b820dd6d64",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6.0|^7.0.0"
+        },
+        "require-dev": {
+            "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+            "phpcompatibility/php-compatibility": "^8.0",
+            "phpdocumentor/phpdocumentor": "2.*",
+            "phploc/phploc": "2.*",
+            "phpmd/phpmd": "2.*",
+            "phpunit/phpunit": "^4.8.35|^5.4.0",
+            "sebastian/phpcpd": "2.*",
+            "squizlabs/php_codesniffer": "^3.3.0"
+        },
+        "time": "2018-11-04T22:12:12+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Matrix\\": "classes/src/"
+            },
+            "files": [
+                "classes/src/functions/adjoint.php",
+                "classes/src/functions/antidiagonal.php",
+                "classes/src/functions/cofactors.php",
+                "classes/src/functions/determinant.php",
+                "classes/src/functions/diagonal.php",
+                "classes/src/functions/identity.php",
+                "classes/src/functions/inverse.php",
+                "classes/src/functions/minors.php",
+                "classes/src/functions/trace.php",
+                "classes/src/functions/transpose.php",
+                "classes/src/operations/add.php",
+                "classes/src/operations/directsum.php",
+                "classes/src/operations/subtract.php",
+                "classes/src/operations/multiply.php",
+                "classes/src/operations/divideby.php",
+                "classes/src/operations/divideinto.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mark Baker",
+                "email": "mark@lange.demon.co.uk"
+            }
+        ],
+        "description": "PHP Class for working with matrices",
+        "homepage": "https://github.com/MarkBaker/PHPMatrix",
+        "keywords": [
+            "mathematics",
+            "matrix",
+            "vector"
+        ]
+    },
+    {
+        "name": "moonlandsoft/yii2-phpexcel",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/moonlandsoft/yii2-phpexcel.git",
+            "reference": "e0614787a41a9e7e1c9ab3b707ce54c256461d7f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/moonlandsoft/yii2-phpexcel/zipball/e0614787a41a9e7e1c9ab3b707ce54c256461d7f",
+            "reference": "e0614787a41a9e7e1c9ab3b707ce54c256461d7f",
+            "shasum": ""
+        },
+        "require": {
+            "phpoffice/phpspreadsheet": "*",
+            "yiisoft/yii2": "*"
+        },
+        "time": "2018-10-27T03:52:57+00:00",
+        "type": "yii2-extension",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "moonland\\phpexcel\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Moh Khoirul Anam",
+                "email": "moh.khoirul.anaam@gmail.com"
+            }
+        ],
+        "description": "Exporting PHP to Excel or Importing Excel to PHP",
+        "keywords": [
+            "excel",
+            "export",
+            "extension",
+            "import",
+            "xls",
+            "yii2"
+        ]
+    },
+    {
         "name": "myclabs/deep-copy",
         "version": "1.7.0",
         "version_normalized": "1.7.0.0",
@@ -2218,7 +2536,7 @@
             "doctrine/common": "^2.6",
             "phpunit/phpunit": "^4.1"
         },
-        "time": "2017-10-19 19:58:43",
+        "time": "2017-10-19T19:58:43+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2263,7 +2581,7 @@
             "phar-io/version": "^1.0.1",
             "php": "^5.6 || ^7.0"
         },
-        "time": "2017-03-05 18:14:27",
+        "time": "2017-03-05T18:14:27+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2317,7 +2635,7 @@
         "require": {
             "php": "^5.6 || ^7.0"
         },
-        "time": "2017-03-05 17:38:23",
+        "time": "2017-03-05T17:38:23+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2369,7 +2687,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.6"
         },
-        "time": "2017-09-11 18:02:19",
+        "time": "2017-09-11T18:02:19+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2430,7 +2748,7 @@
             "mockery/mockery": "^1.0",
             "phpunit/phpunit": "^6.4"
         },
-        "time": "2017-11-30 07:14:17",
+        "time": "2017-11-30T07:14:17+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2480,7 +2798,7 @@
             "mockery/mockery": "^0.9.4",
             "phpunit/phpunit": "^5.2||^4.8.24"
         },
-        "time": "2017-07-14 14:27:02",
+        "time": "2017-07-14T14:27:02+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2507,6 +2825,102 @@
         ]
     },
     {
+        "name": "phpoffice/phpspreadsheet",
+        "version": "1.6.0",
+        "version_normalized": "1.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+            "reference": "bf00f0cc5f55c354018f9a9ef15e6e3e1a229051"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/bf00f0cc5f55c354018f9a9ef15e6e3e1a229051",
+            "reference": "bf00f0cc5f55c354018f9a9ef15e6e3e1a229051",
+            "shasum": ""
+        },
+        "require": {
+            "ext-ctype": "*",
+            "ext-dom": "*",
+            "ext-fileinfo": "*",
+            "ext-gd": "*",
+            "ext-iconv": "*",
+            "ext-libxml": "*",
+            "ext-mbstring": "*",
+            "ext-simplexml": "*",
+            "ext-xml": "*",
+            "ext-xmlreader": "*",
+            "ext-xmlwriter": "*",
+            "ext-zip": "*",
+            "ext-zlib": "*",
+            "markbaker/complex": "^1.4",
+            "markbaker/matrix": "^1.1",
+            "php": "^5.6|^7.0",
+            "psr/simple-cache": "^1.0"
+        },
+        "require-dev": {
+            "doctrine/instantiator": "^1.0.0",
+            "dompdf/dompdf": "^0.8.0",
+            "friendsofphp/php-cs-fixer": "@stable",
+            "jpgraph/jpgraph": "^4.0",
+            "mpdf/mpdf": "^7.0.0",
+            "phpcompatibility/php-compatibility": "^8.0",
+            "phpunit/phpunit": "^5.7",
+            "squizlabs/php_codesniffer": "^3.3",
+            "tecnickcom/tcpdf": "^6.2"
+        },
+        "suggest": {
+            "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
+            "jpgraph/jpgraph": "Option for rendering charts, or including charts with PDF or HTML Writers",
+            "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
+            "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
+        },
+        "time": "2019-01-02T04:42:54+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Erik Tilt"
+            },
+            {
+                "name": "Adrien Crivelli"
+            },
+            {
+                "name": "Maarten Balliauw",
+                "homepage": "https://blog.maartenballiauw.be"
+            },
+            {
+                "name": "Mark Baker",
+                "homepage": "https://markbakeruk.net"
+            },
+            {
+                "name": "Franck Lefevre",
+                "homepage": "https://rootslabs.net"
+            }
+        ],
+        "description": "PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+        "homepage": "https://github.com/PHPOffice/PhpSpreadsheet",
+        "keywords": [
+            "OpenXML",
+            "excel",
+            "gnumeric",
+            "ods",
+            "php",
+            "spreadsheet",
+            "xls",
+            "xlsx"
+        ]
+    },
+    {
         "name": "phpspec/php-diff",
         "version": "v1.1.0",
         "version_normalized": "1.1.0.0",
@@ -2521,7 +2935,7 @@
             "reference": "0464787bfa7cd13576c5a1e318709768798bec6a",
             "shasum": ""
         },
-        "time": "2016-04-07 12:29:16",
+        "time": "2016-04-07T12:29:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2572,7 +2986,7 @@
             "phpspec/phpspec": "^2.5|^3.2",
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5"
         },
-        "time": "2018-02-19 10:16:54",
+        "time": "2018-02-19T10:16:54+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2644,7 +3058,7 @@
         "suggest": {
             "ext-xdebug": "^2.5.5"
         },
-        "time": "2017-12-06 09:29:45",
+        "time": "2017-12-06T09:29:45+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2694,7 +3108,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-11-27 13:52:08",
+        "time": "2017-11-27T13:52:08+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2743,7 +3157,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2015-06-21 13:50:34",
+        "time": "2015-06-21T13:50:34+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2789,7 +3203,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
         },
-        "time": "2017-02-26 11:10:40",
+        "time": "2017-02-26T11:10:40+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2841,7 +3255,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.2.4"
         },
-        "time": "2017-11-27 05:48:46",
+        "time": "2017-11-27T05:48:46+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2921,7 +3335,7 @@
             "ext-xdebug": "*",
             "phpunit/php-invoker": "^1.1"
         },
-        "time": "2018-02-26 07:01:09",
+        "time": "2018-02-26T07:01:09+00:00",
         "bin": [
             "phpunit"
         ],
@@ -2986,7 +3400,7 @@
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2018-01-06 05:45:45",
+        "time": "2018-01-06T05:45:45+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3035,7 +3449,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-08-06 14:39:51",
+        "time": "2016-08-06T14:39:51+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3087,7 +3501,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10 12:19:37",
+        "time": "2016-10-10T12:19:37+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3119,6 +3533,56 @@
         ]
     },
     {
+        "name": "psr/simple-cache",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-fig/simple-cache.git",
+            "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+            "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2017-10-23T01:57:42+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr\\SimpleCache\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common interfaces for simple caching",
+        "keywords": [
+            "cache",
+            "caching",
+            "psr",
+            "psr-16",
+            "simple-cache"
+        ]
+    },
+    {
         "name": "sebastian/code-unit-reverse-lookup",
         "version": "1.0.1",
         "version_normalized": "1.0.1.0",
@@ -3139,7 +3603,7 @@
         "require-dev": {
             "phpunit/phpunit": "^5.7 || ^6.0"
         },
-        "time": "2017-03-04 06:30:41",
+        "time": "2017-03-04T06:30:41+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3188,7 +3652,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.4"
         },
-        "time": "2018-02-01 13:46:46",
+        "time": "2018-02-01T13:46:46+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3252,7 +3716,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.2"
         },
-        "time": "2017-08-03 08:09:46",
+        "time": "2017-08-03T08:09:46+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3306,7 +3770,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.1"
         },
-        "time": "2017-07-01 08:51:00",
+        "time": "2017-07-01T08:51:00+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3360,7 +3824,7 @@
             "ext-mbstring": "*",
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-04-03 13:19:02",
+        "time": "2017-04-03T13:19:02+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3430,7 +3894,7 @@
         "suggest": {
             "ext-uopz": "*"
         },
-        "time": "2017-04-27 15:39:26",
+        "time": "2017-04-27T15:39:26+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3482,7 +3946,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-08-03 12:35:26",
+        "time": "2017-08-03T12:35:26+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3529,7 +3993,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-03-29 09:07:27",
+        "time": "2017-03-29T09:07:27+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3576,7 +4040,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-03-03 06:23:57",
+        "time": "2017-03-03T06:23:57+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3628,7 +4092,7 @@
         "require": {
             "php": ">=5.6.0"
         },
-        "time": "2015-07-28 20:34:47",
+        "time": "2015-07-28T20:34:47+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3672,7 +4136,7 @@
         "require": {
             "php": ">=5.6"
         },
-        "time": "2016-10-03 07:35:21",
+        "time": "2016-10-03T07:35:21+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3722,7 +4186,7 @@
             "mockery/mockery": "~0.9.1",
             "symfony/phpunit-bridge": "~3.3@dev"
         },
-        "time": "2017-09-30 22:39:41",
+        "time": "2017-09-30T22:39:41+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3782,7 +4246,7 @@
         "suggest": {
             "symfony/process": ""
         },
-        "time": "2017-07-12 13:03:20",
+        "time": "2017-07-12T13:03:20+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3853,7 +4317,7 @@
             "symfony/filesystem": "",
             "symfony/process": ""
         },
-        "time": "2017-07-29 21:27:59",
+        "time": "2017-07-29T21:27:59+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3904,7 +4368,7 @@
         "require": {
             "php": ">=5.5.9"
         },
-        "time": "2017-05-01 15:01:29",
+        "time": "2017-05-01T15:01:29+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3966,7 +4430,7 @@
         "require-dev": {
             "symfony/http-kernel": "~2.8|~3.0"
         },
-        "time": "2017-07-28 15:27:31",
+        "time": "2017-07-28T15:27:31+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4024,7 +4488,7 @@
         "suggest": {
             "symfony/css-selector": ""
         },
-        "time": "2017-05-25 23:10:31",
+        "time": "2017-05-25T23:10:31+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4089,7 +4553,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2017-06-09 14:53:08",
+        "time": "2017-06-09T14:53:08+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4140,7 +4604,7 @@
         "require": {
             "php": ">=5.5.9"
         },
-        "time": "2017-06-01 21:01:25",
+        "time": "2017-06-01T21:01:25+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4194,7 +4658,7 @@
         "suggest": {
             "ext-mbstring": "For best performance"
         },
-        "time": "2018-01-30 19:27:44",
+        "time": "2018-01-30T19:27:44+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4258,7 +4722,7 @@
         "suggest": {
             "symfony/console": "For validating YAML files using the lint command"
         },
-        "time": "2017-07-23 12:43:26",
+        "time": "2017-07-23T12:43:26+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4312,7 +4776,7 @@
             "ext-xmlwriter": "*",
             "php": "^7.0"
         },
-        "time": "2017-04-07 12:08:54",
+        "time": "2017-04-07T12:08:54+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -4355,7 +4819,7 @@
             "phpunit/phpunit": "^4.6",
             "sebastian/version": "^1.0.1"
         },
-        "time": "2018-01-29 19:49:41",
+        "time": "2018-01-29T19:49:41+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4410,7 +4874,7 @@
             "friendsofphp/php-cs-fixer": "~2.0",
             "phpunit/phpunit": "~6.0"
         },
-        "time": "2017-09-12 08:35:07",
+        "time": "2017-09-12T08:35:07+00:00",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -4463,7 +4927,7 @@
             "php": ">=5.4.0",
             "yiisoft/yii2-composer": "~2.0.4"
         },
-        "time": "2018-03-21 18:36:53",
+        "time": "2018-03-21T18:36:53+00:00",
         "bin": [
             "yii"
         ],
@@ -4556,7 +5020,7 @@
             "bower-asset/bootstrap": "3.3.* | 3.2.* | 3.1.*",
             "yiisoft/yii2": "~2.0.6"
         },
-        "time": "2018-02-16 10:41:52",
+        "time": "2018-02-16T10:41:52+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -4620,7 +5084,7 @@
         "require-dev": {
             "composer/composer": "^1.0"
         },
-        "time": "2018-03-21 16:15:55",
+        "time": "2018-03-21T16:15:55+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "yii\\composer\\Plugin",
@@ -4674,7 +5138,7 @@
             "yiisoft/yii2": "~2.0.13",
             "yiisoft/yii2-bootstrap": "~2.0.0"
         },
-        "time": "2017-12-05 07:36:23",
+        "time": "2017-12-05T07:36:23+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -4723,7 +5187,7 @@
             "fzaninotto/faker": "~1.4",
             "yiisoft/yii2": "~2.0.0"
         },
-        "time": "2018-02-19 20:27:10",
+        "time": "2018-02-19T20:27:10+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -4774,7 +5238,7 @@
             "yiisoft/yii2": "~2.0.13",
             "yiisoft/yii2-bootstrap": "~2.0.0"
         },
-        "time": "2017-12-22 23:53:06",
+        "time": "2017-12-22T23:53:06+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -4827,7 +5291,7 @@
             "swiftmailer/swiftmailer": "~6.0",
             "yiisoft/yii2": "~2.0.4"
         },
-        "time": "2017-08-04 10:48:17",
+        "time": "2017-08-04T10:48:17+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -4857,108 +5321,6 @@
             "mailer",
             "swift",
             "swiftmailer",
-            "yii2"
-        ]
-    },
-    {
-        "name": "ckeditor/ckeditor",
-        "version": "4.7.3",
-        "version_normalized": "4.7.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ckeditor/ckeditor-releases.git",
-            "reference": "97b8f412f6b36985c734daf0717e81009a885dba"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/97b8f412f6b36985c734daf0717e81009a885dba",
-            "reference": "97b8f412f6b36985c734daf0717e81009a885dba",
-            "shasum": ""
-        },
-        "time": "2017-09-13 13:09:47",
-        "type": "library",
-        "installation-source": "dist",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+",
-            "LGPL-2.1+",
-            "MPL-1.1+"
-        ],
-        "authors": [
-            {
-                "name": "CKSource",
-                "homepage": "http://cksource.com"
-            }
-        ],
-        "description": "JavaScript WYSIWYG web text editor.",
-        "homepage": "http://ckeditor.com",
-        "keywords": [
-            "CKEditor",
-            "editor",
-            "fckeditor",
-            "html",
-            "javascript",
-            "richtext",
-            "text",
-            "wysiwyg"
-        ]
-    },
-    {
-        "name": "2amigos/yii2-ckeditor-widget",
-        "version": "2.1.0",
-        "version_normalized": "2.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/2amigos/yii2-ckeditor-widget.git",
-            "reference": "2ba96ec670d0745b5616d2aa94d720cc7288bc08"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/2amigos/yii2-ckeditor-widget/zipball/2ba96ec670d0745b5616d2aa94d720cc7288bc08",
-            "reference": "2ba96ec670d0745b5616d2aa94d720cc7288bc08",
-            "shasum": ""
-        },
-        "require": {
-            "ckeditor/ckeditor": "~4.7.0+full",
-            "yiisoft/yii2": "^2.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "4.*"
-        },
-        "time": "2017-06-12 18:51:26",
-        "type": "yii2-extension",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "dosamigos\\ckeditor\\": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "2amigOS! Consulting Group",
-                "email": "hola@2amigos.us",
-                "homepage": "http://2amigos.us",
-                "role": "Developer"
-            }
-        ],
-        "description": "CKEditor widget for Yii2.",
-        "homepage": "http://yiiwheels.com/extension/ckeditor-widget",
-        "keywords": [
-            "2amigos",
-            "CKEditor",
-            "extension",
-            "widget",
-            "yii",
-            "yii 2",
             "yii2"
         ]
     }
