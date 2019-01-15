@@ -38,7 +38,7 @@ class Program extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'sortno', 'status', 'createdDate', 'createdBy', 'updatedBy', 'description'], 'required'],
+            [['name', 'status'], 'required'],
             [['sortno', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['description'], 'string'],
@@ -46,6 +46,19 @@ class Program extends \yii\db\ActiveRecord
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->updatedBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

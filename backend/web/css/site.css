@@ -118,3 +118,24 @@ a.desc:after {
     margin-right:0px !important;
     margin-left: 0px !important;
 }
+
+.custumbox{
+    padding-left: 0px !important;
+    padding-right: 0px;
+}
+
+.hover{
+    cursor: pointer;
+}
+
+form div.required label.control-label:after {
+    content: " * ";
+    color: red;
+}
+
+.form-control {
+    border-color: #e4e5e7 !important;
+}
+label{
+    font-weight: 100 !important;
+}

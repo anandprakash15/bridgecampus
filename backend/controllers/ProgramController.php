@@ -50,12 +50,12 @@ class ProgramController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    /*public function actionView($id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
+    }*/
 
     /**
      * Creates a new Program model.
@@ -67,7 +67,8 @@ class ProgramController extends Controller
         $model = new Program();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -87,7 +88,8 @@ class ProgramController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

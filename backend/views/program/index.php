@@ -1,41 +1,65 @@
+
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ProgramSearch */
+/* @var $searchModel common\models\search\SpecializationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Programs';
+$this->params['subtitle'] = '<h1>Program '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
+$status = Yii::$app->myhelper->getActiveInactive();
+
+echo Yii::$app->message->display();
 ?>
-<div class="program-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="specialization-index">
+    <div class="custumbox box box-info">
+        <div class="box-body">
+            <?= GridView::widget([
+                'striped'=>false,
+                'hover'=>true,
+                'panel'=>['type'=>'default', 'heading'=>'Programs List','after'=>false],
+                'toolbar'=> [
+                    '{export}',
+                    '{toggleData}',
+                ],
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'kartik\grid\SerialColumn'],
 
-    <p>
-        <?= Html::a('Create Program', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+                    'name',
+                    [
+                        'attribute' => 'status',
+                        'filter' => $status,
+                        'value' => function($model)use($status){
+                            return $status[$model['status']];
+                        }
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'sortno',
-            'status',
-            'createdDate',
-            //'updatedDate',
-            //'createdBy',
-            //'updatedBy',
-            //'description:ntext',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                    ],
+                ],
+                'exportConfig'=> [
+                    GridView::CSV=>[
+                        'label' => 'CSV',
+                    ],
+                    GridView::EXCEL=>[
+                        'label' => 'Excel',
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
 </div>
+
+<?php 
+$this->registerCss("
+    .app-title{
+       display: none;
+   }
+   ");
+   ?>
+

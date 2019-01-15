@@ -35,13 +35,26 @@ class Specialization extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
+            [['name', 'status'], 'required'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['status', 'createdBy', 'updatedBy'], 'integer'],
             [['name'], 'string', 'max' => 200],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->updatedBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

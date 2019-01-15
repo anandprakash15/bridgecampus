@@ -47,6 +47,7 @@ class SpecializationSearch extends Specialization
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+           // 'pagination'=>['pageSize'=>1]
         ]);
 
         $this->load($params);

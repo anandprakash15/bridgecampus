@@ -117,8 +117,8 @@ AppAsset::register($this);
               <i class="fa fa-angle-left pull-right"></i>
               </span></a>',
               'items' => [
-                ['label' => 'Parent Courses', 'url' => ['/site/contact']],
-                ['label' => 'Sub-Courses', 'url' => ['/camp/index']]
+                ['label' => 'Specialization', 'url' => ['/specialization/index']],
+                ['label' => 'Program', 'url' => ['/program/index']]
               ],
             ],
           ],
@@ -137,9 +137,10 @@ AppAsset::register($this);
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+      <h1 class="app-title">
         <?= Html::encode($this->title) ?>
       </h1>
+      <?= isset($this->params['subtitle']) ? $this->params['subtitle'] : '';?>
      <!--  <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Dashboard</li>

@@ -3,9 +3,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=bridge_campus',
+            'dsn' => 'mysql:host=localhost;dbname=bca',
             'username' => 'root',
-            'password' => '',
+            'password' => 'switch',
             'charset' => 'utf8',
         ],
         'mailer' => [

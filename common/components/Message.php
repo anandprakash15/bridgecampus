@@ -24,12 +24,12 @@ class Message extends Component{
 		        'timer'=>'3000',
 		        'options' => [
 		            'title' => '<strong>'.$key.'</strong>',
-		            'text' => $message,
+		            //'text' => $message,
 				     'showConfirmButton'=> false
 			        ]
 			    ]); 
 
-			}elseif($key == "danger"){
+			}elseif($key == "error"){
 				echo Alert::widget([
 			        'type' => Alert::TYPE_ERROR,
 			        'timer'=>'3000',

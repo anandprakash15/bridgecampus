@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-grid": "dev-master",
-        "yii2mod/yii2-sweet-alert": "*"
+        "yii2mod/yii2-sweet-alert": "*",
+        "2amigos/yii2-ckeditor-widget": "^2.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

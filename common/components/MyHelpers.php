@@ -56,5 +56,16 @@ use yii\db\Query;
         return [1 => 'Active', 0=>'Inactive'];
     }
 
-  }
+
+    public function getCreatenew($allowbyrole,$url = null, $label='Create New')
+    {
+      $roleid = Yii::$app->user->identity->roleID;
+      if(in_array($roleid, $allowbyrole)){
+        if($url){
+          return Html::a($label, [$url], ['class' => 'btn btn-success btn-xs']);
+        }else{
+          return Html::a($label, ['create'], ['class' => 'btn btn-success btn-xs']);
+        } 
+      }
+    }
 }

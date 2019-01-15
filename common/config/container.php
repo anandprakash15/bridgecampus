@@ -5,7 +5,7 @@ use yii\helpers\Url;
 
     [
     'tableOptions' => [
-        'class' => 'table table-striped table-condensed',
+        'class' => 'table table-condensed table-bordered hover table-striped',
     ],
     'layout'=>"{items}\n{summary}\n{pager}",
     'rowOptions' => function ($model, $key, $index, $grid) {
@@ -14,10 +14,12 @@ use yii\helpers\Url;
     },
 ]);
 
+
+
 \Yii::$container->set('kartik\grid\GridView', [
     'containerOptions' => ['class'=>'panel panel-default'],
     'tableOptions' => [
-        'class' => 'table table-striped table-condensed',
+        'class' => 'table table-condensed table-bordered hover',
     ],
     'bordered'=>false,
     'responsiveWrap' => false,
@@ -45,10 +47,13 @@ use yii\helpers\Url;
 \Yii::$container->set('yii\bootstrap\ActiveForm', [
     'layout' => 'horizontal',
 	'fieldConfig' => [
+         'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
 		'horizontalCssClasses' => [
-		'label' => 'col-sm-2',
-		'wrapper' => 'col-sm-6',
-	],
+                 'wrapper' => 'col-sm-8',
+                 'error' => '',
+                 'label' => 'col-sm-2',
+                 'hint' => '',
+             ],
 	],
 ]);
 
