@@ -8,6 +8,8 @@ use common\models\search\ProgramSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+
 
 /**
  * ProgramController implements the CRUD actions for Program model.
@@ -125,5 +127,22 @@ class ProgramController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionProgramList($q = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["id", new \yii\db\Expression("name AS text")])
+            ->from('program')
+            ->where(['like', 'name', $q])
+            ->andWhere(['status'=>1])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 }

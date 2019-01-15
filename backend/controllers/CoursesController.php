@@ -4,11 +4,13 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Courses;
+use common\models\Program;
+use common\models\Specialization;
 use common\models\search\CoursesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\ArrayHelper;
 /**
  * CoursesController implements the CRUD actions for Courses model.
  */
@@ -50,12 +52,12 @@ class CoursesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    /*public function actionView($id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
+    }*/
 
     /**
      * Creates a new Courses model.
@@ -67,11 +69,14 @@ class CoursesController extends Controller
         $model = new Courses();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'specialization'=> [],
+            'program' => [],
         ]);
     }
 
@@ -85,13 +90,26 @@ class CoursesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $program= []; $specialization = [];
+
+        if(!empty($model->programID)){
+           
+            $program = ArrayHelper::map(Program::find()->where(['id'=>$model->programID])->asArray()->all(),'id','name');
+        }
+
+        if(!empty($model->specializationID)){
+            $specialization = ArrayHelper::map(Specialization::find()->where(['id'=>$model->specializationID])->asArray()->all(),'id','name');
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'specialization'=> $specialization,
+            'program' => $program,
         ]);
     }
 

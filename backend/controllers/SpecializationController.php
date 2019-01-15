@@ -8,6 +8,8 @@ use common\models\search\SpecializationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+
 
 /**
  * SpecializationController implements the CRUD actions for Specialization model.
@@ -109,6 +111,24 @@ class SpecializationController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+
+    public function actionSpecializationList($q = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["id", new \yii\db\Expression("name AS text")])
+            ->from('specialization')
+            ->where(['like', 'name', $q])
+            ->andWhere(['status'=>1])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 
     /**
