@@ -44,18 +44,7 @@ class UniversityController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single University model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+
 
     /**
      * Creates a new University model.
@@ -67,7 +56,8 @@ class UniversityController extends Controller
         $model = new University();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -87,11 +77,52 @@ class UniversityController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+        ]);
+    }
+
+    /**
+     * Displays a single University model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionGallery(){
+        $this->layout= "university";
+        $university = "";//$this->findModel($id);
+        return $this->render('gallery', [
+            'university' => $university,
+        ]);
+    }
+
+
+    public function actionReview(){
+        $this->layout= "university";
+        $university = "";//$this->findModel($id);
+        return $this->render('gallery', [
+            'university' => $university,
+        ]);
+    }
+
+    public function actionCourses(){
+        $this->layout= "university";
+        $university = "";//$this->findModel($id);
+        return $this->render('courses', [
+            'university' => $university,
         ]);
     }
 

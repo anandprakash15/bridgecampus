@@ -46,7 +46,7 @@ class Courses extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['programID', 'specializationID', 'name', 'code', 'sortno', 'createdDate', 'status', 'createdBy', 'updatedBy', 'type', 'description', 'courseType'], 'required'],
+            [['programID', 'specializationID', 'name', 'code', 'sortno', 'status', 'type', 'description', 'courseType'], 'required'],
             [['programID', 'specializationID', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'description', 'courseType'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['name'], 'string', 'max' => 300],
@@ -65,12 +65,12 @@ class Courses extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'programID' => 'Program ID',
-            'specializationID' => 'Specialization ID',
+            'programID' => 'Program',
+            'specializationID' => 'Specialization',
             'name' => 'Name',
             'code' => 'Code',
-            'sortno' => 'Sortno',
-            'courselevel' => 'Courselevel',
+            'sortno' => 'Sort No.',
+            'courselevel' => 'Course Level',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
@@ -81,6 +81,19 @@ class Courses extends \yii\db\ActiveRecord
             'description' => 'Description',
             'courseType' => 'Course Type',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**

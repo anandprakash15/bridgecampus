@@ -80,16 +80,16 @@ class University extends \yii\db\ActiveRecord
             'name' => 'Name',
             'code' => 'Code',
             'address' => 'Address',
-            'cityID' => 'City ID',
-            'stateID' => 'State ID',
-            'countryID' => 'Country ID',
+            'cityID' => 'City',
+            'stateID' => 'State',
+            'countryID' => 'Country',
             'taluka' => 'Taluka',
             'district' => 'District',
             'pincode' => 'Pincode',
             'contact' => 'Contact',
             'fax' => 'Fax',
             'email' => 'Email',
-            'websiteurl' => 'Websiteurl',
+            'websiteurl' => 'Website Url',
             'establish_year' => 'Establish Year',
             'approved_by' => 'Approved By',
             'accredited_by' => 'Accredited By',
@@ -103,6 +103,19 @@ class University extends \yii\db\ActiveRecord
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**

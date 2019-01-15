@@ -53,9 +53,9 @@ class Program extends \yii\db\ActiveRecord
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
                 $this->createdBy = \Yii::$app->user->identity->id;
-                $this->updatedBy = \Yii::$app->user->identity->id;
                 $this->createdDate = date('Y-m-d H:i:s');
             }
+            $this->updatedBy = \Yii::$app->user->identity->id;
             return true;
         }
         return false;
