@@ -44,7 +44,7 @@ AppAsset::register($this);
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
           <span class="sr-only">Toggle navigation</span>
         </a>
-
+        <span class="uc-title">University: <?= @Yii::$app->params['uTitle'] ?></span>
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
             <!-- User Account: style can be found in dropdown.less -->
@@ -106,7 +106,7 @@ AppAsset::register($this);
           'items' => [
             ['label' => '<i class="fa fa-home"></i> <span>Dashboard</span>', 'url' => ['/site/dashboard']],
             [
-              'label' => 'University',
+              'label' => @Yii::$app->params['uTitle'],
               'url' => ['#'],
               'options'=>['class'=>'treeview active'],
               'template' => '<a href="#"><i class="fa fa-edit"></i> <span>{label}</span>
@@ -114,11 +114,11 @@ AppAsset::register($this);
               <i class="fa fa-angle-left pull-right"></i>
               </span></a>',
               'items' => [
-                ['label' => 'View', 'url' => ['/university/view']],
-                ['label' => 'Update', 'url' => ['/university/update']],
-                ['label' => 'Courses', 'url' => ['/university/courses']],
-                ['label' => 'Gallery', 'url' => ['/university/gallery']],
-                ['label' => 'Review', 'url' => ['/university/review']],
+                ['label' => 'View', 'url' => ['/university/view','id'=>@Yii::$app->params['uID']]],
+                ['label' => 'Update', 'url' => ['/university/update','id'=>@Yii::$app->params['uID']]],
+                ['label' => 'Courses', 'url' => ['/university/courses','id'=>@Yii::$app->params['uID']]],
+                ['label' => 'Gallery', 'url' => ['/university/gallery','id'=>@Yii::$app->params['uID']]],
+                ['label' => 'Review', 'url' => ['/university/review','id'=>@Yii::$app->params['uID']]],
               ],
             ],
           ],

@@ -139,3 +139,9 @@ form div.required label.control-label:after {
 label{
     font-weight: 100 !important;
 }
+.uc-title{
+    color: #fff;
+    font-size: 18px;
+    padding: 13px 15px !important;
+    float: left;
+}

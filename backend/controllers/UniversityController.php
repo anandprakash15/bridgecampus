@@ -4,10 +4,13 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\University;
+use common\models\Courses;
 use common\models\search\UniversitySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use common\models\UniversityCourse;
 
 /**
  * UniversityController implements the CRUD actions for University model.
@@ -74,6 +77,7 @@ class UniversityController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout= "university";
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -101,28 +105,64 @@ class UniversityController extends Controller
         ]);
     }
 
-    public function actionGallery(){
+    public function actionGallery($id){
         $this->layout= "university";
-        $university = "";//$this->findModel($id);
+        $university = $this->findModel($id);
         return $this->render('gallery', [
             'university' => $university,
         ]);
     }
 
 
-    public function actionReview(){
+    public function actionReview($id){
         $this->layout= "university";
-        $university = "";//$this->findModel($id);
+        $university = $this->findModel($id);
         return $this->render('gallery', [
             'university' => $university,
         ]);
     }
 
-    public function actionCourses(){
+    public function actionCourses($id){
         $this->layout= "university";
-        $university = "";//$this->findModel($id);
+        $university = $this->findModel($id);
+        $courses = ArrayHelper::map(Courses::find()->where(['status'=>1])->all(),'id','name');
+        $ucmodel = new UniversityCourse();
+        $ucmodel->scenario = UniversityCourse::SCENARIO_UC_CREATE;
+
+       
+        $oldCourses = ArrayHelper::getColumn(UniversityCourse::find()->where(['universityID'=>$university->id])->asArray()->all(),'courseID');
+        
+        $ucmodel->courseID = $oldCourses;
+
+        $ucmodel->universityID = $university->id;
+
+        if ($ucmodel->load(Yii::$app->request->post())) {
+
+            $newCourse = array_diff((array)$ucmodel['courseID'], (array)$oldCourses);
+           
+            $deletedCourse = array_diff((array)$oldCourses,(array)$ucmodel['courseID']);    
+            foreach ($newCourse as $key => $courseID) {
+                $nucmodel = new UniversityCourse();
+                $nucmodel->universityID = $university->id;
+                $nucmodel->courseID = $courseID;
+                $nucmodel->save();    
+            }
+
+            if(!empty($deletedCourse))
+            {
+                UniversityCourse::deleteAll(['universityID' => $university->id, 'courseID' =>  array_values($deletedCourse)]);
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            
+            return $this->redirect(['courses','id'=>$university->id]);
+        }
+
+        
         return $this->render('courses', [
             'university' => $university,
+            'courses'=>$courses,
+            'ucmodel' => $ucmodel,
         ]);
     }
 
@@ -136,7 +176,6 @@ class UniversityController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
@@ -150,6 +189,8 @@ class UniversityController extends Controller
     protected function findModel($id)
     {
         if (($model = University::findOne($id)) !== null) {
+            Yii::$app->params['uTitle'] = $model->name;
+            Yii::$app->params['uID'] = $model->id;
             return $model;
         }
 

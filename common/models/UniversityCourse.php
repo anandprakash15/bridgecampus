@@ -23,6 +23,8 @@ use Yii;
  */
 class UniversityCourse extends \yii\db\ActiveRecord
 {
+    const SCENARIO_UC_CREATE = 'uc_create';
+
     /**
      * @inheritdoc
      */
@@ -37,7 +39,7 @@ class UniversityCourse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['universityID', 'courseID', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
+            [['universityID', 'courseID'], 'required','except' => self::SCENARIO_UC_CREATE],
             [['universityID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['universityID'], 'exist', 'skipOnError' => true, 'targetClass' => University::className(), 'targetAttribute' => ['universityID' => 'id']],
@@ -47,6 +49,15 @@ class UniversityCourse extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_UC_CREATE] = ['courseID','universityID'];
+
+        return $scenarios;
+    }
+
     /**
      * @inheritdoc
      */
@@ -54,14 +65,27 @@ class UniversityCourse extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'universityID' => 'University ID',
-            'courseID' => 'Course ID',
+            'universityID' => 'University',
+            'courseID' => 'Course',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**
