@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use common\models\UniversityCourse;
-
+use common\models\search\UniversityCourseSearch;
 /**
  * UniversityController implements the CRUD actions for University model.
  */
@@ -122,14 +122,28 @@ class UniversityController extends Controller
         ]);
     }
 
+
     public function actionCourses($id){
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        $searchModel = new UniversityCourseSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id);
+        
+        return $this->render('courses', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+    public function actionAddCourses($id){
         $this->layout= "university";
         $university = $this->findModel($id);
         $courses = ArrayHelper::map(Courses::find()->where(['status'=>1])->all(),'id','name');
         $ucmodel = new UniversityCourse();
         $ucmodel->scenario = UniversityCourse::SCENARIO_UC_CREATE;
 
-       
+
         $oldCourses = ArrayHelper::getColumn(UniversityCourse::find()->where(['universityID'=>$university->id])->asArray()->all(),'courseID');
         
         $ucmodel->courseID = $oldCourses;
@@ -139,7 +153,7 @@ class UniversityController extends Controller
         if ($ucmodel->load(Yii::$app->request->post())) {
 
             $newCourse = array_diff((array)$ucmodel['courseID'], (array)$oldCourses);
-           
+
             $deletedCourse = array_diff((array)$oldCourses,(array)$ucmodel['courseID']);    
             foreach ($newCourse as $key => $courseID) {
                 $nucmodel = new UniversityCourse();
@@ -153,13 +167,13 @@ class UniversityController extends Controller
                 UniversityCourse::deleteAll(['universityID' => $university->id, 'courseID' =>  array_values($deletedCourse)]);
             }
 
-            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            \Yii::$app->getSession()->setFlash('success', 'Courses successfully added in university '.$university->name.".");
             
             return $this->redirect(['courses','id'=>$university->id]);
         }
 
         
-        return $this->render('courses', [
+        return $this->render('add_courses', [
             'university' => $university,
             'courses'=>$courses,
             'ucmodel' => $ucmodel,

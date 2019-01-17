@@ -11,32 +11,52 @@ use softark\duallistbox\DualListbox;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'University: Courses';
-$this->params['subtitle'] = '<h1>University: Courses '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';?>
+$this->params['subtitle'] = '<h1>University: Courses <a class="btn btn-success btn-xs" href="'.Url::to(['add-courses','id'=>$university->id]).'">Add</a></h1>';
+echo Yii::$app->message->display();
+?>
+
 <div class="university-index">
 	<div class="custumbox box box-info">
 		<div class="box-body">
-			<?php $form = ActiveForm::begin(); ?>
-			<?php
-			$options = [
-				'multiple' => true,
-				'size' => 20,
-			];
-    // echo $form->field($model, $attribute)->listBox($items, $options);
-			echo $form->field($ucmodel, 'courseID')->widget(DualListbox::className(),[
-				'items' => $courses,
-				'options' => [],
-				'clientOptions' => [
-					'moveOnSelect' => false,
-					'selectedListLabel' => 'Selected Courses',
-					'nonSelectedListLabel' => 'Course List',
-				],
-			])->label(false);
-			?>
-			<div class="form-group">
-				<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-			</div>
+			<?= GridView::widget([
+            'striped'=>false,
+            'hover'=>true,
+            'panel'=>['type'=>'default', 'heading'=>'University Courses List','after'=>false],
+            'toolbar'=> [
+                '{export}',
+                '{toggleData}',
+            ],
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-			<?php ActiveForm::end(); ?>
+                [
+                	'label'=>'Name',
+                	'contentOptions' => ['style' => 'width:50%;'],
+                    'attribute' => 'cname',
+                    'value' => function($model){
+                        return $model['course']['name'];
+                    }
+                ],
+                [
+                	'label'=>'Program',
+                	'contentOptions' => ['style' => 'width:25%;'],
+                    'attribute' => 'program',
+                    'value' => function($model){
+                        return $model['course']['program']['name'];
+                    }
+                ],
+                [
+                	'label'=>'Specialization',
+                	'contentOptions' => ['style' => 'width:25%;'],
+                    'attribute' => 'specialization',
+                    'value' => function($model){
+                        return $model['course']['specialization']['name'];
+                    }
+                ],
+            ],
+        ]); ?>
 		</div>
 	</div>
 </div>

@@ -16,7 +16,7 @@ echo Yii::$app->message->display();
 ?>
 <div class="courses-index">
     <div class="custumbox box box-info">
-       <div class="box-body">
+     <div class="box-body">
         <?= GridView::widget([
             'striped'=>false,
             'hover'=>true,
@@ -30,23 +30,39 @@ echo Yii::$app->message->display();
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'programID',
-                'specializationID',
-                'name',
-                'code',
-            //'sortno',
-            //'courselevel',
-            //'createdDate',
-            //'updatedDate',
-            //'status',
-            //'createdBy',
-            //'updatedBy',
-            //'full_part_time:datetime',
-            //'type',
-            //'description',
-            //'courseType',
+                [
+                    'contentOptions' => ['style' => 'width:30%;'],
+                    'attribute' => 'name',
+                ],
+                [
+                    'contentOptions' => ['style' => 'width:10%;'],
+                    'attribute' => 'code',
+                ],
+                [
+                    'label'=>'Program',
+                    'contentOptions' => ['style' => 'width:20%;'],
+                    'attribute' => 'program',
+                    'value' => function($model){
+                        return $model['program']['name'];
+                    }
+                ],
+                [
+                    'label'=>'Specialization',
+                    'contentOptions' => ['style' => 'width:20%;'],
+                    'attribute' => 'specialization',
+                    'value' => function($model){
+                        return $model['specialization']['name'];
+                    }
+                ],
+                [
+                    'attribute' => 'status',
+                    'filter' => $status,
+                    'value' => function($model)use($status){
+                        return $status[$model['status']];
+                    }
 
-                ['class' => 'yii\grid\ActionColumn'],
+                ],
+                
             ],
         ]); ?>
     </div>
@@ -55,7 +71,7 @@ echo Yii::$app->message->display();
 <?php 
 $this->registerCss("
     .app-title{
-       display: none;
-   }
-   ");
-   ?>
+     display: none;
+ }
+ ");
+ ?>

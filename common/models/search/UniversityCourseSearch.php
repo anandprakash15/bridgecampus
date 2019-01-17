@@ -2,31 +2,31 @@
 
 namespace common\models\search;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Courses;
+use common\models\UniversityCourse;
 
 /**
- * CoursesSearch represents the model behind the search form of `common\models\Courses`.
+ * UniversityCourseSearch represents the model behind the search form of `common\models\UniversityCourse`.
  */
-class CoursesSearch extends Courses
+class UniversityCourseSearch extends UniversityCourse
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
+    public $cname;
     public $specialization;
     public $program;
     public function rules()
     {
         return [
-            [['id', 'programID', 'specializationID', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'description', 'courseType'], 'integer'],
-            [['name', 'code', 'createdDate', 'updatedDate','specialization','program'], 'safe'],
+            [['id', 'universityID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['createdDate', 'updatedDate','specialization','program','cname'], 'safe'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function scenarios()
     {
@@ -41,12 +41,13 @@ class CoursesSearch extends Courses
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$uid=null)
     {
-        $query = Courses::find()->joinWith(['program','specialization']);
-
+        $query = UniversityCourse::find()->joinWith(['coursePS']);
+        if($uid!=null){
+            $query->where(['universityID'=>$uid]);
+        }
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -62,25 +63,18 @@ class CoursesSearch extends Courses
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'programID' => $this->programID,
-            'specializationID' => $this->specializationID,
-            'sortno' => $this->sortno,
-            'courselevel' => $this->courselevel,
+            'universityID' => $this->universityID,
+            'courseID' => $this->courseID,
             'createdDate' => $this->createdDate,
             'updatedDate' => $this->updatedDate,
-            'courses.status' => $this->status,
+            'status' => $this->status,
             'createdBy' => $this->createdBy,
             'updatedBy' => $this->updatedBy,
-            'full_part_time' => $this->full_part_time,
-            'type' => $this->type,
-            'description' => $this->description,
-            'courseType' => $this->courseType,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'code', $this->code])
+        $query->andFilterWhere(['like', 'courses.name', $this->cname])
             ->andFilterWhere(['like', 'program.name', $this->program])
-            ->andFilterWhere(['like', 'specialization', $this->specialization]);
+            ->andFilterWhere(['like', 'specialization.name', $this->specialization]);
 
         return $dataProvider;
     }

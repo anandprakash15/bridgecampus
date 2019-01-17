@@ -107,6 +107,14 @@ class UniversityCourse extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getCoursePS()
+    {
+        return $this->hasOne(Courses::className(), ['id' => 'courseID'])->joinWith(['program','specialization']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getCreatedBy0()
     {
         return $this->hasOne(User::className(), ['id' => 'createdBy']);
