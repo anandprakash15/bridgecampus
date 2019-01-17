@@ -5,14 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\ExamCategory */
 
-$this->title = 'Update Exam Category: {nameAttribute}';
+$this->title = 'Update Exam Category';
 $this->params['breadcrumbs'][] = ['label' => 'Exam Categories', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="exam-category-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

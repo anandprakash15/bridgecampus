@@ -51,7 +51,7 @@ AppAsset::register($this);
             <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <?= Html::img('@web/images/avatar5.png',['height'=>"50px",'title'=>'CARE Training','class'=>'user-image'] ) ?>
-                <span class="hidden-xs">Chetan Ambelkar</span>
+                <span class="hidden-xs"><?= @Yii::$app->user->identity->fullname; ?></span>
               </a>
               <ul class="dropdown-menu">
                 <!-- User image -->
@@ -108,7 +108,9 @@ AppAsset::register($this);
             ['label' => '<i class="fa fa-book" aria-hidden="true"></i> <span>Courses</span>', 'url' => ['/courses/index']],
             ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>University</span>', 'url' => ['/university/index']],
             ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>Colleges</span>', 'url' => ['/site/index']],
+            ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>Exam</span>', 'url' => ['/exam/index']],
             ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>User</span>', 'url' => ['/user/index']],
+
             [
               'label' => 'Master',
               'url' => ['#'],
@@ -119,7 +121,8 @@ AppAsset::register($this);
               </span></a>',
               'items' => [
                 ['label' => 'Specialization', 'url' => ['/specialization/index']],
-                ['label' => 'Program', 'url' => ['/program/index']]
+                ['label' => 'Program', 'url' => ['/program/index']],
+                ['label' => 'Exam Category', 'url' => ['/exam-category/index']]
               ],
             ],
           ],

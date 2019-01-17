@@ -37,7 +37,7 @@ class ExamCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['programID', 'name', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
+            [['programID', 'name', 'status'], 'required'],
             [['programID', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['name'], 'string'],
             [['createdDate', 'updatedDate'], 'safe'],
@@ -54,7 +54,7 @@ class ExamCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'programID' => 'Program ID',
+            'programID' => 'Program',
             'name' => 'Name',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
@@ -62,6 +62,19 @@ class ExamCategory extends \yii\db\ActiveRecord
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -1,63 +1,75 @@
+
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ExamSearch */
+/* @var $searchModel common\models\search\SpecializationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Exams';
+$this->params['subtitle'] = '<h1>Exam Categorie '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
+$program = Yii::$app->myhelper->getProgram();
+$status = Yii::$app->myhelper->getActiveInactive();
+$examcatID = Yii::$app->myhelper->getExamCategory();
+echo Yii::$app->message->display();
 ?>
-<div class="exam-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="specialization-index">
+    <div class="custumbox box box-info">
+        <div class="box-body">
+            <?= GridView::widget([
+                'striped'=>false,
+                'hover'=>true,
+                'panel'=>['type'=>'default', 'heading'=>'Exams List','after'=>false],
+                'toolbar'=> [
+                    '{export}',
+                    '{toggleData}',
+                ],
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'kartik\grid\SerialColumn'],
 
-    <p>
-        <?= Html::a('Create Exam', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+                    [
+                        'attribute' => 'examcatID',
+                        'filter' => $examcatID,
+                        'value' => function($model)use($examcatID){
+                            return $examcatID[$model['examcatID']];
+                        }
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+                    ],
+                    'name',
+                    [
+                        'attribute' => 'status',
+                        'filter' => $status,
+                        'value' => function($model)use($status){
+                            return $status[$model['status']];
+                        }
 
-            'id',
-            'examcatID',
-            'courseID',
-            'name:ntext',
-            'exam_dates:ntext',
-            //'exam_fullname:ntext',
-            //'conductedBy:ntext',
-            //'process:ntext',
-            //'highlight:ntext',
-            //'eligibility:ntext',
-            //'appform:ntext',
-            //'exam_center:ntext',
-            //'r_book',
-            //'result:ntext',
-            //'cutt_off:ntext',
-            //'selection_process:ntext',
-            //'main_stream:ntext',
-            //'summary:ntext',
-            //'analysis:ntext',
-            //'bylocation:ntext',
-            //'question_paper:ntext',
-            //'ans_key:ntext',
-            //'counselling',
-            //'syllabus:ntext',
-            //'admit_card:ntext',
-            //'upload_guide:ntext',
-            //'createdDate',
-            //'updatedDate',
-            //'status',
-            //'createdBy',
-            //'updatedBy',
+                    ],
+                ],
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                'exportConfig'=> [
+                    GridView::CSV=>[
+                        'label' => 'CSV',
+                    ],
+                    GridView::EXCEL=>[
+                        'label' => 'Excel',
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
 </div>
+
+<?php 
+$this->registerCss("
+    .app-title{
+       display: none;
+   }
+   ");
+   ?>
+

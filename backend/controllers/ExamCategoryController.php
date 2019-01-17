@@ -8,6 +8,7 @@ use common\models\search\ExamCategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 /**
  * ExamCategoryController implements the CRUD actions for ExamCategory model.
@@ -27,6 +28,23 @@ class ExamCategoryController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionExamCategoryList($q = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["id", new \yii\db\Expression("name AS text")])
+            ->from('exam_category')
+            ->where(['like', 'name', $q])
+            ->andWhere(['status'=>1])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 
     /**
@@ -50,13 +68,13 @@ class ExamCategoryController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    /*public function actionView($id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
-
+*/
     /**
      * Creates a new ExamCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -67,7 +85,8 @@ class ExamCategoryController extends Controller
         $model = new ExamCategory();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -87,7 +106,8 @@ class ExamCategoryController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

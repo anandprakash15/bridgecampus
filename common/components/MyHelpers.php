@@ -12,6 +12,8 @@ use common\components\CustomUrlRule;
 use yii\db\Query;
 use common\models\Program;
 use common\models\Role;
+use common\models\ExamCategory;
+
 
  class MyHelpers extends Component{
 
@@ -66,6 +68,17 @@ use common\models\Role;
         $result = '';
         $model = Program::find()
         ->where(['status'=>1])
+        ->all();
+        if(!empty($model)){
+            $result = ArrayHelper::map($model, 'id', 'name');
+        }
+
+        return $result;
+    }
+
+    public function getExamCategory(){
+        $result = '';
+        $model = ExamCategory::find()
         ->all();
         if(!empty($model)){
             $result = ArrayHelper::map($model, 'id', 'name');
