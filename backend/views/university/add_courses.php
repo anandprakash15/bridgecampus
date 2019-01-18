@@ -10,8 +10,13 @@ use softark\duallistbox\DualListbox;
 /* @var $searchModel common\models\search\UniversitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'University: Courses';
-$this->params['subtitle'] = '<h1>University: Courses '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';?>
+$this->title = $university->name.' Add Courses';
+$this->params['subtitle'] = '<h1>Add Courses</h1>';
+$this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $university->name;
+$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$university->id]];
+$this->params['breadcrumbs'][] = 'Add Courses';
+?>
 <div class="university-index">
 	<div class="custumbox box box-info">
 		<div class="box-body">
@@ -26,7 +31,7 @@ $this->params['subtitle'] = '<h1>University: Courses '.Yii::$app->myhelper->getC
 				'options' => [],
 				'clientOptions' => [
 					'moveOnSelect' => false,
-					'selectedListLabel' => 'Selected Courses',
+					'selectedListLabel' => 'Selected Course',
 					'nonSelectedListLabel' => 'Course List',
 				],
 			])->label(false);

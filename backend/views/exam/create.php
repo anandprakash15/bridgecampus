@@ -13,7 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="exam-create">
     <?= $this->render('_form', [
         'model' => $model,
-        'examcategory' => $examcategory,
+        'examcatID'=> $examcatID,
+		'courseID' => $courseID,
     ]) ?>
 
 </div>

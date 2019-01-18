@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
-
+use dosamigos\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Courses */
@@ -67,25 +67,36 @@ use yii\web\JsExpression;
 
         <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'sortno')->textInput() ?>
 
         <?= $form->field($model, 'courselevel')->textInput() ?>
 
-        <?= $form->field($model, 'full_part_time')->textInput() ?>
+        <?= $form->field($model, 'full_part_time')->dropDownList(Yii::$app->myhelper->getFullPartTime(),['class'=>'form-control'])?>
 
-        <?= $form->field($model, 'type')->textInput() ?>
+        <?= $form->field($model, 'type')->dropDownList(Yii::$app->myhelper->getCDType(),['class'=>'form-control'])?>
 
-        <?= $form->field($model, 'description')->textInput() ?>
+        <?= $form->field($model, 'courseType')->dropDownList(Yii::$app->myhelper->getCourseType(),['class'=>'form-control'])?>
 
-        <?= $form->field($model, 'courseType')->textInput() ?>
+        
+        <?= $form->field($model, 'description')->widget(CKEditor::className(), [
+          'options' => ['rows' => 6],
+          'preset' => 'standard',
+          'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
 
-        <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
-        <div class="col-sm-offset-2 col-sm-4">
-            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
-        </div>
+      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
-        <?php ActiveForm::end(); ?>
+      <div class="col-sm-offset-2 col-sm-4">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
     </div>
+
+    <?php ActiveForm::end(); ?>
 </div>
 </div>
+</div>
+
+
+<?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../course/index')."");?>

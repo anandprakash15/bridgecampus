@@ -26,8 +26,8 @@ use dosamigos\ckeditor\CKEditor;
      <br/>
 
      <?= $form->field($model, 'examcatID')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Search Program...'],
-        'data' => $examcategory,
+        'options' => ['placeholder' => 'Search...'],
+        'data' => $examcatID,
         'size' => Select2::SMALL,
         'pluginOptions' => [
             'allowClear' => true,
@@ -47,8 +47,8 @@ use dosamigos\ckeditor\CKEditor;
     ]);?>
 
      <?= $form->field($model, 'courseID')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Search Program...'],
-        'data' => $examcategory,
+        'options' => ['placeholder' => 'Search...'],
+        'data' => $courseID,
         'size' => Select2::SMALL,
         'pluginOptions' => [
             'allowClear' => true,
@@ -57,7 +57,7 @@ use dosamigos\ckeditor\CKEditor;
                 'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
             ],
             'ajax' => [
-                'url' => \yii\helpers\Url::to(['exam-category/exam-category-list']),
+                'url' => \yii\helpers\Url::to(['courses/course-list']),
                 'dataType' => 'json',
                 'data' => new JsExpression('function(params) { return {q:params.term}; }')
             ],

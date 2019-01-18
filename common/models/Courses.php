@@ -39,6 +39,7 @@ class Courses extends \yii\db\ActiveRecord
     {
         return 'courses';
     }
+    
 
     /**
      * @inheritdoc
@@ -46,9 +47,9 @@ class Courses extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['programID', 'specializationID', 'name', 'code', 'sortno', 'status', 'type', 'description', 'courseType'], 'required'],
-            [['programID', 'specializationID', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'description', 'courseType'], 'integer'],
-            [['createdDate', 'updatedDate'], 'safe'],
+            [['programID', 'specializationID', 'name', 'status', 'type','courseType'], 'required'],
+            [['programID', 'specializationID', 'sortno', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
+            [['createdDate', 'updatedDate','description','courselevel'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['code'], 'string', 'max' => 20],
             [['programID'], 'exist', 'skipOnError' => true, 'targetClass' => Program::className(), 'targetAttribute' => ['programID' => 'id']],

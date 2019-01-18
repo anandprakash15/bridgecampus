@@ -10,7 +10,9 @@ use common\models\search\CoursesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
+
 /**
  * CoursesController implements the CRUD actions for Courses model.
  */
@@ -141,5 +143,22 @@ class CoursesController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionCourseList($q = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["id", new \yii\db\Expression("name AS text")])
+            ->from('courses')
+            ->where(['like', 'name', $q])
+            ->andWhere(['status'=>1])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 }

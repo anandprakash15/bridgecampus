@@ -11,6 +11,7 @@ $this->title = 'Courses';
 $this->params['subtitle'] = '<h1>Courses '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
+$fullparttime = Yii::$app->myhelper->getFullPartTime();
 
 echo Yii::$app->message->display();
 ?>
@@ -34,10 +35,10 @@ echo Yii::$app->message->display();
                     'contentOptions' => ['style' => 'width:30%;'],
                     'attribute' => 'name',
                 ],
-                [
+                /*[
                     'contentOptions' => ['style' => 'width:10%;'],
                     'attribute' => 'code',
-                ],
+                ],*/
                 [
                     'label'=>'Program',
                     'contentOptions' => ['style' => 'width:20%;'],
@@ -54,6 +55,16 @@ echo Yii::$app->message->display();
                         return $model['specialization']['name'];
                     }
                 ],
+
+                [
+                    'attribute' => 'full_part_time',
+                    'filter' => $fullparttime,
+                    'value' => function($model)use($fullparttime){
+                        return $fullparttime[$model['full_part_time']];
+                    }
+
+                ],
+
                 [
                     'attribute' => 'status',
                     'filter' => $status,

@@ -8,6 +8,10 @@ use common\models\search\ExamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
+use common\models\ExamCategory;
+use common\models\Courses;
 
 /**
  * ExamController implements the CRUD actions for Exam model.
@@ -65,7 +69,8 @@ class ExamController extends Controller
     public function actionCreate()
     {
         $model = new Exam();
-
+        $examcatID= []; $courseID = [];
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
             return $this->redirect(['index']);
@@ -73,7 +78,8 @@ class ExamController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'examcategory' => [],
+            'examcatID'=> $examcatID,
+            'courseID' => $courseID,
         ]);
     }
 
@@ -88,6 +94,18 @@ class ExamController extends Controller
     {
         $model = $this->findModel($id);
 
+        $examcatID= []; $courseID = [];
+
+        if(!empty($model->examcatID)){
+           
+            $examcatID = ArrayHelper::map(ExamCategory::find()->where(['id'=>$model->examcatID])->asArray()->all(),'id','name');
+        }
+
+        if(!empty($model->courseID)){
+            $courseID = ArrayHelper::map(Courses::find()->where(['id'=>$model->courseID])->asArray()->all(),'id','name');
+        }
+
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
              \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
             return $this->redirect(['index']);
@@ -95,7 +113,8 @@ class ExamController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'examcategory' => [],
+            'examcatID'=> $examcatID,
+            'courseID' => $courseID,
         ]);
     }
 

@@ -88,7 +88,7 @@ class Exam extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'examcatID' => 'Examcat ID',
+            'examcatID' => 'Exam',
             'courseID' => 'Course ID',
             'name' => 'Name',
             'exam_dates' => 'Exam Dates',

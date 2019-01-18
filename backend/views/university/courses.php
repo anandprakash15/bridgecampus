@@ -10,8 +10,13 @@ use softark\duallistbox\DualListbox;
 /* @var $searchModel common\models\search\UniversitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'University: Courses';
-$this->params['subtitle'] = '<h1>University: Courses <a class="btn btn-success btn-xs" href="'.Url::to(['add-courses','id'=>$university->id]).'">Add</a></h1>';
+$this->title = $university->name.' University Courses';
+$this->params['subtitle'] = '<h1>Courses <a class="btn btn-success btn-xs" href="'.Url::to(['add-courses','id'=>$university->id]).'">Add</a></h1>';
+
+$this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $university->name;
+$this->params['breadcrumbs'][] = 'Courses';
+
 echo Yii::$app->message->display();
 ?>
 
@@ -21,7 +26,7 @@ echo Yii::$app->message->display();
 			<?= GridView::widget([
             'striped'=>false,
             'hover'=>true,
-            'panel'=>['type'=>'default', 'heading'=>'University Courses List','after'=>false],
+            'panel'=>['type'=>'default', 'heading'=>$this->title,'after'=>false],
             'toolbar'=> [
                 '{export}',
                 '{toggleData}',

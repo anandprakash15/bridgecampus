@@ -64,6 +64,21 @@ use common\models\ExamCategory;
         return ['M' => 'Male', 'F'=>'Female'];
     }
 
+    public static function getFullPartTime()
+    {
+        return [1 => 'Full Time', 2=>'Part Time'];
+    }
+
+    public static function getCourseType()
+    {
+        return [1 => 'University', 2=>'autonomas'];
+    }
+
+    public static function getCDType()
+    {
+        return [1 => 'Certificate', 2=>'Degree'];
+    }
+
     public function getProgram(){
         $result = '';
         $model = Program::find()

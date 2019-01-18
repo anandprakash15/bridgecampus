@@ -12,9 +12,10 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="exam-update">
 
-    <?= $this->render('_form', [
-        'model' => $model,
-        'examcategory' => $examcategory,
-    ]) ?>
+	<?= $this->render('_form', [
+		'model' => $model,
+		'examcatID'=> $examcatID,
+		'courseID' => $courseID,
+	]) ?>
 
 </div>

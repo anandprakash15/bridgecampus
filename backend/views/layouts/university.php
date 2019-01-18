@@ -103,22 +103,24 @@ AppAsset::register($this);
       <section class="sidebar">
         <?php echo Menu::widget([
           'options' => ['class' => 'sidebar-menu', 'id'=>'side-menu','data-widget'=>"tree"],
+
           'items' => [
             ['label' => '<i class="fa fa-home"></i> <span>Dashboard</span>', 'url' => ['/site/dashboard']],
             [
-              'label' => @Yii::$app->params['uTitle'],
+              'label' => 'University',
               'url' => ['#'],
               'options'=>['class'=>'treeview active'],
               'template' => '<a href="#"><i class="fa fa-edit"></i> <span>{label}</span>
               <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
               </span></a>',
+
               'items' => [
-                ['label' => 'View', 'url' => ['/university/view','id'=>@Yii::$app->params['uID']]],
-                ['label' => 'Update', 'url' => ['/university/update','id'=>@Yii::$app->params['uID']]],
-                ['label' => 'Courses', 'url' => ['/university/courses','id'=>@Yii::$app->params['uID']]],
-                ['label' => 'Gallery', 'url' => ['/university/gallery','id'=>@Yii::$app->params['uID']]],
-                ['label' => 'Review', 'url' => ['/university/review','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> View', 'url' => ['/university/view','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Update', 'url' => ['/university/update','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Courses', 'url' => ['/university/courses','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Gallery', 'url' => ['/university/gallery','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Review', 'url' => ['/university/review','id'=>@Yii::$app->params['uID']]],
               ],
             ],
           ],
