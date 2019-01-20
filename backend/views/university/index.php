@@ -61,7 +61,7 @@ echo Yii::$app->message->display();
             //'createdBy',
             //'updatedBy',
 
-                ['class' => 'yii\grid\ActionColumn'],
+                //['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
     </div>

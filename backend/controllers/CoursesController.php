@@ -12,7 +12,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
-
+use yii\web\Response;
+use yii\bootstrap\ActiveForm;
 /**
  * CoursesController implements the CRUD actions for Courses model.
  */
@@ -161,4 +162,20 @@ class CoursesController extends Controller
         }
         return $out;
     }
+
+    public function actionValidate($id = "")
+    {
+       if($id != "")
+        {
+            $model = $this->findModel($id);  
+        }else{
+            $model = new Courses();
+        }
+  
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+    }
+
 }

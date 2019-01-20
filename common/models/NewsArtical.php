@@ -9,8 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property int $natype 1-news, 2-artical
- * @property int $type 1-unversity, 2-college
- * @property int $coll_univID
+ * @property int $type 1-unversity, 2-college, 3-exam
+ * @property int $coll_univ_examID
  * @property int $programID
  * @property int $courseID
  * @property string $title
@@ -43,13 +43,26 @@ class NewsArtical extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['natype', 'type', 'coll_univID', 'title', 'description', 'national_international', 'startDate', 'endDate', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
-            [['natype', 'type', 'coll_univID', 'programID', 'courseID', 'national_international', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['natype', 'type', 'title', 'description', 'national_international'], 'required'],
+            [['natype', 'type', 'coll_univ_examID', 'programID', 'courseID', 'national_international', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['title', 'description'], 'string'],
             [['startDate', 'endDate', 'createdDate', 'updatedDate'], 'safe'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -61,7 +74,7 @@ class NewsArtical extends \yii\db\ActiveRecord
             'id' => 'ID',
             'natype' => 'Natype',
             'type' => 'Type',
-            'coll_univID' => 'Coll Univ ID',
+            'coll_univ_examID' => 'Coll Univ ID',
             'programID' => 'Program ID',
             'courseID' => 'Course ID',
             'title' => 'Title',

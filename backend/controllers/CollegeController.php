@@ -8,6 +8,9 @@ use common\models\search\CollegeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+use yii\web\Response;
+use yii\bootstrap\ActiveForm;
 
 /**
  * CollegeController implements the CRUD actions for College model.
@@ -67,7 +70,8 @@ class CollegeController extends Controller
         $model = new College();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+           \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -87,7 +91,8 @@ class CollegeController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -123,5 +128,20 @@ class CollegeController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionValidate($id = "")
+    {
+       if($id != "")
+        {
+            $model = $this->findModel($id);  
+        }else{
+            $model = new College();
+        }
+  
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
     }
 }

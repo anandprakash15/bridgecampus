@@ -79,6 +79,22 @@ use common\models\ExamCategory;
         return [1 => 'Certificate', 2=>'Degree'];
     }
 
+    public static function getNationalInternational()
+    {
+        return [1 => 'National', 2=>'International'];
+    }
+
+    public static function getNewsArtical()
+    {
+        return [1 => 'News', 2=>'Articals'];
+    }
+    public static function getUCE()
+    {
+        return [1 => 'University', 2=>'College', 3=>'Exam'];
+    }
+
+    
+
     public function getProgram(){
         $result = '';
         $model = Program::find()

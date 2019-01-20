@@ -12,6 +12,9 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use common\models\UniversityCourse;
 use common\models\search\UniversityCourseSearch;
+use yii\db\Query;
+use yii\web\Response;
+use yii\bootstrap\ActiveForm;
 /**
  * UniversityController implements the CRUD actions for University model.
  */
@@ -210,4 +213,20 @@ class UniversityController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionValidate($id = "")
+    {
+       if($id != "")
+        {
+            $model = $this->findModel($id);  
+        }else{
+            $model = new University();
+        }
+  
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+    }
+
 }

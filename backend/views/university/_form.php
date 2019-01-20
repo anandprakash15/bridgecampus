@@ -2,33 +2,96 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use kartik\widgets\Select2;
+use yii\web\JsExpression;
+use app\components\CustomUrlRule;
+use dosamigos\ckeditor\CKEditor;
+use backend\controllers\UserController;
+use kartik\widgets\FileInput;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\University */
+/* @var $model common\models\Specialization */
 /* @var $form yii\widgets\ActiveForm */
+
+$validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['university/validate','id'=>$model->id]);
 ?>
 
-<div class="university-form">
-    <div class="custumbox box box-info">
-     <div class="box-body">
-        <?php $form = ActiveForm::begin([
-           'layout' => 'horizontal',
-           'enableClientValidation' => true,
-           'enableAjaxValidation' => false,
-           'options' => ['enctype' => 'multipart/form-data'],
-       ]);?>
+<div class="exam-category-form">
+  <div class="custumbox box box-info">
+   <div class="box-body">
 
-       <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?php $form = ActiveForm::begin([
+     'layout' => 'horizontal',
+     'enableClientValidation' => true,
+     'enableAjaxValidation' => true,
+     'validationUrl' => $validateUrl,
+     'options' => ['enctype' => 'multipart/form-data'],
+   ]);?>
+   <br/>
 
-       <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+   <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'address')->textarea(['rows' => 6]) ?>
+   <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'cityID')->textInput() ?>
+   <?= $form->field($model, 'address')->widget(CKEditor::className(), [
+    'options' => ['rows' => 6],
+    'preset' => 'standard',
+    'clientOptions'=>[
+      'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+      /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+    ]
+  ]) ?>
 
-       <?= $form->field($model, 'stateID')->textInput() ?>
 
-       <?= $form->field($model, 'countryID')->textInput() ?>
+
+   <?php
+
+   $contriesList = UserController::actionGetCountrieslist();
+   if($model->isNewRecord){
+    $stateLists = UserController::actionGetStateslist();
+    $citiesLists = UserController::actionGetCitieslist();
+    $model->countryID = 101;/*india*/
+    $model->stateID = 22;/*maharsahtra*/
+  }else{
+    if(!empty($model->countryID)){
+
+      $stateLists = UserController::actionGetStateslist($model->countryID);
+    }else{
+      $stateLists = UserController::actionGetStateslist(101);
+    }
+    if(!empty($model->stateID)){
+      $citiesLists = UserController::actionGetCitieslist($model->stateID);
+    }else{
+      $citiesLists = UserController::actionGetCitieslist(22);
+    }
+  }
+  ?>
+
+  <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
+    'onchange'=>'$.get("../user/get-stateslist?countryID="+$(this).val(), function( data ) {
+      data = $.parseJSON(data);
+      $(\'#user-state\').empty().append("<option value=\'\'>-- Select State --</option>");
+      $(\'#user-city\').empty().append("<option value=\'\'>-- Select City --</option>");
+      $.each(data, function(index, value) {
+       $(\'#user-state\').append($(\'<option>\').text(value).attr(\'value\', index));
+       });
+       });
+       ','prompt'=>'-- Select Country --'])?>
+
+  <?= $form->field($model, 'stateID')->dropDownList(json_decode($stateLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select State --',
+    'onchange'=>'$.get("../user/get-citieslist?stateID="+$(this).val(), function( data ) {
+     data = $.parseJSON(data);
+     $(\'#user-city\').empty().append("<option value=\'\'>-- Select City --</option>");
+     $.each(data, function(index, value) {
+       $(\'#user-city\').append($(\'<option>\').text(value).attr(\'value\', index));
+       });
+       });
+       '])?>
+
+       <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
+
+
 
        <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
 
@@ -36,35 +99,84 @@ use yii\bootstrap\ActiveForm;
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'contact')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'fax')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'contact')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
 
-       <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'websiteurl')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'establish_year')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'fax')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'approved_by')->textarea(['rows' => 6]) ?>
+      <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'accredited_by')->textarea(['rows' => 6]) ?>
+      <?= $form->field($model, 'websiteurl')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'establish_year')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'about')->textarea(['rows' => 6]) ?>
+      <?= $form->field($model, 'approved_by')->textarea(['rows' => 6]) ?>
 
-       <?= $form->field($model, 'brochureurl')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'accredited_by')->textarea(['rows' => 6]) ?>
 
-       <?= $form->field($model, 'logourl')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
 
-      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
-     <div class="col-sm-offset-2 col-sm-4">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+      <?= $form->field($model, 'about')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+
+      <?php
+      $previewImg = $showPreview = '';
+
+    
+    ?>
+
+    <?php   echo $form->field($model, 'brochureurl')->widget(FileInput::classname(), [
+      'pluginOptions' => [
+        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+        'initialPreview'=> [$previewImg],
+        'showPreview' => $showPreview,
+        'showCaption' => true,
+        'showRemove' => false,
+        'showUpload' => false,
+        'uploadAsync'=>false,
+        'maxFileCount' => 1
+      ]
+    ]);?>
+
+    <?php   echo $form->field($model, 'logourl')->widget(FileInput::classname(), [
+      'pluginOptions' => [
+        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+        'initialPreview'=> [$previewImg],
+        'showPreview' => $showPreview,
+        'showCaption' => true,
+        'showRemove' => false,
+        'showUpload' => false,
+        'uploadAsync'=>false,
+        'maxFileCount' => 1
+      ]
+    ]);?>
+
+    <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+    <div class="col-sm-offset-2 col-sm-4">
+      <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+  </div>
 </div>
 </div>
-</div>
+
+<?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>

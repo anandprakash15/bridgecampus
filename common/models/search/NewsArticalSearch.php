@@ -18,7 +18,7 @@ class NewsArticalSearch extends NewsArtical
     public function rules()
     {
         return [
-            [['id', 'natype', 'type', 'coll_univID', 'programID', 'courseID', 'national_international', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['id', 'natype', 'type', 'coll_univ_examID', 'programID', 'courseID', 'national_international', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['title', 'description', 'startDate', 'endDate', 'createdDate', 'updatedDate'], 'safe'],
         ];
     }
@@ -62,7 +62,7 @@ class NewsArticalSearch extends NewsArtical
             'id' => $this->id,
             'natype' => $this->natype,
             'type' => $this->type,
-            'coll_univID' => $this->coll_univID,
+            'coll_univ_examID' => $this->coll_univ_examID,
             'programID' => $this->programID,
             'courseID' => $this->courseID,
             'national_international' => $this->national_international,

@@ -52,11 +52,26 @@ class Courses extends \yii\db\ActiveRecord
             [['createdDate', 'updatedDate','description','courselevel'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['code'], 'string', 'max' => 20],
+            ['code', 'codeunique'],
             [['programID'], 'exist', 'skipOnError' => true, 'targetClass' => Program::className(), 'targetAttribute' => ['programID' => 'id']],
             [['specializationID'], 'exist', 'skipOnError' => true, 'targetClass' => Specialization::className(), 'targetAttribute' => ['specializationID' => 'id']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function codeunique($attribute,$params)
+    {
+        $check = '';
+        if(!$this->isNewRecord){
+            $id = $this->id;
+            $check = Courses::find()->where(['code'=>$this->code])->andWhere(['<>','id',$id])->one();
+        }else{
+            $check = Courses::find()->where(['code'=>$this->code])->one();
+        }
+        if(!empty($check)){
+            $this->addError($attribute, $this->code.' This code has already been taken');
+        }
     }
 
     /**

@@ -107,8 +107,9 @@ AppAsset::register($this);
             ['label' => '<i class="fa fa-home"></i> <span>Dashboard</span>', 'url' => ['/site/dashboard']],
             ['label' => '<i class="fa fa-book" aria-hidden="true"></i> <span>Courses</span>', 'url' => ['/courses/index']],
             ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>University</span>', 'url' => ['/university/index']],
-            ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>Colleges</span>', 'url' => ['/site/index']],
+            ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>Colleges</span>', 'url' => ['/college/index']],
             ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>Exam</span>', 'url' => ['/exam/index']],
+            ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>News / Articals</span>', 'url' => ['/news-artical/index']],
             ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>User</span>', 'url' => ['/user/index']],
 
             [

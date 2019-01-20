@@ -57,18 +57,34 @@ class College extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name'], 'required'],
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['approved_by', 'accredited_by', 'affiliate_to', 'about', 'vission', 'mission'], 'string'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['name', 'address'], 'string', 'max' => 500],
             [['code', 'taluka', 'district', 'contact', 'fax', 'email', 'logourl'], 'string', 'max' => 100],
             [['pincode'], 'string', 'max' => 20],
+            ['code', 'codeunique'],
             [['websiteurl'], 'string', 'max' => 265],
             [['establish_year'], 'string', 'max' => 50],
             [['rating'], 'string', 'max' => 10],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function codeunique($attribute,$params)
+    {
+        $check = '';
+        if(!$this->isNewRecord){
+            $id = $this->id;
+            $check = College::find()->where(['code'=>$this->code])->andWhere(['<>','id',$id])->one();
+        }else{
+            $check = College::find()->where(['code'=>$this->code])->one();
+        }
+        if(!empty($check)){
+            $this->addError($attribute, $this->code.' This code has already been taken');
+        }
     }
 
     /**
@@ -106,6 +122,19 @@ class College extends \yii\db\ActiveRecord
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**

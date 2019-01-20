@@ -55,7 +55,7 @@ class University extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'websiteurl'], 'required'],
+            [['name'], 'required'],
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['approved_by', 'accredited_by', 'about'], 'string'],
             [['createdDate', 'updatedDate'], 'safe'],
@@ -65,9 +65,24 @@ class University extends \yii\db\ActiveRecord
             [['taluka', 'district', 'contact', 'fax', 'email', 'brochureurl', 'logourl'], 'string', 'max' => 50],
             [['websiteurl'], 'string', 'max' => 100],
             [['grade'], 'string', 'max' => 10],
+            ['code', 'codeunique'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function codeunique($attribute,$params)
+    {
+        $check = '';
+        if(!$this->isNewRecord){
+            $id = $this->id;
+            $check = University::find()->where(['code'=>$this->code])->andWhere(['<>','id',$id])->one();
+        }else{
+            $check = University::find()->where(['code'=>$this->code])->one();
+        }
+        if(!empty($check)){
+            $this->addError($attribute, $this->code.' This code has already been taken');
+        }
     }
 
     /**
