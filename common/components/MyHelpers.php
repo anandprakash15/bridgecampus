@@ -120,4 +120,13 @@ use common\models\ExamCategory;
       return  ArrayHelper::map(Role::find()->where(['not in','id', [1]])->all(), 'id', 'name');
     }
 
+    public static function getEncryptID($id)
+    {
+        return CustomUrlRule::encryptor("encrypt",$id);
+    }
+
+    public static function getDecryptID($id)
+    {
+        return CustomUrlRule::encryptor("decrypt",$id);
+    }
 }

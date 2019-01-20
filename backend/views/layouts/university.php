@@ -119,7 +119,7 @@ AppAsset::register($this);
                 ['label' => '<i class="fa fa-circle-o"></i> View', 'url' => ['/university/view','id'=>@Yii::$app->params['uID']]],
                 ['label' => '<i class="fa fa-circle-o"></i> Update', 'url' => ['/university/update','id'=>@Yii::$app->params['uID']]],
                 ['label' => '<i class="fa fa-circle-o"></i> Courses', 'url' => ['/university/courses','id'=>@Yii::$app->params['uID']]],
-                ['label' => '<i class="fa fa-circle-o"></i> Gallery', 'url' => ['/university/gallery','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Gallery', 'url' => ['/university/gallery','id'=>@Yii::$app->params['uID'],'type'=>1]],
                 ['label' => '<i class="fa fa-circle-o"></i> Review', 'url' => ['/university/review','id'=>@Yii::$app->params['uID']]],
               ],
             ],

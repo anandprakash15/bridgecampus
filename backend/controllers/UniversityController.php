@@ -8,10 +8,16 @@ use common\models\Courses;
 use common\models\search\UniversitySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
+use yii\web\Response;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
+use yii\helpers\Url;
 use common\models\UniversityCourse;
 use common\models\search\UniversityCourseSearch;
+use common\models\UniversityGallery;
+
 /**
  * UniversityController implements the CRUD actions for University model.
  */
@@ -105,12 +111,84 @@ class UniversityController extends Controller
         ]);
     }
 
-    public function actionGallery($id){
+    public function actionGallery($id,$type){
         $this->layout= "university";
         $university = $this->findModel($id);
+
+        $uID = Yii::$app->myhelper->getEncryptID($id);
+        $fileType = "image";
+        $fBasePath = '../../uploads/'.$uID."/images/";
+
+        $fileList = UniversityGallery::find()->where(['universityID'=>$university->id,'type'=>$type])->all();
+        $allowedFileExtensions = ['jpg','jpeg','png'];
+        if($type == 2){
+            $fileType = "video";
+            $fBasePath = '../../uploads/'.$uID."/videos/";
+            $allowedFileExtensions = ['mp4','avi','mkv'];
+        }
+    
         return $this->render('gallery', [
             'university' => $university,
+            'fileList' => $fileList,
+            'type'=> $type,
+            'allowedFileExtensions'=> $allowedFileExtensions,
+            'fileType'=>$fileType,
+            'fBasePath' => $fBasePath
         ]);
+    }
+
+    public function actionFileUpload($id,$type)
+    {
+        
+        $uID = Yii::$app->myhelper->getEncryptID($id);
+        if(!empty($uID))
+        {
+            if($type == 1)
+            {
+                $uplaodPath = Yii::getAlias('@backend') .'/uploads/'.$uID."/images/";
+            }
+            if($type == 2)
+            {
+                $uplaodPath = Yii::getAlias('@backend') .'/uploads/'.$uID."/videos/";
+            }
+            
+            $successfiles = [];
+            $errorfiles = [];
+            FileHelper::createDirectory($uplaodPath,0775,true);
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            $files = UploadedFile::getInstancesByName('ufiles');
+
+            foreach ($files as $key => $file) {
+                $model = new UniversityGallery();
+                $model->type = $type;
+                $model->universityID = $id;
+                $filename = time().$key;
+                $model->url = $filename.'.'.pathinfo($file->name, PATHINFO_EXTENSION);
+                $model->status = 1;
+
+                if($model->save()){
+                    array_push($successfiles, $file->name);
+                    $filePath = $uplaodPath.$model->url;
+                    if($file->saveAs($filePath)){
+                        array_push($successfiles, $file->name);
+
+                        if($type == 2){
+                            //-vf scale=300:300
+                            $thumbPath = $uplaodPath.$filename."-thumb.png";
+                            $cmd = 'C:\\ffmpeg\\bin\\ffmpeg -y -i '.$filePath.' -vframes 1   '.$thumbPath." 2>&1";
+                            exec($cmd, $output, $return);
+                        }
+                    }
+                }else{
+                   // print_r($model);exit;
+                    array_push($errorfiles, $file->name);
+                }   
+            }
+            $message =  "Successfully uploaded Files ".implode(", ", $successfiles);
+            $message .=  "<br>Error Files ".implode(", ", $errorfiles);
+
+            return ['success'=>$message];
+        }
     }
 
 

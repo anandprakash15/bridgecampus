@@ -19,10 +19,10 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/admin-main.js',
-        'js/bootstrap.js',
+        //'js/bootstrap.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
     ];
 }
