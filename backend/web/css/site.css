@@ -155,3 +155,10 @@ label{
     content: '\f101';
     font-size: 48px;
 }
+.copyright{
+    margin-top: 10px;
+}
+
+.login-box-body .form-group{
+    margin-bottom: 5px; 
+}

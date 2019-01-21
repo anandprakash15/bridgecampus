@@ -177,7 +177,8 @@ class UniversityController extends Controller
                         if($type == 2){
                             //-vf scale=300:300
                             $thumbPath = $uplaodPath.$filename."-thumb.png";
-                            $cmd = 'C:\\ffmpeg\\bin\\ffmpeg -y -i '.$filePath.' -vframes 1   '.$thumbPath." 2>&1";
+                            /*C:\\ffmpeg\\bin\\*/
+                            $cmd = 'ffmpeg -y -i '.$filePath.' -vframes 1   '.$thumbPath." 2>&1";
                             exec($cmd, $output, $return);
                         }
                     }

@@ -33,13 +33,6 @@ AppAsset::register($this);
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-  <strong>Copyright &copy; <?= date('Y') ?> <a href="<?= Url::home() ?>">Bridge Campus</a>.</strong> All rights
-  reserved.
-</div>
-</footer>
-
 <?php $this->endBody() ?>
 </body>
 </html>

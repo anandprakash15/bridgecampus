@@ -19,24 +19,24 @@ $this->params['breadcrumbs'][] = $this->title;
   <!-- /.login-logo -->
   <div class="login-box-body">
     <?php $form = ActiveForm::begin([
-    'layout' => 'horizontal',
-    'fieldConfig' => [
+      'layout' => 'horizontal',
+      'fieldConfig' => [
         'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
         'horizontalCssClasses' => [
-            'label' => 'col-sm-4',
-            'offset' => '',
-            'wrapper' => '',
-            'error' => '',
-            'hint' => '',
+          'label' => 'col-sm-4',
+          'offset' => '',
+          'wrapper' => '',
+          'error' => '',
+          'hint' => '',
         ],
-    ],
-]); ?>
-      <div class="form-group has-feedback">
-        <?= $form->field($model, 'email',['template' => '<div><span class="glyphicon glyphicon-lock form-control-feedback"></span>{input}{error}</div>'])->textInput(['autofocus' => true,"placeholder"=>"Email"]) ?>
-      </div>
-      <div class="form-group has-feedback">
-        <?= $form->field($model, 'password',['template' => '<div><span class="glyphicon glyphicon-lock form-control-feedback"></span>{input}{error}</div>'])->passwordInput([
-            "placeholder"=>"Password"]) ?>
+      ],
+    ]); ?>
+    <div class="form-group has-feedback">
+      <?= $form->field($model, 'email',['template' => '<div><span class="glyphicon glyphicon-envelope form-control-feedback"></span>{input}{error}</div>'])->textInput(['autofocus' => true,"placeholder"=>"Email"]) ?>
+    </div>
+    <div class="form-group has-feedback">
+      <?= $form->field($model, 'password',['template' => '<div><span class="glyphicon glyphicon-lock form-control-feedback"></span>{input}{error}</div>'])->passwordInput([
+        "placeholder"=>"Password"]) ?>
       </div>
       <div class="row">
         <div class="col-xs-8">
@@ -46,15 +46,19 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-            <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
+          <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
         </div>
         <!-- /.col -->
       </div>
-    <?php ActiveForm::end(); ?>
+      <?php ActiveForm::end(); ?>
 
-    <a href="#">I forgot my password</a><br>
-    <a href="register.html" class="text-center">Register a new membership</a>
+      <a href="#">I forgot my password</a><br>
+      <a href="register.html" class="text-center">Register a new membership</a>
 
+    </div>
+    <!-- /.login-box-body -->
+    <p class="text-center copyright">
+      <strong>Copyright &copy; <?= date('Y') ?> <a href="<?= Url::home() ?>">Bridge Campus</a>.</strong> All rights
+      reserved.
+    </p>
   </div>
-  <!-- /.login-box-body -->
-</div>
