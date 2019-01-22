@@ -4,24 +4,21 @@ namespace common\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\UniversityCourse;
+use common\models\UccDetails;
 
 /**
- * UniversityCourseSearch represents the model behind the search form of `common\models\UniversityCourse`.
+ * UccDetailsSearch represents the model behind the search form of `common\models\UccDetails`.
  */
-class UniversityCourseSearch extends UniversityCourse
+class UccDetailsSearch extends UccDetails
 {
     /**
      * {@inheritdoc}
      */
-    public $cname;
-    public $specialization;
-    public $program;
     public function rules()
     {
         return [
-            [['id', 'universityID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['createdDate', 'updatedDate','specialization','program','cname'], 'safe'],
+            [['id', 'uccID', 'createdBy', 'updatedBy'], 'integer'],
+            [['fees', 'description', 'duration', 'approved_by', 'accredited_by', 'createdDate', 'updatedDate'], 'safe'],
         ];
     }
 
@@ -41,13 +38,12 @@ class UniversityCourseSearch extends UniversityCourse
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$uid=null)
+    public function search($params)
     {
-        $query = UniversityCourse::find()->joinWith(['courseP']);
-        if($uid!=null){
-            $query->where(['universityID'=>$uid]);
-        }
+        $query = UccDetails::find();
+
         // add conditions that should always apply here
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -63,18 +59,18 @@ class UniversityCourseSearch extends UniversityCourse
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'universityID' => $this->universityID,
-            'courseID' => $this->courseID,
-            'createdDate' => $this->createdDate,
-            'updatedDate' => $this->updatedDate,
-            'status' => $this->status,
+            'uccID' => $this->uccID,
             'createdBy' => $this->createdBy,
             'updatedBy' => $this->updatedBy,
+            'createdDate' => $this->createdDate,
+            'updatedDate' => $this->updatedDate,
         ]);
 
-        $query->andFilterWhere(['like', 'courses.name', $this->cname])
-            ->andFilterWhere(['like', 'program.name', $this->program])
-            ->andFilterWhere(['like', 'specialization.name', $this->specialization]);
+        $query->andFilterWhere(['like', 'fees', $this->fees])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'duration', $this->duration])
+            ->andFilterWhere(['like', 'approved_by', $this->approved_by])
+            ->andFilterWhere(['like', 'accredited_by', $this->accredited_by]);
 
         return $dataProvider;
     }

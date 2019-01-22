@@ -4,16 +4,16 @@ namespace common\models;
 
 use Yii;
 
-/**
- * This is the model class for table "courses".
- *
+/** 
+ * This is the model class for table "courses". 
+ * 
  * @property int $id
  * @property int $programID
- * @property int $specializationID
  * @property string $name
+ * @property string $sortname
  * @property string $code
  * @property int $sortno
- * @property int $courselevel
+ * @property string $courselevel
  * @property string $createdDate
  * @property string $updatedDate
  * @property int $status
@@ -21,15 +21,16 @@ use Yii;
  * @property int $updatedBy
  * @property int $full_part_time 1-fulltime, 2-parttime
  * @property int $type (certi, deg etc)
- * @property int $description
+ * @property string $description
  * @property int $courseType (autonomas, university)
- *
+ * 
+ * @property CourseSpecialization[] $courseSpecializations
  * @property Program $program
- * @property Specialization $specialization
  * @property User $createdBy0
  * @property User $updatedBy0
- * @property UniversityCourse[] $universityCourses
- */
+ * @property UniversityCollegeCourse[] $universityCollegeCourses
+ */ 
+
 class Courses extends \yii\db\ActiveRecord
 {
     /**
@@ -47,14 +48,15 @@ class Courses extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['programID', 'specializationID', 'name', 'status', 'type','courseType'], 'required'],
-            [['programID', 'specializationID', 'sortno', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
+            [['programID', 'name', 'sortname', 'status', 'type','courseType'], 'required'],
+            [['programID', 'sortno', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
             [['createdDate', 'updatedDate','description','courselevel'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['code'], 'string', 'max' => 20],
             ['code', 'codeunique'],
+            [['sortname'], 'string', 'max' => 100],
+
             [['programID'], 'exist', 'skipOnError' => true, 'targetClass' => Program::className(), 'targetAttribute' => ['programID' => 'id']],
-            [['specializationID'], 'exist', 'skipOnError' => true, 'targetClass' => Specialization::className(), 'targetAttribute' => ['specializationID' => 'id']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
@@ -86,6 +88,7 @@ class Courses extends \yii\db\ActiveRecord
             'name' => 'Name',
             'code' => 'Code',
             'sortno' => 'Sort No.',
+           'sortname' => 'Sortname',
             'courselevel' => 'Course Level',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
@@ -120,13 +123,13 @@ class Courses extends \yii\db\ActiveRecord
         return $this->hasOne(Program::className(), ['id' => 'programID']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSpecialization()
-    {
-        return $this->hasOne(Specialization::className(), ['id' => 'specializationID']);
-    }
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getCourseSpecializations() 
+    { 
+        return $this->hasMany(CourseSpecialization::className(), ['courseID' => 'id']);
+    } 
 
     /**
      * @return \yii\db\ActiveQuery

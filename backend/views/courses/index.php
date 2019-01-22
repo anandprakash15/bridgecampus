@@ -47,14 +47,6 @@ echo Yii::$app->message->display();
                         return $model['program']['name'];
                     }
                 ],
-                [
-                    'label'=>'Specialization',
-                    'contentOptions' => ['style' => 'width:20%;'],
-                    'attribute' => 'specialization',
-                    'value' => function($model){
-                        return $model['specialization']['name'];
-                    }
-                ],
 
                 [
                     'attribute' => 'full_part_time',

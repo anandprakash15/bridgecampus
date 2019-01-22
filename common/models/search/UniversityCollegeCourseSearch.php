@@ -4,24 +4,21 @@ namespace common\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\UniversityCourse;
+use common\models\UniversityCollegeCourse;
 
 /**
- * UniversityCourseSearch represents the model behind the search form of `common\models\UniversityCourse`.
+ * UniversityCollegeCourseSearch represents the model behind the search form of `common\models\UniversityCollegeCourse`.
  */
-class UniversityCourseSearch extends UniversityCourse
+class UniversityCollegeCourseSearch extends UniversityCollegeCourse
 {
     /**
      * {@inheritdoc}
      */
-    public $cname;
-    public $specialization;
-    public $program;
     public function rules()
     {
         return [
-            [['id', 'universityID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['createdDate', 'updatedDate','specialization','program','cname'], 'safe'],
+            [['id', 'universityID', 'collegeID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['createdDate', 'updatedDate'], 'safe'],
         ];
     }
 
@@ -41,13 +38,12 @@ class UniversityCourseSearch extends UniversityCourse
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$uid=null)
+    public function search($params)
     {
-        $query = UniversityCourse::find()->joinWith(['courseP']);
-        if($uid!=null){
-            $query->where(['universityID'=>$uid]);
-        }
+        $query = UniversityCollegeCourse::find();
+
         // add conditions that should always apply here
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -64,6 +60,7 @@ class UniversityCourseSearch extends UniversityCourse
         $query->andFilterWhere([
             'id' => $this->id,
             'universityID' => $this->universityID,
+            'collegeID' => $this->collegeID,
             'courseID' => $this->courseID,
             'createdDate' => $this->createdDate,
             'updatedDate' => $this->updatedDate,
@@ -71,10 +68,6 @@ class UniversityCourseSearch extends UniversityCourse
             'createdBy' => $this->createdBy,
             'updatedBy' => $this->updatedBy,
         ]);
-
-        $query->andFilterWhere(['like', 'courses.name', $this->cname])
-            ->andFilterWhere(['like', 'program.name', $this->program])
-            ->andFilterWhere(['like', 'specialization.name', $this->specialization]);
 
         return $dataProvider;
     }

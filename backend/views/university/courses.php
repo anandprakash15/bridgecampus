@@ -24,23 +24,27 @@ echo Yii::$app->message->display();
 	<div class="custumbox box box-info">
 		<div class="box-body">
 			<?= GridView::widget([
-            'striped'=>false,
-            'hover'=>true,
-            'panel'=>['type'=>'default', 'heading'=>$this->title,'after'=>false],
-            'toolbar'=> [
-                '{export}',
-                '{toggleData}',
-            ],
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
+                'striped'=>false,
+                'hover'=>true,
+                'panel'=>['type'=>'default', 'heading'=>$this->title,'after'=>false],
+                'toolbar'=> [
+                    '{export}',
+                    '{toggleData}',
+                ],
+                'rowOptions' => function ($model, $key, $index, $grid) {
+                   /* $url = Url::to(['update','id'=> $model['id']]);
+                    return ['onclick' => 'location.href="'.$url.'"'];*/
+                },
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-                [
-                	'label'=>'Name',
-                	'contentOptions' => ['style' => 'width:50%;'],
-                    'attribute' => 'cname',
-                    'value' => function($model){
+                    [
+                       'label'=>'Name',
+                       'contentOptions' => ['style' => 'width:50%;'],
+                       'attribute' => 'cname',
+                       'value' => function($model){
                         return $model['course']['name'];
                     }
                 ],
@@ -52,18 +56,10 @@ echo Yii::$app->message->display();
                         return $model['course']['program']['name'];
                     }
                 ],
-                [
-                	'label'=>'Specialization',
-                	'contentOptions' => ['style' => 'width:25%;'],
-                    'attribute' => 'specialization',
-                    'value' => function($model){
-                        return $model['course']['specialization']['name'];
-                    }
-                ],
             ],
         ]); ?>
-		</div>
-	</div>
+    </div>
+</div>
 </div>
 <?php 
 $this->registerCss("

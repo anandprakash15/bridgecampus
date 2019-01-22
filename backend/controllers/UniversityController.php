@@ -14,8 +14,8 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\helpers\Url;
-use common\models\UniversityCourse;
-use common\models\search\UniversityCourseSearch;
+use common\models\UniversityCollegeCourse;
+use common\models\search\UniversityCollegeCourseSearch;
 use yii\db\Query;
 use yii\bootstrap\ActiveForm;
 use common\models\UniversityGallery;
@@ -208,7 +208,7 @@ class UniversityController extends Controller
         $this->layout= "university";
         $university = $this->findModel($id);
 
-        $searchModel = new UniversityCourseSearch();
+        $searchModel = new UniversityCollegeCourseSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id);
         
         return $this->render('courses', [

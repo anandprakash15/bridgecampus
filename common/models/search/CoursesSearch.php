@@ -15,13 +15,12 @@ class CoursesSearch extends Courses
     /**
      * @inheritdoc
      */
-    public $specialization;
     public $program;
     public function rules()
     {
         return [
-            [['id', 'programID', 'specializationID', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'description', 'courseType'], 'integer'],
-            [['name', 'code', 'createdDate', 'updatedDate','specialization','program'], 'safe'],
+            [['id', 'programID', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'description', 'courseType'], 'integer'],
+            [['name', 'code', 'createdDate', 'updatedDate','program'], 'safe'],
         ];
     }
 
@@ -43,7 +42,7 @@ class CoursesSearch extends Courses
      */
     public function search($params)
     {
-        $query = Courses::find()->joinWith(['program','specialization']);
+        $query = Courses::find()->joinWith(['program']);
 
         // add conditions that should always apply here
 
@@ -63,7 +62,6 @@ class CoursesSearch extends Courses
         $query->andFilterWhere([
             'id' => $this->id,
             'programID' => $this->programID,
-            'specializationID' => $this->specializationID,
             'sortno' => $this->sortno,
             'courselevel' => $this->courselevel,
             'createdDate' => $this->createdDate,
@@ -79,9 +77,7 @@ class CoursesSearch extends Courses
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'program.name', $this->program])
-            ->andFilterWhere(['like', 'specialization', $this->specialization]);
-
+            ->andFilterWhere(['like', 'program.name', $this->program]);
         return $dataProvider;
     }
 }
