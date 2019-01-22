@@ -7,14 +7,12 @@ use kartik\widgets\FileInput;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\UniversitySearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $university->name.' '.$fileType.' Gallery';
+$this->title = $college->name.' '.$fileType.' Gallery';
 
 
-$this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $university->name;
+$this->params['breadcrumbs'][] = ['label' => 'Colleges', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $college->name;
 $this->params['breadcrumbs'][] = $fileType.' Gallery';
 
 $this->registerCssFile("@web/css/lightgallery.min.css", ['depends' => [\yii\bootstrap\BootstrapAsset::className()]]);
@@ -29,7 +27,7 @@ $this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::cl
 $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
 
-<div class="university-index">
+<div class="college-index">
 <div class="custumbox col-md-12">
 <div class="nav-tabs-custom">
 <ul class="nav nav-tabs">
@@ -39,11 +37,11 @@ $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\Jquer
 		<a>Images</a>
 	</li>
 	<li>
-		<a href="<?= Url::to(['gallery','id'=>$university->id,'type'=>2]) ?>">Videos</a>
+		<a href="<?= Url::to(['gallery','id'=>$college->id,'type'=>2]) ?>">Videos</a>
 	</li>
 <?php }else{ ?>
 	<li >
-		<a  href="<?= Url::to(['gallery','id'=>$university->id,'type'=>1]) ?>">Images</a>
+		<a  href="<?= Url::to(['gallery','id'=>$college->id,'type'=>1]) ?>">Images</a>
 	</li>
 	<li class="active">
 		<a>Videos</a>
@@ -72,7 +70,7 @@ $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\Jquer
 				'pluginOptions' => [
 					'allowedFileExtensions'=>$allowedFileExtensions,
 					'uploadAsync' => false,
-					'uploadUrl' => Url::to(['file-upload','id' => $university->id,'type' => $type]),
+					'uploadUrl' => Url::to(['file-upload','id' => $college->id,'type' => $type]),
 					'uploadExtraData' => [
 						'type' => $type,
 					],

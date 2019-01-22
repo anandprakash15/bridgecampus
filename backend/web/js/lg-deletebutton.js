@@ -29,7 +29,35 @@
     Delete.prototype.delete = function() {
         var that = this;
         this.core.$outer.find('.deletePicture').on('click', function() {
-            
+            var imgEl =  $(that.core.$el.children()[that.core.index]).find(".img-thumbnail");
+            var key = imgEl.data("key");
+            var flag = false;
+            if(key !="" && typeof key !="undefined")
+            {
+
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: "delete-file?id="+key,
+                    data: '{name: "Mudassar" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if(response.success)
+                        {
+                            flag = true;
+                        }
+                        if(response.error)
+                        {
+                            alert(response.msg);
+                        }
+                    }
+                });
+                
+            }
+            if(flag == false){
+                return false;
+            } 
             var elements;
             if (that.core.s.dynamic) {
                 elements = that.core.s.dynamicEl;
@@ -46,12 +74,12 @@
                     elements = that.core.$el.children();
                 }
             }
-            console.log(that.core.modules.Thumbnail);
             that.core.modules.Thumbnail.destroy();
 
             elements.splice(that.core.index, 1);
 
             if (!that.core.s.dynamic) {
+                
                 that.core.$el.children()[that.core.index].remove();
                 that.core.$items.splice(that.core.index, 1);
             }

@@ -119,15 +119,14 @@ class UniversityController extends Controller
 
         $uID = Yii::$app->myhelper->getEncryptID($id);
         $fileType = "image";
-        $fBasePath = '../../uploads/'.$uID."/images/";
 
         $fileList = UniversityGallery::find()->where(['universityID'=>$university->id,'type'=>$type])->all();
         $allowedFileExtensions = ['jpg','jpeg','png'];
         if($type == 2){
             $fileType = "video";
-            $fBasePath = '../../uploads/'.$uID."/videos/";
             $allowedFileExtensions = ['mp4','avi','mkv'];
         }
+        $fBasePath = Yii::$app->myhelper->getFileBasePath(1,$university->id,$type);
     
         return $this->render('gallery', [
             'university' => $university,
@@ -142,21 +141,13 @@ class UniversityController extends Controller
     public function actionFileUpload($id,$type)
     {
         
-        $uID = Yii::$app->myhelper->getEncryptID($id);
-        if(!empty($uID))
+        if(!empty($id))
         {
-            if($type == 1)
-            {
-                $uplaodPath = Yii::getAlias('@backend') .'/uploads/'.$uID."/images/";
-            }
-            if($type == 2)
-            {
-                $uplaodPath = Yii::getAlias('@backend') .'/uploads/'.$uID."/videos/";
-            }
+            $uploadPath = Yii::$app->myhelper->getUploadPath(1,$id,$type);
             
             $successfiles = [];
             $errorfiles = [];
-            FileHelper::createDirectory($uplaodPath,0775,true);
+            FileHelper::createDirectory($uploadPath,0775,true);
             \Yii::$app->response->format = Response::FORMAT_JSON;
             $files = UploadedFile::getInstancesByName('ufiles');
 
@@ -170,13 +161,13 @@ class UniversityController extends Controller
 
                 if($model->save()){
                     array_push($successfiles, $file->name);
-                    $filePath = $uplaodPath.$model->url;
+                    $filePath = $uploadPath.$model->url;
                     if($file->saveAs($filePath)){
                         array_push($successfiles, $file->name);
 
                         if($type == 2){
                             //-vf scale=300:300
-                            $thumbPath = $uplaodPath.$filename."-thumb.png";
+                            $thumbPath = $uploadPath.$filename."-thumb.png";
                             /*C:\\ffmpeg\\bin\\*/
                             $cmd = 'ffmpeg -y -i '.$filePath.' -vframes 1   '.$thumbPath." 2>&1";
                             exec($cmd, $output, $return);
@@ -193,6 +184,25 @@ class UniversityController extends Controller
             return ['success'=>$message];
         }
     }
+
+    public function actionDeleteFile($id){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $file = UniversityGallery::findOne($id);
+        if(!empty($file))
+        {
+
+            if($file->delete()){
+                $uploadPath = Yii::$app->myhelper->getUploadPath(1,$file->universityID,$file->type);
+                @unlink($uploadPath.$file->url);
+                if($file->type == 2){
+                    @unlink($uplaodPath.pathinfo($file->url, PATHINFO_FILENAME)."-thumb.png");
+                }
+                return ['success'=>true];
+            }
+        }
+        return ['error'=>true,'msg'=>'Error occured while deleting the file.'];
+    }
+
 
 
     public function actionReview($id){
@@ -221,11 +231,13 @@ class UniversityController extends Controller
         $this->layout= "university";
         $university = $this->findModel($id);
         $courses = ArrayHelper::map(Courses::find()->where(['status'=>1])->all(),'id','name');
-        $ucmodel = new UniversityCourse();
-        $ucmodel->scenario = UniversityCourse::SCENARIO_UC_CREATE;
+        $ucmodel = new UniversityCollegeCourse();
+        $ucmodel->scenario = UniversityCollegeCourse::SCENARIO_UC_CREATE;
 
 
-        $oldCourses = ArrayHelper::getColumn(UniversityCourse::find()->where(['universityID'=>$university->id])->asArray()->all(),'courseID');
+        $oldCourses = ArrayHelper::getColumn(UniversityCollegeCourse::find()->where(['universityID'=>$university->id])->asArray()->all(),'courseID');
+
+
         
         $ucmodel->courseID = $oldCourses;
 
@@ -237,15 +249,18 @@ class UniversityController extends Controller
 
             $deletedCourse = array_diff((array)$oldCourses,(array)$ucmodel['courseID']);    
             foreach ($newCourse as $key => $courseID) {
-                $nucmodel = new UniversityCourse();
+                $nucmodel = new UniversityCollegeCourse();
                 $nucmodel->universityID = $university->id;
                 $nucmodel->courseID = $courseID;
-                $nucmodel->save();    
+                $nucmodel->status = 1;
+                if(!$nucmodel->save()){
+                    //print_r($nucmodel);exit;
+                }    
             }
 
             if(!empty($deletedCourse))
             {
-                UniversityCourse::deleteAll(['universityID' => $university->id, 'courseID' =>  array_values($deletedCourse)]);
+                UniversityCollegeCourse::deleteAll(['universityID' => $university->id, 'courseID' =>  array_values($deletedCourse)]);
             }
 
             \Yii::$app->getSession()->setFlash('success', 'Courses successfully added in university '.$university->name.".");

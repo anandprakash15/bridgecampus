@@ -37,7 +37,7 @@ class CollegeGallery extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'collegeID', 'url', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
+            [['type', 'collegeID', 'url', 'status'], 'required'],
             [['type', 'collegeID', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['url'], 'string', 'max' => 150],
@@ -45,6 +45,19 @@ class CollegeGallery extends \yii\db\ActiveRecord
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**

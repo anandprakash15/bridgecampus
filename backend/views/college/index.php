@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -26,6 +27,10 @@ echo Yii::$app->message->display();
                     '{export}',
                     '{toggleData}',
                 ],
+                'rowOptions' => function ($model, $key, $index, $grid) {
+                    $url = Url::to(['view','id'=> $model['id']]);
+                    return ['onclick' => 'location.href="'.$url.'"'];
+                },
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
@@ -57,8 +62,8 @@ echo Yii::$app->message->display();
 <?php 
 $this->registerCss("
     .app-title{
-       display: none;
-   }
-   ");
-   ?>
+     display: none;
+ }
+ ");
+ ?>
 
