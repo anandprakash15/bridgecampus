@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'specialization'=> $specialization,
 		'program' => $program,
+		'program_categoryID' => $program_categoryID
+
     ]) ?>
 
 </div>

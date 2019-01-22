@@ -1,15 +1,18 @@
-
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\grid\GridView;
+use common\components\CustomUrlRule;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\SpecializationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Programs';
-$this->params['subtitle'] = '<h1>Program '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
+$this->title = 'Course';
+$this->params['subtitle'] = '<h1>Course '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'program-category/create?id='.CustomUrlRule::encryptor("encrypt",$program['id']),'Add').'</h1>';
+$this->params['breadcrumbs'][] = ['label' => 'Programs', 'url' => ['/program/index']];
+$this->params['breadcrumbs'][] = $program['name'];
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
 
@@ -22,7 +25,7 @@ echo Yii::$app->message->display();
             <?= GridView::widget([
                 'striped'=>false,
                 'hover'=>true,
-                'panel'=>['type'=>'default', 'heading'=>'Programs List','after'=>false],
+                'panel'=>['type'=>'default', 'heading'=>'Course List','after'=>false],
                 'toolbar'=> [
                     '{export}',
                     '{toggleData}',
@@ -33,28 +36,7 @@ echo Yii::$app->message->display();
                     ['class' => 'kartik\grid\SerialColumn'],
 
                     'name',
-                    [
-                        'attribute' => 'status',
-                        'filter' => $status,
-                        'value' => function($model)use($status){
-                            return $status[$model['status']];
-                        }
-
-                    ],
-
-                     [
-                        'class' => 'kartik\grid\ActionColumn',
-                        'width'=>'30%',
-                        'buttons' => [
-
-                            'info' => function ($url, $model, $key) {
-                                $btn = Html::button("Courses",['class'=>'btn btn-primary btn btn-xs connect_icon']);
-                                return Html::a($btn,["program-category/index", 'id' => $model->id],['title'=>'Info']);
-
-                            },
-                        ],
-                        'template' => '{info}'
-                    ],
+                    
                 ],
                
                 'exportConfig'=> [

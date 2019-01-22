@@ -9,6 +9,9 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+  * @property string $sortname
+ * @property string $bannerURL
+ * @property string $area
  * @property string $code
  * @property string $address
  * @property int $cityID
@@ -60,7 +63,7 @@ class College extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['approved_by', 'accredited_by', 'affiliate_to', 'about', 'vission', 'mission'], 'string'],
-            [['createdDate', 'updatedDate'], 'safe'],
+            [['createdDate', 'updatedDate','sortname','bannerURL','area'], 'safe'],
             [['name', 'address'], 'string', 'max' => 500],
             [['code', 'taluka', 'district', 'contact', 'fax', 'email', 'logourl'], 'string', 'max' => 100],
             [['pincode'], 'string', 'max' => 20],
@@ -95,6 +98,9 @@ class College extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'sortname' => 'Sortname',
+            'bannerURL' => 'Banner Url',
+            'area' => 'Area',
             'code' => 'Code',
             'address' => 'Address',
             'cityID' => 'City ID',

@@ -9,6 +9,7 @@ use Yii;
  * 
  * @property int $id
  * @property int $programID
+ * @property int $program_categoryID 
  * @property string $name
  * @property string $sortname
  * @property string $code
@@ -50,7 +51,7 @@ class Courses extends \yii\db\ActiveRecord
         return [
             [['programID', 'name', 'sortname', 'status', 'type','courseType'], 'required'],
             [['programID', 'sortno', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
-            [['createdDate', 'updatedDate','description','courselevel'], 'safe'],
+            [['createdDate', 'updatedDate','description','courselevel','program_categoryID'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['code'], 'string', 'max' => 20],
             ['code', 'codeunique'],
@@ -84,6 +85,7 @@ class Courses extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'programID' => 'Program',
+            'program_categoryID' => 'program_categoryID',
             'specializationID' => 'Specialization',
             'name' => 'Name',
             'code' => 'Code',

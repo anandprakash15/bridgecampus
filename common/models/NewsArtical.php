@@ -5,29 +5,36 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "program_category".
+ * This is the model class for table "news_artical".
  *
  * @property int $id
- * @property string $name
+ * @property int $natype 1-news, 2-artical
+ * @property int $type 1-unversity, 2-college
+ * @property int $coll_univ_examID
  * @property int $programID
+ * @property int $courseID
+ * @property string $title
+ * @property string $description
+ * @property int $national_international 1-national, 2-international
+ * @property string $startDate
+ * @property string $endDate
  * @property string $createdDate
- * @property int $createdBy
  * @property string $updatedDate
- * @property int $updatedBy
  * @property int $status
+ * @property int $createdBy
+ * @property int $updatedBy
  *
- * @property Program $program
  * @property User $createdBy0
  * @property User $updatedBy0
  */
-class ProgramCategory extends \yii\db\ActiveRecord
+class NewsArtical extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'program_category';
+        return 'news_artical';
     }
 
     /**
@@ -36,11 +43,10 @@ class ProgramCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['programID', 'createdBy', 'updatedBy', 'status'], 'integer'],
-            [['createdDate', 'updatedDate'], 'safe'],
-            [['name'], 'string', 'max' => 500],
-            [['programID'], 'exist', 'skipOnError' => true, 'targetClass' => Program::className(), 'targetAttribute' => ['programID' => 'id']],
+            [['natype', 'type', 'title', 'description', 'national_international'], 'required'],
+            [['natype', 'type', 'coll_univ_examID', 'programID', 'courseID', 'national_international', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['title', 'description'], 'string'],
+            [['startDate', 'endDate', 'createdDate', 'updatedDate'], 'safe'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
@@ -58,7 +64,7 @@ class ProgramCategory extends \yii\db\ActiveRecord
         }
         return false;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -66,22 +72,22 @@ class ProgramCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'natype' => 'Natype',
+            'type' => 'Type',
+            'coll_univ_examID' => 'Coll Univ Exam ID',
             'programID' => 'Program ID',
+            'courseID' => 'Course ID',
+            'title' => 'Title',
+            'description' => 'Description',
+            'national_international' => 'National International',
+            'startDate' => 'Start Date',
+            'endDate' => 'End Date',
             'createdDate' => 'Created Date',
-            'createdBy' => 'Created By',
             'updatedDate' => 'Updated Date',
-            'updatedBy' => 'Updated By',
             'status' => 'Status',
+            'createdBy' => 'Created By',
+            'updatedBy' => 'Updated By',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProgram()
-    {
-        return $this->hasOne(Program::className(), ['id' => 'programID']);
     }
 
     /**

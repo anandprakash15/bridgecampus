@@ -71,10 +71,10 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
   <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
     'onchange'=>'$.get("../user/get-stateslist?countryID="+$(this).val(), function( data ) {
       data = $.parseJSON(data);
-      $(\'#user-state\').empty().append("<option value=\'\'>-- Select State --</option>");
-      $(\'#user-city\').empty().append("<option value=\'\'>-- Select City --</option>");
+      $(\'#university-stateid\').empty().append("<option value=\'\'>-- Select State --</option>");
+      $(\'#university-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
       $.each(data, function(index, value) {
-       $(\'#user-state\').append($(\'<option>\').text(value).attr(\'value\', index));
+       $(\'#university-stateid\').append($(\'<option>\').text(value).attr(\'value\', index));
        });
        });
        ','prompt'=>'-- Select Country --'])?>
@@ -82,9 +82,9 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
   <?= $form->field($model, 'stateID')->dropDownList(json_decode($stateLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select State --',
     'onchange'=>'$.get("../user/get-citieslist?stateID="+$(this).val(), function( data ) {
      data = $.parseJSON(data);
-     $(\'#user-city\').empty().append("<option value=\'\'>-- Select City --</option>");
+     $(\'#university-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
      $.each(data, function(index, value) {
-       $(\'#user-city\').append($(\'<option>\').text(value).attr(\'value\', index));
+       $(\'#university-cityid\').append($(\'<option>\').text(value).attr(\'value\', index));
        });
        });
        '])?>
@@ -95,7 +95,12 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
        <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
+
+       <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
+
+        
+        <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 
@@ -142,6 +147,20 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
     
     ?>
 
+
+    <?php   echo $form->field($model, 'bannerURL')->widget(FileInput::classname(), [
+      'pluginOptions' => [
+        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+        'initialPreview'=> [$previewImg],
+        'showPreview' => $showPreview,
+        'showCaption' => true,
+        'showRemove' => false,
+        'showUpload' => false,
+        'uploadAsync'=>false,
+        'maxFileCount' => 1
+      ]
+    ]);?>
+    
     <?php   echo $form->field($model, 'brochureurl')->widget(FileInput::classname(), [
       'pluginOptions' => [
         'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',

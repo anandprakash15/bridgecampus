@@ -68,28 +68,29 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
   }
   ?>
 
-  <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
+   <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
     'onchange'=>'$.get("../user/get-stateslist?countryID="+$(this).val(), function( data ) {
       data = $.parseJSON(data);
-      $(\'#user-state\').empty().append("<option value=\'\'>-- Select State --</option>");
-      $(\'#user-city\').empty().append("<option value=\'\'>-- Select City --</option>");
+      $(\'#college-stateid\').empty().append("<option value=\'\'>-- Select State --</option>");
+      $(\'#college-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
       $.each(data, function(index, value) {
-         $(\'#user-state\').append($(\'<option>\').text(value).attr(\'value\', index));
-         });
-         });
-         ','prompt'=>'-- Select Country --'])?>
+       $(\'#college-stateid\').append($(\'<option>\').text(value).attr(\'value\', index));
+       });
+       });
+       ','prompt'=>'-- Select Country --'])?>
 
   <?= $form->field($model, 'stateID')->dropDownList(json_decode($stateLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select State --',
     'onchange'=>'$.get("../user/get-citieslist?stateID="+$(this).val(), function( data ) {
-       data = $.parseJSON(data);
-       $(\'#user-city\').empty().append("<option value=\'\'>-- Select City --</option>");
-       $.each(data, function(index, value) {
-         $(\'#user-city\').append($(\'<option>\').text(value).attr(\'value\', index));
-         });
-         });
-         '])?>
+     data = $.parseJSON(data);
+     $(\'#college-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
+     $.each(data, function(index, value) {
+       $(\'#college-cityid\').append($(\'<option>\').text(value).attr(\'value\', index));
+       });
+       });
+       '])?>
 
-         <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
+       <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
+
 
 
          <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>

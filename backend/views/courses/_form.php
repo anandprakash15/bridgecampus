@@ -46,9 +46,32 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       ],
     ]);?>
 
+     <?= $form->field($model, 'program_categoryID')->widget(Select2::classname(), [
+      'options' => ['placeholder' => 'Search...'],
+      'data' => $program_categoryID,
+      'size' => Select2::SMALL,
+      'pluginOptions' => [
+        'allowClear' => true,
+        'minimumInputLength' => 1,
+        'language' => [
+          'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+        ],
+        'ajax' => [
+          'url' => \yii\helpers\Url::to(['program-category/search-list']),
+          'dataType' => 'json',
+          'data' => new JsExpression('function(params) { return {q:params.term,type:$("#courses-programID").val()}; }')
+        ],
+        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+        'templateResult' => new JsExpression('function(type) { return type.text; }'),
+        'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+      ],
+    ]);?>
+
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
+    
     <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
 
 

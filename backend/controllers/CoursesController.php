@@ -80,6 +80,7 @@ class CoursesController extends Controller
             'model' => $model,
             'specialization'=> [],
             'program' => [],
+            'program_categoryID' => [],
         ]);
     }
 
