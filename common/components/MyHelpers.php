@@ -146,35 +146,41 @@ use common\models\ExamCategory;
         return CustomUrlRule::encryptor("decrypt",$id);
     }
 
-    public function getUploadPath($ucType,$ucID,$fileType){
+
+    //ucType = university or college
+    public function getUploadPath($ucType,$ucID,$fileType = ""){
         if($ucType == 1){
             $ucType = "university";
         }else{
             $ucType = "college";
         }
 
-        if($fileType == 1){
-            $fileType = "images";
-        }else{
-            $fileType = "videos";
-        }
         $ucID = $this->getEncryptID($ucID);
-        return Yii::getAlias('@backend') .'/uploads/'.$ucType.'/'.$ucID.'/'.$fileType.'/';
+        $uploadPath=Yii::getAlias('@backend') .'/uploads/'.$ucType.'/'.$ucID.'/';
+
+        if($fileType == 1){
+            $uploadPath .= "images/";
+        }elseif($fileType == 2){
+            $uploadPath .= "videos/";
+        }
+        
+        return $uploadPath;
     }
 
-    public function getFileBasePath($ucType,$ucID,$fileType){
+    public function getFileBasePath($ucType,$ucID,$fileType=""){
         if($ucType == 1){
             $ucType = "university";
         }else{
             $ucType = "college";
         }
-
-        if($fileType == 1){
-            $fileType = "images";
-        }else{
-            $fileType = "videos";
-        }
         $ucID = $this->getEncryptID($ucID);
-        return '../../uploads/'.$ucType.'/'.$ucID.'/'.$fileType.'/';
+        $fileViewPath =  '../../uploads/'.$ucType.'/'.$ucID.'/';
+        if($fileType == 1){
+            $fileViewPath .= "images/";
+        }elseif($fileType == 2){
+            $fileViewPath .= "videos";
+        }
+        
+        return $fileViewPath;
     }
 }

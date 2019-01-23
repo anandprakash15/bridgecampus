@@ -66,8 +66,48 @@ class UniversityController extends Controller
     {
         $model = new University();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+        if ($model->load(Yii::$app->request->post())) {
+            
+
+            $bannerImg = UploadedFile::getInstance($model, 'bannerImg');
+            if(!empty($bannerImg))
+            {
+                $model->bannerURL = "banner.".pathinfo($bannerImg->name, PATHINFO_EXTENSION);
+            }
+
+            $brochureFile = UploadedFile::getInstance($model, 'brochureFile');
+            if(!empty($brochureFile))
+            {
+                $model->brochureurl = "brochure.".pathinfo($brochureFile->name, PATHINFO_EXTENSION);
+            }
+            
+            $logoImg = UploadedFile::getInstance($model, 'logoImg');
+            if(!empty($logoImg))
+            {
+                $model->logourl = "logo.".pathinfo($logoImg->name, PATHINFO_EXTENSION);
+            }
+
+            if($model->save()){
+                $uploadPath = Yii::$app->myhelper->getUploadPath(1,$model->id);
+                FileHelper::createDirectory($uploadPath,0775,true);
+                if(!empty($bannerImg))
+                {
+                    $bannerImg->saveAs($uploadPath.$model->bannerURL);
+                }
+                if(!empty($brochureFile))
+                {
+                    $brochureFile->saveAs($uploadPath.$model->brochureurl);
+                }
+
+                if(!empty($logoImg))
+                {
+                    $logoImg->saveAs($uploadPath.$model->logourl);
+                }
+
+                \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            }else{
+                \Yii::$app->getSession()->setFlash('error', 'Error occured while creating.');
+            }
             return $this->redirect(['index']);
         }
 
@@ -87,9 +127,57 @@ class UniversityController extends Controller
     {
         $this->layout= "university";
         $model = $this->findModel($id);
+        $oldbannerURL = $model->bannerURL;
+        $oldbrochureURL = $model->brochureurl;
+        $oldlogoURL = $model->logourl;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+        if ($model->load(Yii::$app->request->post())) {
+            
+            $uploadPath = Yii::$app->myhelper->getUploadPath(1,$model->id);
+            FileHelper::createDirectory($uploadPath,0775,true);
+
+            $bannerImg = UploadedFile::getInstance($model, 'bannerImg');
+            
+            if(!empty($bannerImg))
+            {
+
+                $model->bannerURL = "banner.".pathinfo($bannerImg->name, PATHINFO_EXTENSION);
+            }
+
+            $brochureFile = UploadedFile::getInstance($model, 'brochureFile');
+            if(!empty($brochureFile))
+            {
+                $model->brochureurl = "brochure.".pathinfo($brochureFile->name, PATHINFO_EXTENSION);
+            }
+            
+            $logoImg = UploadedFile::getInstance($model, 'logoImg');
+            if(!empty($logoImg))
+            {
+                $model->logourl = "logo.".pathinfo($logoImg->name, PATHINFO_EXTENSION);
+            }
+
+            if($model->save()){
+                if(!empty($bannerImg))
+                {
+                    @unlink($uploadPath.$oldbannerURL);
+                    $bannerImg->saveAs($uploadPath.$model->bannerURL);
+                }
+                if(!empty($brochureFile))
+                {
+                    @unlink($uploadPath.$oldbrochureURL);
+                    $brochureFile->saveAs($uploadPath.$model->brochureurl);
+                }
+
+                if(!empty($logoImg))
+                {
+                    @unlink($uploadPath.$oldlogoURL);
+                    $logoImg->saveAs($uploadPath.$model->logourl);
+                }
+
+                \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            }else{
+                \Yii::$app->getSession()->setFlash('error', 'Error occured while update.');
+            }
             return $this->redirect(['index']);
         }
 
@@ -127,7 +215,7 @@ class UniversityController extends Controller
             $allowedFileExtensions = ['mp4','avi','mkv'];
         }
         $fBasePath = Yii::$app->myhelper->getFileBasePath(1,$university->id,$type);
-    
+
         return $this->render('gallery', [
             'university' => $university,
             'fileList' => $fileList,
@@ -140,7 +228,7 @@ class UniversityController extends Controller
 
     public function actionFileUpload($id,$type)
     {
-        
+
         if(!empty($id))
         {
             $uploadPath = Yii::$app->myhelper->getUploadPath(1,$id,$type);
@@ -309,17 +397,17 @@ class UniversityController extends Controller
 
     public function actionValidate($id = "")
     {
-       if($id != "")
-        {
-            $model = $this->findModel($id);  
-        }else{
-            $model = new University();
-        }
-  
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
-        }
+     if($id != "")
+     {
+        $model = $this->findModel($id);  
+    }else{
+        $model = new University();
     }
+
+    if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return ActiveForm::validate($model);
+    }
+}
 
 }

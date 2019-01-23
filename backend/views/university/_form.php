@@ -99,8 +99,8 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
        <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
 
-        
-        <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
+
+       <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 
@@ -142,60 +142,79 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
       ]) ?>
 
       <?php
-      $previewImg = $showPreview = '';
+      $bannerImgPreview = $brochureFilePreview = $logoImgPreview = "";
+      if(!$model->isNewRecord){
 
-    
-    ?>
+        
+        $fViewPath= Yii::$app->myhelper->getFileBasePath(1,$model->id);
+        if(!empty($model->bannerURL)){
+          $bannerImgPreview = [$fViewPath.$model->bannerURL];
+        }
+        if(!empty($model->brochureurl)){
+          $brochureFilePreview = [$fViewPath.$model->brochureurl];
+        }
+        if(!empty($model->logourl)){
+          $logoImgPreview = [$fViewPath.$model->logourl];
+        }
+
+      }
+
+      ?>
 
 
-    <?php   echo $form->field($model, 'bannerURL')->widget(FileInput::classname(), [
-      'pluginOptions' => [
-        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-        'initialPreview'=> [$previewImg],
-        'showPreview' => $showPreview,
-        'showCaption' => true,
-        'showRemove' => false,
-        'showUpload' => false,
-        'uploadAsync'=>false,
-        'maxFileCount' => 1
-      ]
-    ]);?>
-    
-    <?php   echo $form->field($model, 'brochureurl')->widget(FileInput::classname(), [
-      'pluginOptions' => [
-        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-        'initialPreview'=> [$previewImg],
-        'showPreview' => $showPreview,
-        'showCaption' => true,
-        'showRemove' => false,
-        'showUpload' => false,
-        'uploadAsync'=>false,
-        'maxFileCount' => 1
-      ]
-    ]);?>
+      <?php echo $form->field($model, 'bannerImg')->widget(FileInput::classname(), [
+        'pluginOptions' => [
+          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+          'options' => ['multiple' => false,'accept' => 'image/*'],
+          'initialPreview'=> $bannerImgPreview,
+          'initialPreviewAsData'=>true,
+          'overwriteInitial'=>true,
+          'dropZoneEnabled'=> false,
+          'showCaption' => true,
+          'showRemove' => false,
+          'showUpload' => false,
+          'uploadAsync'=>false,
+        ]
+      ]);?>
 
-    <?php   echo $form->field($model, 'logourl')->widget(FileInput::classname(), [
-      'pluginOptions' => [
-        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-        'initialPreview'=> [$previewImg],
-        'showPreview' => $showPreview,
-        'showCaption' => true,
-        'showRemove' => false,
-        'showUpload' => false,
-        'uploadAsync'=>false,
-        'maxFileCount' => 1
-      ]
-    ]);?>
+      <?php echo $form->field($model, 'brochureFile')->widget(FileInput::classname(), [
+        'pluginOptions' => [
+          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+          'options' => ['multiple' => false,'accept' => 'image/*'],
+          'initialPreview'=> $brochureFilePreview,
+          'initialPreviewAsData'=>true,
+          'overwriteInitial'=>true,
+          'dropZoneEnabled'=> false,
+          'showCaption' => true,
+          'showRemove' => false,
+          'showUpload' => false,
+          'uploadAsync'=>false,
+        ]
+      ]);?>
 
-    <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+      <?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
+        'pluginOptions' => [
+          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+          'options' => ['multiple' => false,'accept' => 'image/*'],
+          'initialPreview'=> $logoImgPreview,
+          'initialPreviewAsData'=>true,
+          'overwriteInitial'=>true,
+          'dropZoneEnabled'=> false,
+          'showCaption' => true,
+          'showRemove' => false,
+          'showUpload' => false,
+          'uploadAsync'=>false,
+        ]
+      ]);?>
+      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
-    <div class="col-sm-offset-2 col-sm-4">
-      <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+      <div class="col-sm-offset-2 col-sm-4">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+      </div>
+
+      <?php ActiveForm::end(); ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
   </div>
-</div>
 </div>
 
 <?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>

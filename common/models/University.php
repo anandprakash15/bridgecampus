@@ -47,6 +47,9 @@ class University extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $bannerImg;
+    public $brochureFile;
+    public $logoImg;
     public static function tableName()
     {
         return 'university';
@@ -59,9 +62,12 @@ class University extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['bannerImg','logoImg'], 'file', 'extensions'=>'jpg, jpeg, png'],
+            [['brochureFile'], 'file', 'extensions'=>'pdf, doc, docx'],
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['approved_by', 'accredited_by', 'about'], 'string'],
             [['createdDate', 'updatedDate','sortname','bannerURL','area'], 'safe'],
+
             [['name'], 'string', 'max' => 300],
             [['code', 'pincode', 'establish_year'], 'string', 'max' => 20],
             [['address'], 'string', 'max' => 500],
@@ -123,6 +129,9 @@ class University extends \yii\db\ActiveRecord
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
+            'bannerImg' => 'Banner Image',
+            'brochureImg' => 'Brochure Image',
+            'logoImg' => 'Logo',
         ];
     }
 
