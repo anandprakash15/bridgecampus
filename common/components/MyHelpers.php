@@ -145,4 +145,36 @@ use common\models\ExamCategory;
     {
         return CustomUrlRule::encryptor("decrypt",$id);
     }
+
+    public function getUploadPath($ucType,$ucID,$fileType){
+        if($ucType == 1){
+            $ucType = "university";
+        }else{
+            $ucType = "college";
+        }
+
+        if($fileType == 1){
+            $fileType = "images";
+        }else{
+            $fileType = "videos";
+        }
+        $ucID = $this->getEncryptID($ucID);
+        return Yii::getAlias('@backend') .'/uploads/'.$ucType.'/'.$ucID.'/'.$fileType.'/';
+    }
+
+    public function getFileBasePath($ucType,$ucID,$fileType){
+        if($ucType == 1){
+            $ucType = "university";
+        }else{
+            $ucType = "college";
+        }
+
+        if($fileType == 1){
+            $fileType = "images";
+        }else{
+            $fileType = "videos";
+        }
+        $ucID = $this->getEncryptID($ucID);
+        return '../../uploads/'.$ucType.'/'.$ucID.'/'.$fileType.'/';
+    }
 }

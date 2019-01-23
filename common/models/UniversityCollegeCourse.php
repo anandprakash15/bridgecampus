@@ -23,6 +23,7 @@ use Yii;
  */
 class UniversityCollegeCourse extends \yii\db\ActiveRecord
 {
+    const SCENARIO_UC_CREATE = 'uc_create';
     /**
      * {@inheritdoc}
      */
@@ -38,7 +39,7 @@ class UniversityCollegeCourse extends \yii\db\ActiveRecord
     {
         return [
             [['universityID', 'collegeID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['courseID', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
+            [['courseID', 'status'], 'required','except' => self::SCENARIO_UC_CREATE],
             [['createdDate', 'updatedDate'], 'safe'],
             [['courseID'], 'exist', 'skipOnError' => true, 'targetClass' => Courses::className(), 'targetAttribute' => ['courseID' => 'id']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
@@ -62,6 +63,27 @@ class UniversityCollegeCourse extends \yii\db\ActiveRecord
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_UC_CREATE] = ['courseID','universityID'];
+
+        return $scenarios;
     }
 
     /**
