@@ -13,6 +13,8 @@ $this->params['breadcrumbs'][] = 'Update';
 <div class="university-update">
     <?= $this->render('_form', [
         'model' => $model,
+        'approved_by'=>$approved_by,
+        'accredited_by' => $accredited_by,
     ]) ?>
 
 </div>

@@ -15,10 +15,12 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/admin.css',
         'css/skin-black.css',
-        'css/font-awesome/css/font-awesome.css'
+        'css/font-awesome/css/font-awesome.css',
+        'css/jquery-confirm.min.css'
     ];
     public $js = [
         'js/admin-main.js',
+        'js/jquery-confirm.min.js'
         //'js/bootstrap.js',
     ];
     public $depends = [

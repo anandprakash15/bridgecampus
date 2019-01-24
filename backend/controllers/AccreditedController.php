@@ -8,6 +8,7 @@ use common\models\search\AccreditedSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 /**
  * AccreditedController implements the CRUD actions for Accredited model.
@@ -109,6 +110,23 @@ class AccreditedController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAccreditedByList($q = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["id", new \yii\db\Expression("name AS text")])
+            ->from('accredited')
+            ->where(['like', 'name', $q])
+            ->andWhere(['status'=>1])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 
     /**

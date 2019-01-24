@@ -38,8 +38,7 @@
                 $.ajax({
                     async: false,
                     type: "POST",
-                    url: "delete-file?id="+key,
-                    data: '{name: "Mudassar" }',
+                    url: "delete-gallery-file?id="+key,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {

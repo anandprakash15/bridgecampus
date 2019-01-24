@@ -65,8 +65,8 @@ class University extends \yii\db\ActiveRecord
             [['bannerImg','logoImg'], 'file', 'extensions'=>'jpg, jpeg, png'],
             [['brochureFile'], 'file', 'extensions'=>'pdf, doc, docx'],
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['approved_by', 'accredited_by', 'about'], 'string'],
-            [['createdDate', 'updatedDate','sortname','bannerURL','area'], 'safe'],
+            [['about'], 'string'],
+            [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by'], 'safe'],
 
             [['name'], 'string', 'max' => 300],
             [['code', 'pincode', 'establish_year'], 'string', 'max' => 20],

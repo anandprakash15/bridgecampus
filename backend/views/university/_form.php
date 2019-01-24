@@ -16,7 +16,18 @@ use yii\helpers\Url;
 
 $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['university/validate','id'=>$model->id]);
 ?>
+<style type="text/css">
 
+.download_link {
+  background-color: #f5f5f5;
+  border: 1px solid #dcdcdc;
+  font-weight: bold;
+  margin: 5px 0px;
+  overflow-y: hidden;
+  padding: 4px 4px 4px 8px;
+  max-width: 373px;
+}
+</style>
 <div class="exam-category-form">
   <div class="custumbox box box-info">
    <div class="box-body">
@@ -125,9 +136,52 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
       <?= $form->field($model, 'establish_year')->textInput(['maxlength' => true]) ?>
 
-      <?= $form->field($model, 'approved_by')->textarea(['rows' => 6]) ?>
 
-      <?= $form->field($model, 'accredited_by')->textarea(['rows' => 6]) ?>
+      <?= $form->field($model, 'approved_by')->widget(Select2::classname(), [
+        'options' => ['placeholder' => 'Approved By...'],
+        'data' => $approved_by,
+        'size' => Select2::SMALL,
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => true,
+          'minimumInputLength' => 1,
+          'language' => [
+            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+          ],
+          'ajax' => [
+            'url' => \yii\helpers\Url::to(['approved/approved-by-list']),
+            'dataType' => 'json',
+            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          ],
+          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+          'templateResult' => new JsExpression('function(type) { return type.text; }'),
+          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        ],
+      ]);?>
+
+
+      <?= $form->field($model, 'accredited_by')->widget(Select2::classname(), [
+        'options' => ['placeholder' => 'Accredited By...'],
+        'data' => $accredited_by,
+        'size' => Select2::SMALL,
+
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => true,
+          'minimumInputLength' => 1,
+          'language' => [
+            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+          ],
+          'ajax' => [
+            'url' => \yii\helpers\Url::to(['accredited/accredited-by-list']),
+            'dataType' => 'json',
+            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          ],
+          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+          'templateResult' => new JsExpression('function(type) { return type.text; }'),
+          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        ],
+      ]);?>
 
       <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
 
@@ -145,13 +199,13 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
       $bannerImgPreview = $brochureFilePreview = $logoImgPreview = "";
       if(!$model->isNewRecord){
 
-        
+
         $fViewPath= Yii::$app->myhelper->getFileBasePath(1,$model->id);
         if(!empty($model->bannerURL)){
           $bannerImgPreview = [$fViewPath.$model->bannerURL];
         }
         if(!empty($model->brochureurl)){
-          $brochureFilePreview = [$fViewPath.$model->brochureurl];
+          $brochureFilePreview = $fViewPath.$model->brochureurl;
         }
         if(!empty($model->logourl)){
           $logoImgPreview = [$fViewPath.$model->logourl];
@@ -168,53 +222,141 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           'options' => ['multiple' => false,'accept' => 'image/*'],
           'initialPreview'=> $bannerImgPreview,
           'initialPreviewAsData'=>true,
+          'initialPreviewFileType'=> 'image',
+          'initialPreviewConfig'=>[[
+            'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
+            'extra'=> ['id'=> 100],
+            'key'=>1
+          ]
+        ],
+        'overwriteInitial'=>true,
+        'dropZoneEnabled'=> false,
+        'showCaption' => true,
+        'showRemove' => false,
+        'showUpload' => false,
+      ],
+      'pluginEvents'=>[
+        'filebeforedelete'=>'function(){
+          return new Promise(function(resolve, reject) {
+            $.confirm({
+              title: "Confirmation!",
+              content: "Are you sure you want to delete this file?",
+              type: "red",
+              buttons: {   
+                ok: {
+                  btnClass: "btn-primary text-white",
+                  keys: ["enter"],
+                  action: function(){
+                   console.log();
+                   resolve();
+
+                 }
+                 },
+                 cancel: function(){
+                  $.alert("File deletion was aborted! ");
+                }
+              }
+              });
+              }); 
+            }',
+          ],
+        ]);?>
+
+        <?php  if(!empty($model->brochureurl)){ ?>
+         <!--  <div class="col-sm-10 col-sm-offset-2 certificate_link" style="padding-bottom: 15px">
+            <div class="download_link col-sm-12">
+              <a href="#" onclick="window.open('<?= $brochureFilePreview ?>');"><div class="col-sm-10" style="padding: 0"><?= ucwords($model->brochureurl) ?></div></a>
+            </div>
+            &nbsp;<a class="btn btn-success btn-sm" href="/courses/certificate-preview?id=U0Iydm1USStCMXM9" target="blank" style="margin-top: 5px; pointer-events: auto;" disabled="disabled">Preview</a>
+          </div> -->
+        <?php } ?>
+        <?php echo $form->field($model, 'brochureFile')->widget(FileInput::classname(), [
+          'pluginOptions' => [
+            'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+            'options' => ['multiple' => false],
+            'initialPreview'=> $brochureFilePreview,
+            'initialPreviewAsData'=>true,
+            'initialPreviewConfig'=>[[
+              'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'brochureurl']):'',
+              'extra'=> ['id'=> 100],
+              'key'=>1
+            ]
+          ],
+          'preferIconicPreview'=> true,
+          'initialPreviewFileType'=> 'image',
+          'previewFileIconSettings'=>[
+            'doc'=> '<i class="fa fa-file text-primary"></i>',
+            'xls'=> '<i class="fa fa-file-excel text-success"></i>',
+            'ppt'=> '<i class="fa fa-file-powerpoint text-danger"></i>',
+          ],
+          'previewFileExtSettings'=>[
+            /*'doc'=> 'function(ext) {
+              return ext.match(/(doc|docx)$/i);
+            }',*/
+          ],
+          'overwriteInitial'=>true,
+          'dropZoneEnabled'=> false,
+          'showCaption' => true,
+          'showRemove' => false,
+          'showUpload' => false,
+        ]
+      ]);?>
+
+        <?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
+          'pluginOptions' => [
+            'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+            'options' => ['multiple' => false,'accept' => 'image/*'],
+            'initialPreview'=> $logoImgPreview,
+            'initialPreviewAsData'=>true,
+            'initialPreviewFileType'=> 'image',
+            'initialPreviewConfig'=>[[
+              'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'logourl']):'',
+              'extra'=> [],
+              'key'=>1
+            ]
+          ],
           'overwriteInitial'=>true,
           'dropZoneEnabled'=> false,
           'showCaption' => true,
           'showRemove' => false,
           'showUpload' => false,
           'uploadAsync'=>false,
-        ]
-      ]);?>
+        ],
+        'pluginEvents'=>[
+          'filebeforedelete'=>'function(){
+            return new Promise(function(resolve, reject) {
+              $.confirm({
+                title: "Confirmation!",
+                content: "Are you sure you want to delete this file?",
+                type: "red",
+                buttons: {   
+                  ok: {
+                    btnClass: "btn-primary text-white",
+                    keys: ["enter"],
+                    action: function(){
+                     console.log();
+                     resolve();
 
-      <?php echo $form->field($model, 'brochureFile')->widget(FileInput::classname(), [
-        'pluginOptions' => [
-          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-          'options' => ['multiple' => false,'accept' => 'image/*'],
-          'initialPreview'=> $brochureFilePreview,
-          'initialPreviewAsData'=>true,
-          'overwriteInitial'=>true,
-          'dropZoneEnabled'=> false,
-          'showCaption' => true,
-          'showRemove' => false,
-          'showUpload' => false,
-          'uploadAsync'=>false,
-        ]
-      ]);?>
+                   }
+                   },
+                   cancel: function(){
+                    $.alert("File deletion was aborted! ");
+                  }
+                }
+                });
+                }); 
+              }',
+            ]
+          ]);?>
+          <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
-      <?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
-        'pluginOptions' => [
-          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-          'options' => ['multiple' => false,'accept' => 'image/*'],
-          'initialPreview'=> $logoImgPreview,
-          'initialPreviewAsData'=>true,
-          'overwriteInitial'=>true,
-          'dropZoneEnabled'=> false,
-          'showCaption' => true,
-          'showRemove' => false,
-          'showUpload' => false,
-          'uploadAsync'=>false,
-        ]
-      ]);?>
-      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+          <div class="col-sm-offset-2 col-sm-4">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+          </div>
 
-      <div class="col-sm-offset-2 col-sm-4">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+          <?php ActiveForm::end(); ?>
+        </div>
       </div>
-
-      <?php ActiveForm::end(); ?>
     </div>
-  </div>
-</div>
 
-<?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>
+    <?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>

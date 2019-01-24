@@ -8,6 +8,7 @@ use common\models\search\AffiliateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 /**
  * AffiliateController implements the CRUD actions for Affiliate model.
@@ -88,14 +89,14 @@ class AffiliateController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
-            return $this->redirect(['index']);
-        }
+         \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+         return $this->redirect(['index']);
+     }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
+     return $this->render('update', [
+        'model' => $model,
+    ]);
+ }
 
     /**
      * Deletes an existing Affiliate model.
@@ -109,6 +110,24 @@ class AffiliateController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+
+    public function actionAffiliateByList($q = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["id", new \yii\db\Expression("name AS text")])
+            ->from('affiliate')
+            ->where(['like', 'name', $q])
+            ->andWhere(['status'=>1])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 
     /**

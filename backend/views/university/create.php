@@ -14,6 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'approved_by'=>$approved_by,
+        'accredited_by' => $accredited_by,
     ]) ?>
 
 </div>

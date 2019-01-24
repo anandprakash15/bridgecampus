@@ -19,6 +19,9 @@ use common\models\search\UniversityCollegeCourseSearch;
 use yii\db\Query;
 use yii\bootstrap\ActiveForm;
 use common\models\UniversityGallery;
+use common\models\Approved;
+use common\models\Accredite;
+use common\models\Accredited;
 
 /**
  * UniversityController implements the CRUD actions for University model.
@@ -68,7 +71,9 @@ class UniversityController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             
-
+            $model->approved_by = implode(",",(array) $model->approved_by);
+            $model->accredited_by = implode(",",(array) $model->accredited_by);
+            
             $bannerImg = UploadedFile::getInstance($model, 'bannerImg');
             if(!empty($bannerImg))
             {
@@ -113,6 +118,8 @@ class UniversityController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'approved_by' => [],
+            'accredited_by' => [],
         ]);
     }
 
@@ -130,9 +137,25 @@ class UniversityController extends Controller
         $oldbannerURL = $model->bannerURL;
         $oldbrochureURL = $model->brochureurl;
         $oldlogoURL = $model->logourl;
+        $approved_by = $accredited_by = [];
+
+        if(!empty($model->approved_by)){
+           
+            $approved_by = ArrayHelper::map(Approved::find()->where(new \yii\db\Expression("id IN(".$model->approved_by.")"))->asArray()->all(),'id','name');
+            $model->approved_by = explode(",",$model->approved_by);
+        }
+
+        if(!empty($model->accredited_by)){
+           
+            $accredited_by = ArrayHelper::map(Accredited::find()->where(new \yii\db\Expression("id IN(".$model->accredited_by.")"))->asArray()->all(),'id','name');
+            $model->accredited_by = explode(",",$model->accredited_by);
+        }
 
         if ($model->load(Yii::$app->request->post())) {
             
+            $model->approved_by = implode(",",(array) $model->approved_by);
+            $model->accredited_by = implode(",",(array) $model->accredited_by);
+
             $uploadPath = Yii::$app->myhelper->getUploadPath(1,$model->id);
             FileHelper::createDirectory($uploadPath,0775,true);
 
@@ -181,8 +204,11 @@ class UniversityController extends Controller
             return $this->redirect(['index']);
         }
 
+
         return $this->render('update', [
             'model' => $model,
+            'approved_by' => $approved_by,
+            'accredited_by'=>$accredited_by,
         ]);
     }
 
@@ -273,7 +299,20 @@ class UniversityController extends Controller
         }
     }
 
-    public function actionDeleteFile($id){
+
+    public function actionDeleteFile($id,$property){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = University::findOne($id);
+        $filename = $model->$property;
+        $model->$property = "";
+        if($model->save()){
+            $uploadPath = Yii::$app->myhelper->getUploadPath(1,$id);
+            @unlink($uploadPath.$filename);
+            return ['success'=>false];
+        }
+
+    }
+    public function actionDeleteGalleryFile($id){
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $file = UniversityGallery::findOne($id);
         if(!empty($file))
