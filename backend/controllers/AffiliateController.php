@@ -113,7 +113,7 @@ class AffiliateController extends Controller
     }
 
 
-    public function actionAffiliateByList($q = null) {
+    public function actionAffiliateList($q = null) {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $out = ['results' => ['id' => '', 'text' => '']];
         if (!is_null($q)) {

@@ -19,56 +19,56 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
 
 <div class="exam-category-form">
   <div class="custumbox box box-info">
-     <div class="box-body">
+   <div class="box-body">
 
-        <?php $form = ActiveForm::begin([
-           'layout' => 'horizontal',
-           'enableClientValidation' => true,
-           'enableAjaxValidation' => true,
-           'validationUrl' => $validateUrl,
-           'options' => ['enctype' => 'multipart/form-data'],
-       ]);?>
-       <br/>
+    <?php $form = ActiveForm::begin([
+     'layout' => 'horizontal',
+     'enableClientValidation' => true,
+     'enableAjaxValidation' => true,
+     'validationUrl' => $validateUrl,
+     'options' => ['enctype' => 'multipart/form-data'],
+   ]);?>
+   <br/>
 
-       <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+   <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
+   <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'address')->widget(CKEditor::className(), [
-        'options' => ['rows' => 6],
-        'preset' => 'standard',
-        'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
+   <?= $form->field($model, 'address')->widget(CKEditor::className(), [
+    'options' => ['rows' => 6],
+    'preset' => 'standard',
+    'clientOptions'=>[
+      'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+      /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+    ]
   ]) ?>
 
 
 
-       <?php
+   <?php
 
-       $contriesList = UserController::actionGetCountrieslist();
-       if($model->isNewRecord){
-        $stateLists = UserController::actionGetStateslist();
-        $citiesLists = UserController::actionGetCitieslist();
-        $model->countryID = 101;/*india*/
-        $model->stateID = 22;/*maharsahtra*/
+   $contriesList = UserController::actionGetCountrieslist();
+   if($model->isNewRecord){
+    $stateLists = UserController::actionGetStateslist();
+    $citiesLists = UserController::actionGetCitieslist();
+    $model->countryID = 101;/*india*/
+    $model->stateID = 22;/*maharsahtra*/
+  }else{
+    if(!empty($model->countryID)){
+
+      $stateLists = UserController::actionGetStateslist($model->countryID);
     }else{
-        if(!empty($model->countryID)){
-
-          $stateLists = UserController::actionGetStateslist($model->countryID);
-      }else{
-          $stateLists = UserController::actionGetStateslist(101);
-      }
-      if(!empty($model->stateID)){
-          $citiesLists = UserController::actionGetCitieslist($model->stateID);
-      }else{
-          $citiesLists = UserController::actionGetCitieslist(22);
-      }
+      $stateLists = UserController::actionGetStateslist(101);
+    }
+    if(!empty($model->stateID)){
+      $citiesLists = UserController::actionGetCitieslist($model->stateID);
+    }else{
+      $citiesLists = UserController::actionGetCitieslist(22);
+    }
   }
   ?>
 
-   <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
+  <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
     'onchange'=>'$.get("../user/get-stateslist?countryID="+$(this).val(), function( data ) {
       data = $.parseJSON(data);
       $(\'#college-stateid\').empty().append("<option value=\'\'>-- Select State --</option>");
@@ -93,19 +93,19 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
 
 
 
-         <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
 
-         <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
 
-         <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 
-         <?= $form->field($model, 'contact')->widget(CKEditor::className(), [
-            'options' => ['rows' => 6],
-            'preset' => 'standard',
-            'clientOptions'=>[
-              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
-              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-          ]
+       <?= $form->field($model, 'contact')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
       ]) ?>
 
 
@@ -117,11 +117,75 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
 
       <?= $form->field($model, 'establish_year')->textInput(['maxlength' => true]) ?>
 
-      <?= $form->field($model, 'approved_by')->textarea(['rows' => 6]) ?>
+      <?= $form->field($model, 'approved_by')->widget(Select2::classname(), [
+        'options' => ['placeholder' => 'Approved By...'],
+        'data' => $approved_by,
+        'size' => Select2::SMALL,
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => true,
+          'minimumInputLength' => 1,
+          'language' => [
+            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+          ],
+          'ajax' => [
+            'url' => \yii\helpers\Url::to(['approved/approved-by-list']),
+            'dataType' => 'json',
+            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          ],
+          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+          'templateResult' => new JsExpression('function(type) { return type.text; }'),
+          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        ],
+      ]);?>
 
-      <?= $form->field($model, 'accredited_by')->textarea(['rows' => 6]) ?>
 
-      <?= $form->field($model, 'affiliate_to')->textarea(['rows' => 6]) ?>
+      <?= $form->field($model, 'accredited_by')->widget(Select2::classname(), [
+        'options' => ['placeholder' => 'Accredited By...'],
+        'data' => $accredited_by,
+        'size' => Select2::SMALL,
+
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => true,
+          'minimumInputLength' => 1,
+          'language' => [
+            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+          ],
+          'ajax' => [
+            'url' => \yii\helpers\Url::to(['accredited/accredited-by-list']),
+            'dataType' => 'json',
+            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          ],
+          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+          'templateResult' => new JsExpression('function(type) { return type.text; }'),
+          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        ],
+      ]);?>
+
+
+      <?= $form->field($model, 'affiliate_to')->widget(Select2::classname(), [
+        'options' => ['placeholder' => 'Affiliate To...'],
+        'data' => $affiliate_to,
+        'size' => Select2::SMALL,
+
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => true,
+          'minimumInputLength' => 1,
+          'language' => [
+            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+          ],
+          'ajax' => [
+            'url' => \yii\helpers\Url::to(['affiliate/affiliate-list']),
+            'dataType' => 'json',
+            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          ],
+          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+          'templateResult' => new JsExpression('function(type) { return type.text; }'),
+          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        ],
+      ]);?>
 
       <?= $form->field($model, 'rating')->textInput(['maxlength' => true]) ?>
 
@@ -131,8 +195,8 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
         'clientOptions'=>[
           'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
           /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
+        ]
+      ]) ?>
 
       <?= $form->field($model, 'vission')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],
@@ -140,8 +204,8 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
         'clientOptions'=>[
           'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
           /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
+        ]
+      ]) ?>
 
       <?= $form->field($model, 'mission')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],
@@ -149,39 +213,74 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
         'clientOptions'=>[
           'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
           /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
+        ]
+      ]) ?>
 
       <?php
-      $previewImg = $showPreview = '';
-
-
+      $logoImgPreview = "";
+      if(!$model->isNewRecord){
+        $fViewPath= Yii::$app->myhelper->getFileBasePath(2,$model->id);
+        if(!empty($model->logourl)){
+          $logoImgPreview = [$fViewPath.$model->logourl];
+        }
+      }
       ?>
 
-
-
-      <?php   echo $form->field($model, 'logourl')->widget(FileInput::classname(), [
+<?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
           'pluginOptions' => [
             'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-            'initialPreview'=> [$previewImg],
-            'showPreview' => $showPreview,
-            'showCaption' => true,
-            'showRemove' => false,
-            'showUpload' => false,
-            'uploadAsync'=>false,
-            'maxFileCount' => 1
-        ]
-    ]);?>
+            'options' => ['multiple' => false,'accept' => 'image/*'],
+            'initialPreview'=> $logoImgPreview,
+            'initialPreviewAsData'=>true,
+            'initialPreviewFileType'=> 'image',
+            'initialPreviewConfig'=>[[
+              'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'logourl']):'',
+              'extra'=> [],
+              'key'=>1
+            ]
+          ],
+          'overwriteInitial'=>true,
+          'dropZoneEnabled'=> false,
+          'showCaption' => true,
+          'showRemove' => false,
+          'showUpload' => false,
+          'uploadAsync'=>false,
+        ],
+        'pluginEvents'=>[
+          'filebeforedelete'=>'function(){
+            return new Promise(function(resolve, reject) {
+              $.confirm({
+                title: "Confirmation!",
+                content: "Are you sure you want to delete this file?",
+                type: "red",
+                buttons: {   
+                  ok: {
+                    btnClass: "btn-primary text-white",
+                    keys: ["enter"],
+                    action: function(){
+                     console.log();
+                     resolve();
 
-    <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+                   }
+                   },
+                   cancel: function(){
+                    $.alert("File deletion was aborted! ");
+                  }
+                }
+                });
+                }); 
+              }',
+            ]
+          ]);?>
 
-    <div class="form-group" style="margin-left: 18% !important;">
+      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+      <div class="form-group" style="margin-left: 18% !important;">
        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+     </div>
+
+     <?php ActiveForm::end(); ?>
+
    </div>
 
-    <?php ActiveForm::end(); ?>
-
-</div>
-
-<?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../college/index')."");?>
+   <?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../college/index')."");?>

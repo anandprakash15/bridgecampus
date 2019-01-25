@@ -13,6 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="college-create">
     <?= $this->render('_form', [
         'model' => $model,
+        'approved_by' => $approved_by,
+        'accredited_by' => $approved_by,
+        'affiliate_to'=>$affiliate_to,
     ]) ?>
 
 </div>

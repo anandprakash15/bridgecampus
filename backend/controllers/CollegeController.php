@@ -17,6 +17,13 @@ use common\models\UniversityCollegeCourse;
 use common\models\search\UniversityCollegeCourseSearch;
 use common\models\CollegeGallery;
 use yii\web\UploadedFile;
+use common\models\Approved;
+use common\models\Accredite;
+use common\models\Accredited;
+use common\models\Affiliate;
+use common\models\CourseDetails;
+use yii\helpers\ArrayHelper;
+
 
 /**
  * CollegeController implements the CRUD actions for College model.
@@ -62,9 +69,9 @@ class CollegeController extends Controller
     public function actionView($id)
     {
         $this->layout= "college";
-        $university = $this->findModel($id);
+        $college = $this->findModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $college,
         ]);    
     }
 
@@ -137,13 +144,24 @@ class CollegeController extends Controller
         }
     }
 
-    public function actionDeleteFile($id){
+    public function actionDeleteFile($id,$property){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = College::findOne($id);
+        $filename = $model->$property;
+        $model->$property = "";
+        if($model->save()){
+            $uploadPath = Yii::$app->myhelper->getUploadPath(2,$id);
+            @unlink($uploadPath.$filename);
+            return ['success'=>false];
+        }
+
+    }
+    public function actionDeleteGalleryFile($id){
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $file = CollegeGallery::findOne($id);
-       
+
         if(!empty($file))
         {
-
             if($file->delete()){
                 $uploadPath = Yii::$app->myhelper->getUploadPath(2,$file->collegeID,$file->type);
                 @unlink($uploadPath.$file->url);
@@ -175,15 +193,37 @@ class CollegeController extends Controller
     {
         $model = new College();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-         \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
-         return $this->redirect(['index']);
-     }
+        if ($model->load(Yii::$app->request->post())) {
+            $model->approved_by = implode(",",(array) $model->approved_by);
+            $model->accredited_by = implode(",",(array) $model->accredited_by);
+            $model->affiliate_to = implode(",",(array) $model->affiliate_to);
 
-     return $this->render('create', [
-        'model' => $model,
-    ]);
- }
+            $logoImg = UploadedFile::getInstance($model, 'logoImg');
+            if(!empty($logoImg))
+            {
+                $model->logourl = "logo.".pathinfo($logoImg->name, PATHINFO_EXTENSION);
+            }
+            if($model->save()){
+                $uploadPath = Yii::$app->myhelper->getUploadPath(2,$model->id);
+                FileHelper::createDirectory($uploadPath,0775,true);
+                 if(!empty($logoImg))
+                {
+                    $logoImg->saveAs($uploadPath.$model->logourl);
+                }
+                \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            }else{
+                \Yii::$app->getSession()->setFlash('error', 'Error occured while creating.');
+            }
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'approved_by' => [],
+            'accredited_by' => [],
+            'affiliate_to'=>[]
+        ]);
+    }
 
     /**
      * Updates an existing College model.
@@ -195,14 +235,60 @@ class CollegeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        $oldlogoURL = $model->logourl;
+        $approved_by = $accredited_by = $affiliate_to = [];
+        if(!empty($model->approved_by)){
+           
+            $approved_by = ArrayHelper::map(Approved::find()->where(new \yii\db\Expression("id IN(".$model->approved_by.")"))->asArray()->all(),'id','name');
+            $model->approved_by = explode(",",$model->approved_by);
+        }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+        if(!empty($model->accredited_by)){
+           
+            $accredited_by = ArrayHelper::map(Accredited::find()->where(new \yii\db\Expression("id IN(".$model->accredited_by.")"))->asArray()->all(),'id','name');
+            $model->accredited_by = explode(",",$model->accredited_by);
+        }
+
+        if(!empty($model->affiliate_to)){
+           
+            $affiliate_to = ArrayHelper::map(Affiliate::find()->where(new \yii\db\Expression("id IN(".$model->affiliate_to.")"))->asArray()->all(),'id','name');
+            $model->affiliate_to = explode(",",$model->affiliate_to);
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->approved_by = implode(",",(array) $model->approved_by);
+            $model->accredited_by = implode(",",(array) $model->accredited_by);
+            $model->affiliate_to = implode(",",(array) $model->affiliate_to);
+
+            $uploadPath = Yii::$app->myhelper->getUploadPath(2,$model->id);
+            FileHelper::createDirectory($uploadPath,0775,true);
+            
+            $logoImg = UploadedFile::getInstance($model, 'logoImg');
+            if(!empty($logoImg))
+            {
+                $model->logourl = "logo.".pathinfo($logoImg->name, PATHINFO_EXTENSION);
+            }
+
+            if($model->save()){
+                if(!empty($logoImg))
+                {
+                    @unlink($uploadPath.$oldlogoURL);
+                    $logoImg->saveAs($uploadPath.$model->logourl);
+                }
+
+                \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            }else{
+                \Yii::$app->getSession()->setFlash('error', 'Error occured while creating.');
+            }
             return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'approved_by' => $approved_by,
+            'accredited_by'=>$accredited_by,
+            'affiliate_to'=>$affiliate_to
         ]);
     }
 

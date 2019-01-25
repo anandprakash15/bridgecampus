@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Program;
+use yii\db\Query;
 
 /**
  * ProgramCategoryController implements the CRUD actions for ProgramCategory model.
@@ -49,19 +50,18 @@ class ProgramCategoryController extends Controller
 
     public function actionSearchList($q = null,$type=null) {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $out = ['results' => ['id' => '', 'text' => '']];
+        $out = ['results' => []];
         if (!is_null($q) && !is_null($type)) {
+            $out = ['results' => ['id' => '', 'text' => '']];
             $query = new Query;
-            if(!empty($from)){
-                $query->select(["id", new \yii\db\Expression("name AS text")])
-                ->from('program_category')
-                ->where(['like', 'name', $q])
-                ->andWhere(['status'=>1,'programID'=>$type])
-                ->limit(20);
-                $command = $query->createCommand();
-                $data = $command->queryAll();
-                $out['results'] = array_values($data);
-            }
+            $query->select(["id", new \yii\db\Expression("name AS text")])
+            ->from('program_category')
+            ->where(['like', 'name', $q])
+            ->andWhere(['status'=>1,'programID'=>$type])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
         }
         return $out;
     }

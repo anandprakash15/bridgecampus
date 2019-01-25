@@ -85,7 +85,7 @@ class Courses extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'programID' => 'Program',
-            'program_categoryID' => 'program_categoryID',
+            'program_categoryID' => 'Program Category',
             'specializationID' => 'Specialization',
             'name' => 'Name',
             'code' => 'Code',

@@ -14,6 +14,8 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\bootstrap\ActiveForm;
+use common\models\ProgramCategory;
+
 /**
  * CoursesController implements the CRUD actions for Courses model.
  */
@@ -105,6 +107,10 @@ class CoursesController extends Controller
             $specialization = ArrayHelper::map(Specialization::find()->where(['id'=>$model->specializationID])->asArray()->all(),'id','name');
         }
 
+        if(!empty($model->program_categoryID)){
+            $program_categoryID = ArrayHelper::map(ProgramCategory::find()->where(['id'=>$model->program_categoryID])->asArray()->all(),'id','name');
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
             return $this->redirect(['index']);
@@ -114,7 +120,7 @@ class CoursesController extends Controller
             'model' => $model,
             'specialization'=> $specialization,
             'program' => $program,
-            'program_categoryID' => [],
+            'program_categoryID' => $program_categoryID,
         ]);
     }
 

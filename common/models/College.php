@@ -46,6 +46,7 @@ use Yii;
  */
 class College extends \yii\db\ActiveRecord
 {
+    public $logoImg;
     /**
      * @inheritdoc
      */
@@ -61,9 +62,10 @@ class College extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            ['logoImg', 'file', 'extensions'=>'jpg, jpeg, png'],
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['approved_by', 'accredited_by', 'affiliate_to', 'about', 'vission', 'mission'], 'string'],
-            [['createdDate', 'updatedDate','sortname','bannerURL','area'], 'safe'],
+            [['about', 'vission', 'mission'], 'string'],
+            [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by', 'affiliate_to'], 'safe'],
             [['name', 'address'], 'string', 'max' => 500],
             [['code', 'taluka', 'district', 'contact', 'fax', 'email', 'logourl'], 'string', 'max' => 100],
             [['pincode'], 'string', 'max' => 20],

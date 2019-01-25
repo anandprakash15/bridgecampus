@@ -38,7 +38,10 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
         'ajax' => [
           'url' => \yii\helpers\Url::to(['program/program-list']),
           'dataType' => 'json',
-          'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          'data' => new JsExpression('function(params) { 
+            
+            return {q:params.term}; 
+          }')
         ],
         'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
         'templateResult' => new JsExpression('function(type) { return type.text; }'),
@@ -59,7 +62,9 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
         'ajax' => [
           'url' => \yii\helpers\Url::to(['program-category/search-list']),
           'dataType' => 'json',
-          'data' => new JsExpression('function(params) { return {q:params.term,type:$("#courses-programID").val()}; }')
+          'data' => new JsExpression('function(params) { 
+            console.log($("#courses-programid").val());
+            return {q:params.term,type:$("#courses-programid").val()}; }')
         ],
         'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
         'templateResult' => new JsExpression('function(type) { return type.text; }'),
