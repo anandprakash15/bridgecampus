@@ -22,6 +22,7 @@ use common\models\UniversityGallery;
 use common\models\Approved;
 use common\models\Accredite;
 use common\models\Accredited;
+use common\models\CourseDetails;
 
 /**
  * UniversityController implements the CRUD actions for University model.
@@ -55,6 +56,27 @@ class UniversityController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionCourseDetails($id)
+    {
+        $this->layout= "university";
+        $universityandcourse = UniversityCollegeCourse::find()->joinWith(['course','university'])->one();
+        if (($model = CourseDetails::findOne(['uccID'=>$id])) == null) {
+            $model = new CourseDetails();
+        }
+        $model->uccID = $id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+         \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+         return $this->redirect(['courses','id'=>$id]);
+        }
+        
+
+        return $this->render('course-details', [
+            'model' => $model,
+            'universityandcourse' => $universityandcourse,
         ]);
     }
 

@@ -56,6 +56,19 @@ echo Yii::$app->message->display();
                         return $model['course']['program']['name'];
                     }
                 ],
+
+                [
+                    'class' => 'kartik\grid\ActionColumn',
+                    'width'=>'30%',
+                    'buttons' => [
+                        'info' => function ($url, $model, $key)use($university) {
+                            $btn = Html::button("Details",['class'=>'btn btn-primary btn btn-xs connect_icon']);
+                            return Html::a($btn,["university/course-details", 'id' => $model->id],['title'=>'Info']);
+
+                        },
+                    ],
+                    'template' => '{info}'
+                ],
             ],
         ]); ?>
     </div>

@@ -94,7 +94,7 @@ class CoursesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $program= []; $specialization = [];
+        $program= []; $specialization = $program_categoryID  = [];
 
         if(!empty($model->programID)){
            
@@ -114,6 +114,7 @@ class CoursesController extends Controller
             'model' => $model,
             'specialization'=> $specialization,
             'program' => $program,
+            'program_categoryID' => [],
         ]);
     }
 
