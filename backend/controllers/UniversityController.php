@@ -23,6 +23,11 @@ use common\models\Approved;
 use common\models\Accredite;
 use common\models\Accredited;
 use common\models\CourseDetails;
+use common\models\search\FacilitySearch;
+use common\models\Facility;
+use common\models\search\ReviewSearch;
+use common\models\Review;
+
 
 /**
  * UniversityController implements the CRUD actions for University model.
@@ -59,10 +64,78 @@ class UniversityController extends Controller
         ]);
     }
 
+    
+    public function actionFacility($id)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        $searchModel = new FacilitySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('facility', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+    public function actionFacilityDetails($id,$fid = null)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        if (($model = Facility::findOne(['id'=>$fid])) == null) {
+            $model = new Facility();
+        }
+        
+        $model->coll_univID  = $id;
+        $model->type = 1;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+         \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+         return $this->redirect(['facility','id'=>Yii::$app->params['uID'],'type'=>1]);
+        }
+        
+
+        return $this->render('facility-details', [
+            'model' => $model,
+            'university' => $university,
+        ]);
+    }
+
+    public function actionReviewDetails($id,$rid = null)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        if (($model = Review::findOne(['id'=>$rid])) == null) {
+            $model = new Review();
+        }
+        
+        $model->coll_univID  = $id;
+        $model->type = 1;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+         \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+         return $this->redirect(['review','id'=>Yii::$app->params['uID'],'type'=>1]);
+        }
+        
+
+        return $this->render('review-details', [
+            'model' => $model,
+            'university' => $university,
+        ]);
+    }
+
+
     public function actionCourseDetails($id)
     {
         $this->layout= "university";
         $universityandcourse = UniversityCollegeCourse::find()->joinWith(['course','university'])->one();
+        Yii::$app->params['uTitle'] = $universityandcourse->university->name;
+        Yii::$app->params['uID'] = $universityandcourse->university->id;
+
         if (($model = CourseDetails::findOne(['uccID'=>$id])) == null) {
             $model = new CourseDetails();
         }
@@ -70,7 +143,7 @@ class UniversityController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
          \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-         return $this->redirect(['courses','id'=>$id]);
+         return $this->redirect(['courses','id'=>Yii::$app->params['uID']]);
         }
         
 
@@ -79,6 +152,7 @@ class UniversityController extends Controller
             'universityandcourse' => $universityandcourse,
         ]);
     }
+
 
 
 
@@ -357,8 +431,14 @@ class UniversityController extends Controller
     public function actionReview($id){
         $this->layout= "university";
         $university = $this->findModel($id);
-        return $this->render('gallery', [
+
+        $searchModel = new ReviewSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('review', [
             'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
         ]);
     }
 
@@ -368,7 +448,7 @@ class UniversityController extends Controller
         $university = $this->findModel($id);
 
         $searchModel = new UniversityCollegeCourseSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
         
         return $this->render('courses', [
             'university' => $university,

@@ -10,7 +10,9 @@ use softark\duallistbox\DualListbox;
 /* @var $searchModel common\models\search\UniversitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Reviews: '.$university->name;
+$this->title = 'Facilitys: '.$university->name;
+$this->params['subtitle'] = '<h1>Facility <a class="btn btn-success btn-xs" href="'.Url::to(['facility-details','id'=>$university->id]).'">Add</a></h1>';
+
 $this->params['breadcrumbs'][] = ['label' => 'Facility', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $university->name;
 $this->params['breadcrumbs'][] = 'Facility';
@@ -32,13 +34,22 @@ echo Yii::$app->message->display();
                     '{toggleData}',
                 ],
                 'rowOptions' => function ($model, $key, $index, $grid)use($university) {
-                    $url = Url::to(['review-details','id'=> $university->id,'rid'=>$model->id]);
+                    $url = Url::to(['facility-details','id'=> $university->id,'fid'=>$model->id]);
                     return ['onclick' => 'location.href="'.$url.'"'];
                 },
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
+
+                    [
+                        'attribute' => 'ftype',
+                        'filter' => $ftype,
+                        'value' => function($model)use($ftype){
+                            return $ftype[$model['ftype']];
+                        }
+
+                    ],
                     [
                         'attribute' => 'status',
                         'filter' => $status,

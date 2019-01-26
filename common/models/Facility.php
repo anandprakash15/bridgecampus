@@ -34,11 +34,24 @@ class Facility extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'coll_univID', 'ftype', 'description', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
+            [['coll_univID', 'ftype', 'status'], 'required'],
             [['type', 'coll_univID', 'ftype', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['description'], 'string'],
             [['createdDate', 'updatedDate'], 'safe'],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**

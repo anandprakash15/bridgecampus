@@ -4,12 +4,12 @@ namespace common\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Facility;
+use common\models\Review;
 
 /**
- * FacilitySearch represents the model behind the search form of `common\models\Facility`.
+ * ReviewSearch represents the model behind the search form of `common\models\Review`.
  */
-class FacilitySearch extends Facility
+class ReviewSearch extends Review
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,9 @@ class FacilitySearch extends Facility
     public function rules()
     {
         return [
-            [['id', 'type', 'coll_univID', 'ftype', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['description', 'createdDate', 'updatedDate'], 'safe'],
+            [['id', 'type', 'coll_univID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['placement_star', 'infrastructure_star', 'fcc_star', 'ccl_star', 'wtd_star', 'other_star'], 'number'],
+            [['placement_review', 'infrastructure_review', 'fcc_review', 'cct_review', 'wtd_review', 'other_review', 'createdDate', 'updatedDate'], 'safe'],
         ];
     }
 
@@ -40,11 +41,11 @@ class FacilitySearch extends Facility
      */
     public function search($params,$id,$type='university')
     {
-        $query = Facility::find();
+        $query = Review::find();
         if($type == 'university'){
-            $query->andWhere(['facility.coll_univID'=>$id,'type'=>1]);
+            $query->andWhere(['review.coll_univID'=>$id,'type'=>1]);
         }else{
-            $query->andWhere(['facility.coll_univID'=>$id,'type'=>2]);
+            $query->andWhere(['review.coll_univID'=>$id,'type'=>2]);
         }
 
         // add conditions that should always apply here
@@ -66,7 +67,13 @@ class FacilitySearch extends Facility
             'id' => $this->id,
             'type' => $this->type,
             'coll_univID' => $this->coll_univID,
-            'ftype' => $this->ftype,
+            'courseID' => $this->courseID,
+            'placement_star' => $this->placement_star,
+            'infrastructure_star' => $this->infrastructure_star,
+            'fcc_star' => $this->fcc_star,
+            'ccl_star' => $this->ccl_star,
+            'wtd_star' => $this->wtd_star,
+            'other_star' => $this->other_star,
             'createdDate' => $this->createdDate,
             'updatedDate' => $this->updatedDate,
             'status' => $this->status,
@@ -74,7 +81,12 @@ class FacilitySearch extends Facility
             'updatedBy' => $this->updatedBy,
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'placement_review', $this->placement_review])
+            ->andFilterWhere(['like', 'infrastructure_review', $this->infrastructure_review])
+            ->andFilterWhere(['like', 'fcc_review', $this->fcc_review])
+            ->andFilterWhere(['like', 'cct_review', $this->cct_review])
+            ->andFilterWhere(['like', 'wtd_review', $this->wtd_review])
+            ->andFilterWhere(['like', 'other_review', $this->other_review]);
 
         return $dataProvider;
     }

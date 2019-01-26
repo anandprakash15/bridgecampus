@@ -38,9 +38,14 @@ class UniversityCollegeCourseSearch extends UniversityCollegeCourse
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$id,$type='university')
     {
         $query = UniversityCollegeCourse::find();
+        if($type == 'university'){
+            $query->andWhere(['university_college_course.universityID'=>$id]);
+        }else{
+            $query->andWhere(['university_college_course.collegeID'=>$id]);
+        }
 
         // add conditions that should always apply here
 

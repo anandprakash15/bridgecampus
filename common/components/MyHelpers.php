@@ -58,6 +58,10 @@ use common\models\ExamCategory;
     {
         return [1 => 'Active', 0=>'Inactive'];
     }
+    public static function getFacility()
+    {
+        return [1 => 'Gym', 0=>'Hostel'];
+    }
 
     public static function getGender()
     {

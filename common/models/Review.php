@@ -11,7 +11,18 @@ use Yii;
  * @property int $type 1-unvesity, 2-college
  * @property int $coll_univID
  * @property int $courseID
- * @property string $description
+ * @property double $placement_star
+ * @property string $placement_review
+ * @property double $infrastructure_star
+ * @property string $infrastructure_review
+ * @property double $fcc_star
+ * @property string $fcc_review
+ * @property double $ccl_star
+ * @property string $cct_review
+ * @property double $wtd_star
+ * @property string $wtd_review
+ * @property double $other_star
+ * @property string $other_review
  * @property string $createdDate
  * @property string $updatedDate
  * @property int $status
@@ -24,7 +35,7 @@ use Yii;
 class Review extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -32,14 +43,15 @@ class Review extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['type', 'coll_univID', 'courseID', 'description', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
+            [['type', 'coll_univID', 'courseID', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
             [['type', 'coll_univID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['description'], 'string'],
+            [['placement_star', 'infrastructure_star', 'fcc_star', 'ccl_star', 'wtd_star', 'other_star'], 'number'],
+            [['placement_review', 'infrastructure_review', 'fcc_review', 'cct_review', 'wtd_review', 'other_review'], 'string'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
@@ -47,7 +59,7 @@ class Review extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -56,7 +68,18 @@ class Review extends \yii\db\ActiveRecord
             'type' => 'Type',
             'coll_univID' => 'Coll Univ ID',
             'courseID' => 'Course ID',
-            'description' => 'Description',
+            'placement_star' => 'Placement Star',
+            'placement_review' => 'Placement Review',
+            'infrastructure_star' => 'Infrastructure Star',
+            'infrastructure_review' => 'Infrastructure Review',
+            'fcc_star' => 'Fcc Star',
+            'fcc_review' => 'Fcc Review',
+            'ccl_star' => 'Ccl Star',
+            'cct_review' => 'Cct Review',
+            'wtd_star' => 'Wtd Star',
+            'wtd_review' => 'Wtd Review',
+            'other_star' => 'Other Star',
+            'other_review' => 'Other Review',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
