@@ -140,10 +140,12 @@ label{
     font-weight: 100 !important;
 }
 .uc-title{
-    color: #fff;
+    font-size: 14px !important;
+    font-weight: 600;
+    /*color: #fff;
     font-size: 18px;
     padding: 13px 15px !important;
-    float: left;
+    float: left;*/
 }
 .video-js .vjs-big-play-button {
     left: 40% !important;

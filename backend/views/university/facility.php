@@ -13,7 +13,7 @@ use softark\duallistbox\DualListbox;
 $this->title = 'Facilitys: '.$university->name;
 $this->params['subtitle'] = '<h1>Facility <a class="btn btn-success btn-xs" href="'.Url::to(['facility-details','id'=>$university->id]).'">Add</a></h1>';
 
-$this->params['breadcrumbs'][] = ['label' => 'Facility', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $university->name;
 $this->params['breadcrumbs'][] = 'Facility';
 $status = Yii::$app->myhelper->getActiveInactive();

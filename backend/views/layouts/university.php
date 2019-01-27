@@ -52,7 +52,7 @@ $this->registerCss('
           <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-          <span class="uc-title">University: <?= @Yii::$app->params['uTitle'] ?></span>
+          <!-- <span class="uc-title">University: <?php //echo @Yii::$app->params['uTitle'] ?></span> -->
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- User Account: style can be found in dropdown.less -->
@@ -152,7 +152,7 @@ $this->registerCss('
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header col-md-offset-3">
       <h1 class="app-title">
         <?= Html::encode($this->title) ?>
       </h1>
@@ -177,11 +177,7 @@ $this->registerCss('
         <div class="col-md-3">
          <div class="box box-solid">
           <div class="box-header with-border">
-            <h3 class="box-title">University</h3>
-            <div class="box-tools">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-            </div>
+            <h3 class="box-title">University: <?= @Yii::$app->params['uTitle'] ?></h3>
           </div>
           <div class="box-body no-padding">
             <?php echo Menu::widget([
@@ -189,7 +185,7 @@ $this->registerCss('
 
               'items' => [
                 ['label' => '<i class="fa fa-circle-o"></i> View', 'url' => ['/university/view','id'=>@Yii::$app->params['uID']]],
-                ['label' => '<i class="fa fa-circle-o"></i> Update', 'url' => ['/university/update','id'=>@Yii::$app->params['uID']]],
+                /*['label' => '<i class="fa fa-circle-o"></i> Update', 'url' => ['/university/update','id'=>@Yii::$app->params['uID']]],*/
                 ['label' => '<i class="fa fa-circle-o"></i> Courses', 'url' => ['/university/courses','id'=>@Yii::$app->params['uID']]],
                 ['label' => '<i class="fa fa-circle-o"></i> Gallery', 'url' => ['/university/gallery','id'=>@Yii::$app->params['uID'],'type'=>1]],
                 ['label' => '<i class="fa fa-circle-o"></i> Facility', 'url' => ['/university/facility','id'=>@Yii::$app->params['uID'],'type'=>1]],

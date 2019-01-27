@@ -1,62 +1,184 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\College */
 
 $this->title = $model->name;
+$this->params['subtitle'] = '<h1>View '.Html::a('Edit', ['update','id'=>$model->id], ['class' => 'btn btn-success btn-xs']).'</h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Colleges', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="college-view">
+    <div class="custumbox box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Details</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="col-md-4">Logo:</th>
+                        <td class="col-md-8"><?= Html::img(Url::to($fBasePath.$model->logourl),['class' => 'img-responsive','style'=>'width:100px;height:100px']) ?></td>
+                    </tr>                  
+                    <tr>
+                        <th class="col-md-4">Code:</th>
+                        <td class="col-md-8"><?= $model->code ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Establish Year:</th>
+                        <td class="col-md-8"><?= $model->establish_year ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Website Url:</th>
+                        <td class="col-md-8"><a target="_blank" href="<?= $model->websiteurl ?>"><?= $model->websiteurl ?></a></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Approved By:</th>
+                        <td class="col-md-8">
+                            <?php foreach($model->approved_by as $id => $approved_by ){ ?>
+                               <a href="<?= Url::to(['approved/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $approved_by ?></a> 
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Accredited By:</th>
+                        <td class="col-md-8">
+                            <?php foreach($model->accredited_by as $id => $accredited_by ){ ?>
+                               <a href="<?= Url::to(['accredited/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $accredited_by ?></a> 
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="custumbox box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">About</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <?= $model->about ?>
+        </div>
+    </div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="custumbox box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Vission</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <?= $model->vission ?>
+        </div>
+    </div>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+    <div class="custumbox box box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title">Mission</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <?= $model->mission ?>
+        </div>
+    </div>
+    <div class="custumbox box box-warning">
+        <div class="box-header with-border">
+            <h3 class="box-title">Location</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tbody>                  
+                    <tr>
+                        <th class="col-md-4">Country:</th>
+                        <td class="col-md-8"><?= $model->country->name ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">State:</th>
+                        <td class="col-md-8"><?= $model->state->name ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">City:</th>
+                        <td class="col-md-8"><?= $model->city->name ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Taluka:</th>
+                        <td class="col-md-8"><?= $model->taluka ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">District:</th>
+                        <td class="col-md-8"><?= $model->district ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Area:</th>
+                        <td class="col-md-8"><?= $model->area ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Pincode:</th>
+                        <td class="col-md-8"><?= $model->pincode ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Address:</th>
+                        <td class="col-md-8"><?= $model->address ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'code',
-            'address',
-            'cityID',
-            'stateID',
-            'countryID',
-            'taluka',
-            'district',
-            'pincode',
-            'contact',
-            'fax',
-            'email:email',
-            'websiteurl',
-            'establish_year',
-            'approved_by:ntext',
-            'accredited_by:ntext',
-            'affiliate_to:ntext',
-            'rating',
-            'about:ntext',
-            'vission:ntext',
-            'mission:ntext',
-            'logourl',
-            'createdDate',
-            'updatedDate',
-            'status',
-            'createdBy',
-            'updatedBy',
-        ],
-    ]) ?>
-
+    <div class="custumbox box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Contact Details</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tbody>                  
+                    <tr>
+                        <th class="col-md-4">Contact:</th>
+                        <td class="col-md-8"><?= $model->contact ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Fax:</th>
+                        <td class="col-md-8"><?= $model->fax ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Email:</th>
+                        <td class="col-md-8"><a href="mailto:<?= $model->email ?>"><?= $model->email ?></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+<?php 
+$this->registerCss("
+    .app-title{
+       display: none;
+   }
+   ");
+   ?>

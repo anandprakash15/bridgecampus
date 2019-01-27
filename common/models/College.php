@@ -105,16 +105,16 @@ class College extends \yii\db\ActiveRecord
             'area' => 'Area',
             'code' => 'Code',
             'address' => 'Address',
-            'cityID' => 'City ID',
-            'stateID' => 'State ID',
-            'countryID' => 'Country ID',
+            'cityID' => 'City',
+            'stateID' => 'State',
+            'countryID' => 'Country',
             'taluka' => 'Taluka',
             'district' => 'District',
             'pincode' => 'Pincode',
             'contact' => 'Contact',
             'fax' => 'Fax',
             'email' => 'Email',
-            'websiteurl' => 'Websiteurl',
+            'websiteurl' => 'Website Url',
             'establish_year' => 'Establish Year',
             'approved_by' => 'Approved By',
             'accredited_by' => 'Accredited By',
@@ -175,5 +175,29 @@ class College extends \yii\db\ActiveRecord
     public function getCollegeTypes()
     {
         return $this->hasMany(CollegeType::className(), ['collegeID' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCountry()
+    {
+        return $this->hasOne(Countries::className(), ['id' => 'countryID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCity()
+    {
+        return $this->hasOne(Cities::className(), ['id' => 'cityID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getState()
+    {
+        return $this->hasOne(States::className(), ['id' => 'stateID']);
     }
 }

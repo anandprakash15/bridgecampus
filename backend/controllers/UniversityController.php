@@ -317,9 +317,24 @@ class UniversityController extends Controller
     public function actionView($id)
     {
         $this->layout= "university";
-        $university = $this->findModel($id);
+        $model = $this->findModel($id);
+        $fBasePath = Yii::$app->myhelper->getFileBasePath(1,$model->id);
+
+        if(!empty($model->approved_by)){
+            $model->approved_by = ArrayHelper::map(Approved::find()->where(new \yii\db\Expression("id IN(".$model->approved_by.")"))->asArray()->all(),'id','name');
+        }else{
+            $model->approved_by = [];
+        }
+
+        if(!empty($model->accredited_by)){
+            $model->accredited_by = ArrayHelper::map(Accredited::find()->where(new \yii\db\Expression("id IN(".$model->accredited_by.")"))->asArray()->all(),'id','name');
+        }else{
+            $model->accredited_by = [];
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'fBasePath'=>$fBasePath
         ]);
     }
 

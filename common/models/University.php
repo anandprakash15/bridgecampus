@@ -179,4 +179,28 @@ class University extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UniversityType::className(), ['universityID' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCountry()
+    {
+        return $this->hasOne(Countries::className(), ['id' => 'countryID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCity()
+    {
+        return $this->hasOne(Cities::className(), ['id' => 'cityID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getState()
+    {
+        return $this->hasOne(States::className(), ['id' => 'stateID']);
+    }
 }

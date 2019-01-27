@@ -52,7 +52,7 @@ $this->registerCss('
           <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-          <span class="uc-title">College: <?= @Yii::$app->params['cTitle'] ?></span>
+          <!-- <span class="uc-title">College: <?php //echo @Yii::$app->params['cTitle'] ?></span> -->
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- User Account: style can be found in dropdown.less -->
@@ -152,7 +152,7 @@ $this->registerCss('
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header col-md-offset-3">
       <h1 class="app-title">
         <?= Html::encode($this->title) ?>
       </h1>
@@ -177,22 +177,18 @@ $this->registerCss('
         <div class="col-md-3">
          <div class="box box-solid">
           <div class="box-header with-border">
-            <h3 class="box-title">College</h3>
-            <div class="box-tools">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-            </div>
+            <h3 class="box-title uc-title">College: <?= @Yii::$app->params['cTitle'] ?></h3>
           </div>
           <div class="box-body no-padding">
             <?php echo Menu::widget([
               'options' => ['class' => 'nav nav-pills nav-stacked','data-widget'=>"tree"],
 
               'items' => [
-                ['label' => '<i class="fa fa-circle-o"></i> View', 'url' => ['/university/view','id'=>@Yii::$app->params['cID']]],
-                ['label' => '<i class="fa fa-circle-o"></i> Update', 'url' => ['/university/update','id'=>@Yii::$app->params['cID']]],
-                ['label' => '<i class="fa fa-circle-o"></i> Courses', 'url' => ['/university/courses','id'=>@Yii::$app->params['cID']]],
-                ['label' => '<i class="fa fa-circle-o"></i> Gallery', 'url' => ['/university/gallery','id'=>@Yii::$app->params['cID'],'type'=>1]],
-                ['label' => '<i class="fa fa-circle-o"></i> Review', 'url' => ['/university/review','id'=>@Yii::$app->params['cID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> View', 'url' => ['/college/view','id'=>@Yii::$app->params['cID']]],
+               /* ['label' => '<i class="fa fa-circle-o"></i> Update', 'url' => ['/college/update','id'=>@Yii::$app->params['cID']]],*/
+                ['label' => '<i class="fa fa-circle-o"></i> Courses', 'url' => ['/college/courses','id'=>@Yii::$app->params['cID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Gallery', 'url' => ['/college/gallery','id'=>@Yii::$app->params['cID'],'type'=>1]],
+                ['label' => '<i class="fa fa-circle-o"></i> Review', 'url' => ['/college/review','id'=>@Yii::$app->params['cID']]],
 
               ],
               'submenuTemplate' => "\n<ul class='treeview-menu'>\n{items}\n</ul>\n",

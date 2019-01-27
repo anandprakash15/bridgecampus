@@ -11,7 +11,7 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $university->name.' '.$fileType.' Gallery';
-
+$this->params['subtitle'] = '<h1>'.ucwords($fileType).' Gallery</h1>';
 
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $university->name;
@@ -28,7 +28,13 @@ $this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::cl
 
 $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
-
+<?php 
+$this->registerCss("
+    .app-title{
+     display: none;
+ }
+ ");
+ ?>
 <div class="university-index">
 <div class="custumbox col-md-12">
 <div class="nav-tabs-custom">

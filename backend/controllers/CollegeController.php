@@ -69,10 +69,25 @@ class CollegeController extends Controller
     public function actionView($id)
     {
         $this->layout= "college";
-        $college = $this->findModel($id);
+        $model = $this->findModel($id);
+        $fBasePath = Yii::$app->myhelper->getFileBasePath(2,$model->id);
+
+        if(!empty($model->approved_by)){
+            $model->approved_by = ArrayHelper::map(Approved::find()->where(new \yii\db\Expression("id IN(".$model->approved_by.")"))->asArray()->all(),'id','name');
+        }else{
+            $model->approved_by = [];
+        }
+
+        if(!empty($model->accredited_by)){
+            $model->accredited_by = ArrayHelper::map(Accredited::find()->where(new \yii\db\Expression("id IN(".$model->accredited_by.")"))->asArray()->all(),'id','name');
+        }else{
+            $model->accredited_by = [];
+        }
+
         return $this->render('view', [
-            'model' => $college,
-        ]);    
+            'model' => $model,
+            'fBasePath'=>$fBasePath
+        ]);  
     }
 
     public function actionGallery($id,$type){
@@ -177,7 +192,7 @@ class CollegeController extends Controller
 
 
     public function actionReview($id){
-        $this->layout= "university";
+        $this->layout= "college";
         $university = $this->findModel($id);
         return $this->render('gallery', [
             'university' => $university,
@@ -234,6 +249,7 @@ class CollegeController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout= "college";
         $model = $this->findModel($id);
         
         $oldlogoURL = $model->logourl;
