@@ -54,13 +54,19 @@ class ExamController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    /*public function actionView($id)
+    public function actionView($id)
     {
+        //$model = Exam::find()->joinWith(['course'])->where(['exam.id'=>$id])->one();
+        /*if ($model == null) {
+           throw new NotFoundHttpException('The requested page does not exist.');
+        }*/
+
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
-*/
+
     /**
      * Creates a new Exam model.
      * If creation is successful, the browser will be redirected to the 'view' page.

@@ -54,9 +54,9 @@ class UniversityCollegeCourse extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'universityID' => 'University ID',
-            'collegeID' => 'College ID',
-            'courseID' => 'Course ID',
+            'universityID' => 'University',
+            'collegeID' => 'College',
+            'courseID' => 'Course',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',

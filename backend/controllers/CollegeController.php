@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\College;
+use common\models\University;
+use common\models\Courses;
 use common\models\search\CollegeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -88,6 +90,75 @@ class CollegeController extends Controller
             'model' => $model,
             'fBasePath'=>$fBasePath
         ]);  
+    }
+
+
+    public function actionCourses($id){
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        $searchModel = new UniversityCollegeCourseSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$college->id,'college');
+        
+        return $this->render('courses', [
+            'college' => $college,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+
+    public function actionCourseDetails($id,$uccID = null)
+    {
+        $this->layout= "college";
+        $college = $this->findModel($id);
+        Yii::$app->params['cTitle'] = $college->name;
+        Yii::$app->params['cID'] = $college->id;
+
+        if($uccID==null){
+            $uccModel = new UniversityCollegeCourse();
+            $model = new CourseDetails();
+        }else{
+            $uccModel = UniversityCollegeCourse::findOne($uccID);
+            $model = CourseDetails::findOne(['uccID'=>$uccModel->id]);
+        }
+        $university =  $course = [];
+
+        if(!empty($uccModel->universityID)){
+            $university = ArrayHelper::map(University::find()->where(['id'=>$uccModel->universityID])->asArray()->all(),'id','name');
+        }
+
+
+        if($uccModel->courseID){
+            $course = ArrayHelper::map(Courses::find()->where(['id'=>$uccModel->courseID])->asArray()->all(),'id','name');
+        }
+
+        $uccModel->collegeID = $college->id;
+        if ($model->load(Yii::$app->request->post()) && $uccModel->load(Yii::$app->request->post())) {
+             $uccModel->status = 1;
+            if($uccModel->save()){
+               $model->uccID =  $uccModel->id;
+              
+               if($model->save()){
+                \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+               }else{
+                print_r($model);exit;
+               }
+            }else{
+                 print_r($uccModel);exit;
+            }
+        
+         return $this->redirect(['courses','id'=>$college->id]);
+        }
+        
+
+        return $this->render('course-details', [
+            'model' => $model,
+            'uccModel'=>$uccModel,
+            'college' => $college,
+            'university' => $university,
+            'course' => $course,
+        ]);
     }
 
     public function actionGallery($id,$type){

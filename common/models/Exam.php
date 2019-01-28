@@ -89,7 +89,7 @@ class Exam extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'examcatID' => 'Exam',
-            'courseID' => 'Course ID',
+            'courseID' => 'Course',
             'name' => 'Name',
             'exam_dates' => 'Exam Dates',
             'exam_fullname' => 'Exam Fullname',
@@ -106,7 +106,7 @@ class Exam extends \yii\db\ActiveRecord
             'main_stream' => 'Main Stream',
             'summary' => 'Summary',
             'analysis' => 'Analysis',
-            'bylocation' => 'Bylocation',
+            'bylocation' => 'Location',
             'question_paper' => 'Question Paper',
             'ans_key' => 'Ans Key',
             'counselling' => 'Counselling',
@@ -127,6 +127,22 @@ class Exam extends \yii\db\ActiveRecord
     public function getExamcat()
     {
         return $this->hasOne(ExamCategory::className(), ['id' => 'examcatID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExamcatWithProgram()
+    {
+        return $this->hasOne(ExamCategory::className(), ['id' => 'examcatID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourse()
+    {
+        return $this->hasOne(Courses::className(), ['id' => 'courseID']);
     }
 
     /**

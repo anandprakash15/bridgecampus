@@ -93,65 +93,65 @@ class UniversityController extends Controller
         $model->type = 1;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-         \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-         return $this->redirect(['facility','id'=>Yii::$app->params['uID'],'type'=>1]);
-        }
-        
+           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+           return $this->redirect(['facility','id'=>Yii::$app->params['uID'],'type'=>1]);
+       }
 
-        return $this->render('facility-details', [
-            'model' => $model,
-            'university' => $university,
-        ]);
+
+       return $this->render('facility-details', [
+        'model' => $model,
+        'university' => $university,
+    ]);
+   }
+
+   public function actionReviewDetails($id,$rid = null)
+   {
+    $this->layout= "university";
+    $university = $this->findModel($id);
+
+    if (($model = Review::findOne(['id'=>$rid])) == null) {
+        $model = new Review();
     }
 
-    public function actionReviewDetails($id,$rid = null)
-    {
-        $this->layout= "university";
-        $university = $this->findModel($id);
+    $model->coll_univID  = $id;
+    $model->type = 1;
 
-        if (($model = Review::findOne(['id'=>$rid])) == null) {
-            $model = new Review();
-        }
-        
-        $model->coll_univID  = $id;
-        $model->type = 1;
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+       \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+       return $this->redirect(['review','id'=>Yii::$app->params['uID'],'type'=>1]);
+   }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-         \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-         return $this->redirect(['review','id'=>Yii::$app->params['uID'],'type'=>1]);
-        }
-        
 
-        return $this->render('review-details', [
-            'model' => $model,
-            'university' => $university,
-        ]);
+   return $this->render('review-details', [
+    'model' => $model,
+    'university' => $university,
+]);
+}
+
+
+public function actionCourseDetails($id)
+{
+    $this->layout= "university";
+    $universityandcourse = UniversityCollegeCourse::findOne($id);
+    Yii::$app->params['uTitle'] = $universityandcourse->university->name;
+    Yii::$app->params['uID'] = $universityandcourse->university->id;
+
+    if (($model = CourseDetails::findOne(['uccID'=>$id])) == null) {
+        $model = new CourseDetails();
     }
+    $model->uccID = $id;
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+       \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+       return $this->redirect(['courses','id'=>Yii::$app->params['uID']]);
+   }
 
 
-    public function actionCourseDetails($id)
-    {
-        $this->layout= "university";
-        $universityandcourse = UniversityCollegeCourse::find()->joinWith(['course','university'])->one();
-        Yii::$app->params['uTitle'] = $universityandcourse->university->name;
-        Yii::$app->params['uID'] = $universityandcourse->university->id;
-
-        if (($model = CourseDetails::findOne(['uccID'=>$id])) == null) {
-            $model = new CourseDetails();
-        }
-        $model->uccID = $id;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-         \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-         return $this->redirect(['courses','id'=>Yii::$app->params['uID']]);
-        }
-        
-
-        return $this->render('course-details', [
-            'model' => $model,
-            'universityandcourse' => $universityandcourse,
-        ]);
-    }
+   return $this->render('course-details', [
+    'model' => $model,
+    'universityandcourse' => $universityandcourse,
+]);
+}
 
 
 
@@ -166,7 +166,7 @@ class UniversityController extends Controller
         $model = new University();
 
         if ($model->load(Yii::$app->request->post())) {
-            
+
             $model->approved_by = implode(",",(array) $model->approved_by);
             $model->accredited_by = implode(",",(array) $model->accredited_by);
             
@@ -236,19 +236,19 @@ class UniversityController extends Controller
         $approved_by = $accredited_by = [];
 
         if(!empty($model->approved_by)){
-           
+
             $approved_by = ArrayHelper::map(Approved::find()->where(new \yii\db\Expression("id IN(".$model->approved_by.")"))->asArray()->all(),'id','name');
             $model->approved_by = explode(",",$model->approved_by);
         }
 
         if(!empty($model->accredited_by)){
-           
+
             $accredited_by = ArrayHelper::map(Accredited::find()->where(new \yii\db\Expression("id IN(".$model->accredited_by.")"))->asArray()->all(),'id','name');
             $model->accredited_by = explode(",",$model->accredited_by);
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            
+
             $model->approved_by = implode(",",(array) $model->approved_by);
             $model->accredited_by = implode(",",(array) $model->accredited_by);
 
@@ -471,6 +471,8 @@ class UniversityController extends Controller
             'searchModel'=> $searchModel,
         ]);
     }
+
+
     public function actionAddCourses($id){
         $this->layout= "university";
         $university = $this->findModel($id);
@@ -551,10 +553,52 @@ class UniversityController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    public function actionUniversityList($q = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["id", new \yii\db\Expression("name AS text")])
+            ->from('university')
+            ->where(['like', 'name', $q])
+            ->andWhere(['status'=>1])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
+    }
+
+
+    public function actionUniversityCourses($q = null,$universityID=null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["courses.id", new \yii\db\Expression("courses.name AS text")])
+            ->from('courses')
+            ->where(['like', 'name', $q]);
+            if($universityID != null){
+            
+                $query->leftJoin("university_college_course","courses.id = university_college_course.courseID ")
+                ->andWhere(['university_college_course.universityID'=>$universityID]);
+            }
+            
+            
+            $query->andWhere(['courses.status'=>1])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
+    }
+
     public function actionValidate($id = "")
     {
-     if($id != "")
-     {
+       if($id != "")
+       {
         $model = $this->findModel($id);  
     }else{
         $model = new University();
