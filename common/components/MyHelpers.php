@@ -73,6 +73,12 @@ use common\models\ExamCategory;
         return [1 => 'Full Time', 2=>'Part Time'];
     }
 
+    public static function getAdvertisePossition()
+    {
+        return [1 => 'Top', 2=>'Bottom', 3=>'Left', 4=>'Right', 5=>'Center', 6=>'Video'];
+    }
+
+
     public static function getCourseType()
     {
         return [1 => 'University', 2=>'autonomas'];

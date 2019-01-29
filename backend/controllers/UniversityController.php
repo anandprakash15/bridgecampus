@@ -27,6 +27,8 @@ use common\models\search\FacilitySearch;
 use common\models\Facility;
 use common\models\search\ReviewSearch;
 use common\models\Review;
+use common\models\CollegeUniversityAdvpurpose;
+use common\models\search\CollegeUniversityAdvpurposeSearch;
 
 
 /**
@@ -106,52 +108,91 @@ class UniversityController extends Controller
 
    public function actionReviewDetails($id,$rid = null)
    {
-    $this->layout= "university";
-    $university = $this->findModel($id);
+        $this->layout= "university";
+        $university = $this->findModel($id);
 
-    if (($model = Review::findOne(['id'=>$rid])) == null) {
-        $model = new Review();
+        if (($model = Review::findOne(['id'=>$rid])) == null) {
+            $model = new Review();
+        }
+
+        $model->coll_univID  = $id;
+        $model->type = 1;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+           return $this->redirect(['review','id'=>Yii::$app->params['uID'],'type'=>1]);
+       }
+
+
+       return $this->render('review-details', [
+            'model' => $model,
+            'university' => $university,
+        ]);
     }
 
-    $model->coll_univID  = $id;
-    $model->type = 1;
 
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-       \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-       return $this->redirect(['review','id'=>Yii::$app->params['uID'],'type'=>1]);
-   }
+    public function actionCourseDetails($id)
+    {
+        $this->layout= "university";
+        $universityandcourse = UniversityCollegeCourse::findOne($id);
+        Yii::$app->params['uTitle'] = $universityandcourse->university->name;
+        Yii::$app->params['uID'] = $universityandcourse->university->id;
+
+        if (($model = CourseDetails::findOne(['uccID'=>$id])) == null) {
+            $model = new CourseDetails();
+        }
+        $model->uccID = $id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+           return $this->redirect(['courses','id'=>Yii::$app->params['uID']]);
+       }
 
 
-   return $this->render('review-details', [
-    'model' => $model,
-    'university' => $university,
-]);
-}
-
-
-public function actionCourseDetails($id)
-{
-    $this->layout= "university";
-    $universityandcourse = UniversityCollegeCourse::findOne($id);
-    Yii::$app->params['uTitle'] = $universityandcourse->university->name;
-    Yii::$app->params['uID'] = $universityandcourse->university->id;
-
-    if (($model = CourseDetails::findOne(['uccID'=>$id])) == null) {
-        $model = new CourseDetails();
+       return $this->render('course-details', [
+            'model' => $model,
+            'universityandcourse' => $universityandcourse,
+        ]);
     }
-    $model->uccID = $id;
 
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-       \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-       return $this->redirect(['courses','id'=>Yii::$app->params['uID']]);
+    public function actionAdvertiseMaterials($id)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        $searchModel = new CollegeUniversityAdvpurposeSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('advertise-materials', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+    public function actionAdvertiseMaterialsDetails($id,$fid = null)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        if (($model = CollegeUniversityAdvpurpose::findOne(['id'=>$fid])) == null) {
+            $model = new CollegeUniversityAdvpurpose();
+        }
+        
+        $model->coll_univID  = $id;
+        $model->type = 1;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+           return $this->redirect(['advertise-materials','id'=>Yii::$app->params['uID']]);
+       }
+
+
+       return $this->render('advertise-materials-details', [
+        'model' => $model,
+        'university' => $university,
+    ]);
    }
-
-
-   return $this->render('course-details', [
-    'model' => $model,
-    'universityandcourse' => $universityandcourse,
-]);
-}
 
 
 

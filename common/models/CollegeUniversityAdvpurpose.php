@@ -13,6 +13,7 @@ use Yii;
  * @property int $gtype 1-top,2-bottom,3-left, 4-right, 5-center, 6-video
  * @property string $createdDate
  * @property string $updatedDate
+ * @property string $url
  * @property int $status
  * @property int $createdBy
  * @property int $updatedBy
@@ -36,12 +37,25 @@ class CollegeUniversityAdvpurpose extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'coll_univID', 'gtype', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
+            [['type', 'coll_univID', 'gtype', 'status'], 'required'],
             [['type', 'coll_univID', 'gtype', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['createdDate', 'updatedDate'], 'safe'],
+            [['createdDate', 'updatedDate','url'], 'safe'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -53,7 +67,7 @@ class CollegeUniversityAdvpurpose extends \yii\db\ActiveRecord
             'id' => 'ID',
             'type' => 'Type',
             'coll_univID' => 'Coll Univ ID',
-            'gtype' => 'Gtype',
+            'gtype' => 'Type',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
