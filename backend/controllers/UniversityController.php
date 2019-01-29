@@ -106,27 +106,26 @@ class UniversityController extends Controller
 
    public function actionReviewDetails($id,$rid = null)
    {
-    $this->layout= "university";
-    $university = $this->findModel($id);
+        $this->layout= "university";
+        $university = $this->findModel($id);
 
-    if (($model = Review::findOne(['id'=>$rid])) == null) {
-        $model = new Review();
+        if (($model = Review::findOne(['id'=>$rid])) == null) {
+            $model = new Review();
+        }
+
+        $model->coll_univID  = $id;
+        $model->type = 1;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            return $this->redirect(['review','id'=>Yii::$app->params['uID'],'type'=>1]);
+        }
+
+        return $this->render('review-details', [
+        'model' => $model,
+        'university' => $university,
+        ]);
     }
-
-    $model->coll_univID  = $id;
-    $model->type = 1;
-
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-       \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-       return $this->redirect(['review','id'=>Yii::$app->params['uID'],'type'=>1]);
-   }
-
-
-   return $this->render('review-details', [
-    'model' => $model,
-    'university' => $university,
-]);
-}
 
 
 public function actionCourseDetails($id)
@@ -587,6 +586,7 @@ public function actionCourseDetails($id)
             
             
             $query->andWhere(['courses.status'=>1])
+            ->groupBy(['courses.id'])
             ->limit(20);
             $command = $query->createCommand();
             $data = $command->queryAll();

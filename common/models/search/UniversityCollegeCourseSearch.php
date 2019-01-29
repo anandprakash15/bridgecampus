@@ -42,7 +42,7 @@ class UniversityCollegeCourseSearch extends UniversityCollegeCourse
     {
         $query = UniversityCollegeCourse::find();
         if($type == 'university'){
-            $query->andWhere(['university_college_course.universityID'=>$id]);
+            $query->andWhere(['university_college_course.universityID'=>$id,'university_college_course.collegeID'=>NULL]);
         }else{
             $query->andWhere(['university_college_course.collegeID'=>$id]);
         }

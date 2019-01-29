@@ -14,12 +14,13 @@ class ReviewSearch extends Review
     /**
      * {@inheritdoc}
      */
+    public $fullname;
     public function rules()
     {
         return [
             [['id', 'type', 'coll_univID', 'courseID', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['placement_star', 'infrastructure_star', 'fcc_star', 'ccl_star', 'wtd_star', 'other_star'], 'number'],
-            [['placement_review', 'infrastructure_review', 'fcc_review', 'cct_review', 'wtd_review', 'other_review', 'createdDate', 'updatedDate'], 'safe'],
+            [['placement_review', 'infrastructure_review', 'fcc_review', 'cct_review', 'wtd_review', 'other_review', 'createdDate', 'updatedDate','fullname'], 'safe'],
         ];
     }
 
@@ -41,7 +42,7 @@ class ReviewSearch extends Review
      */
     public function search($params,$id,$type='university')
     {
-        $query = Review::find();
+        $query = Review::find()->joinWith(['createdBy0']);
         if($type == 'university'){
             $query->andWhere(['review.coll_univID'=>$id,'type'=>1]);
         }else{
@@ -74,7 +75,7 @@ class ReviewSearch extends Review
             'ccl_star' => $this->ccl_star,
             'wtd_star' => $this->wtd_star,
             'other_star' => $this->other_star,
-            'createdDate' => $this->createdDate,
+            
             'updatedDate' => $this->updatedDate,
             'status' => $this->status,
             'createdBy' => $this->createdBy,
@@ -83,7 +84,9 @@ class ReviewSearch extends Review
 
         $query->andFilterWhere(['like', 'placement_review', $this->placement_review])
             ->andFilterWhere(['like', 'infrastructure_review', $this->infrastructure_review])
+            ->andFilterWhere(['like', 'createdDate', $this->createdDate])
             ->andFilterWhere(['like', 'fcc_review', $this->fcc_review])
+            ->andFilterWhere(['like', 'user.fullname', $this->fullname])
             ->andFilterWhere(['like', 'cct_review', $this->cct_review])
             ->andFilterWhere(['like', 'wtd_review', $this->wtd_review])
             ->andFilterWhere(['like', 'other_review', $this->other_review]);
