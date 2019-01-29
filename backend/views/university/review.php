@@ -11,16 +11,17 @@ use softark\duallistbox\DualListbox;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Reviews: '.$university->name;
-$this->params['breadcrumbs'][] = ['label' => 'Facility', 'url' => ['index']];
+$this->params['subtitle'] = '<h1>Reviews</h1>';
+$this->params['breadcrumbs'][] = ['label' => 'Colleges', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $university->name;
-$this->params['breadcrumbs'][] = 'Facility';
+$this->params['breadcrumbs'][] = 'Reviews';
 $status = Yii::$app->myhelper->getActiveInactive();
 $ftype = Yii::$app->myhelper->getFacility();
 
 echo Yii::$app->message->display();
 ?>
 
-<div class="university-index">
+<div class="university-review-index">
 	<div class="custumbox box box-info">
 		<div class="box-body">
 			<?= GridView::widget([
@@ -40,12 +41,23 @@ echo Yii::$app->message->display();
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
+                        'attribute' => 'fullname',
+                        'value' => function($model){
+                            return $model->createdBy0->fullname;
+                        }
+                    ],
+                    [
+                        'attribute' => 'createdDate',
+                        'value' => function($model){
+                            return date('d-m-Y H:m A');
+                        }
+                    ],
+                    [
                         'attribute' => 'status',
                         'filter' => $status,
                         'value' => function($model)use($status){
                             return $status[$model['status']];
                         }
-
                     ],
             ],
         ]); ?>

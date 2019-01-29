@@ -14,24 +14,19 @@ use dosamigos\ckeditor\CKEditor;
 
 if($model->isNewRecord){
 
-  $this->title = $university->name.' Add Facility';
+  $this->title = $college->name.' Add Facility';
   $this->params['subtitle'] = '<h1>Add Facility</h1>';
-  $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-  $this->params['breadcrumbs'][] = $university->name;
+  $this->params['breadcrumbs'][] = ['label' => 'College', 'url' => ['index']];
+  $this->params['breadcrumbs'][] = $college->name;
   $this->params['breadcrumbs'][] = 'Add Facility';
 }else{
-  $this->title = $university->name.' Update Facility';
+  $this->title = $college->name.' Update Facility';
   $this->params['subtitle'] = '<h1>Update Facility</h1>';
   $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-  $this->params['breadcrumbs'][] = $university->name;
+  $this->params['breadcrumbs'][] = $college->name;
   $this->params['breadcrumbs'][] = 'Update Facility';
 }
 
-/*$this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $universityandcourse->university->name;
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$universityandcourse->university->id]];
-$this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name, 'url' => ['courses','id'=>$universityandcourse->university->id]];*/
-//$this->params['breadcrumbs'][] = 'Add Facility';
 ?>
 <div class="course-details-form">
   <div class="custumbox box box-info">

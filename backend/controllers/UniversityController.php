@@ -106,10 +106,12 @@ class UniversityController extends Controller
     ]);
    }
 
+
    public function actionReviewDetails($id,$rid = null)
    {
         $this->layout= "university";
         $university = $this->findModel($id);
+
 
         if (($model = Review::findOne(['id'=>$rid])) == null) {
             $model = new Review();
@@ -628,6 +630,7 @@ class UniversityController extends Controller
             
             
             $query->andWhere(['courses.status'=>1])
+            ->groupBy(['courses.id'])
             ->limit(20);
             $command = $query->createCommand();
             $data = $command->queryAll();

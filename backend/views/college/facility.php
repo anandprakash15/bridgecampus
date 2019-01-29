@@ -10,11 +10,11 @@ use softark\duallistbox\DualListbox;
 /* @var $searchModel common\models\search\UniversitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Facilitys: '.$university->name;
-$this->params['subtitle'] = '<h1>Facility <a class="btn btn-success btn-xs" href="'.Url::to(['facility-details','id'=>$university->id]).'">Add</a></h1>';
+$this->title = 'Facilitys: '.$college->name;
+$this->params['subtitle'] = '<h1>Facility <a class="btn btn-success btn-xs" href="'.Url::to(['facility-details','id'=>$college->id]).'">Add</a></h1>';
 
-$this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $university->name;
+$this->params['breadcrumbs'][] = ['label' => 'Colleges', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $college->name;
 $this->params['breadcrumbs'][] = 'Facility';
 $status = Yii::$app->myhelper->getActiveInactive();
 $ftype = Yii::$app->myhelper->getFacility();
@@ -22,7 +22,7 @@ $ftype = Yii::$app->myhelper->getFacility();
 echo Yii::$app->message->display();
 ?>
 
-<div class="university-index">
+<div class="college-index">
 	<div class="custumbox box box-info">
 		<div class="box-body">
 			<?= GridView::widget([
@@ -33,8 +33,8 @@ echo Yii::$app->message->display();
                     '{export}',
                     '{toggleData}',
                 ],
-                'rowOptions' => function ($model, $key, $index, $grid)use($university) {
-                    $url = Url::to(['facility-details','id'=> $university->id,'fid'=>$model->id]);
+                'rowOptions' => function ($model, $key, $index, $grid)use($college) {
+                    $url = Url::to(['facility-details','id'=> $college->id,'fid'=>$model->id]);
                     return ['onclick' => 'location.href="'.$url.'"'];
                 },
                 'dataProvider' => $dataProvider,

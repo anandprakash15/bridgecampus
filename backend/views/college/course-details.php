@@ -16,10 +16,19 @@ use yii\web\JsExpression;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $college->name.' Add Courses Details';
+
+$this->params['breadcrumbs'][] = ['label' => 'Colleges', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $college->name;
+
+if($model->isNewRecord){
 $this->params['subtitle'] = '<h1>Add Courses Details</h1>';
-/*$this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $universityandcourse->university->name;
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$universityandcourse->university->id]];
+$this->params['breadcrumbs'][] = "Add Courses Details";
+}else{
+  $this->params['subtitle'] = '<h1>Update Courses Details</h1>';
+  $this->params['breadcrumbs'][] = "Update Courses Details";
+}
+
+/*$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$universityandcourse->university->id]];
 $this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name, 'url' => ['courses','id'=>$universityandcourse->university->id]];
 $this->params['breadcrumbs'][] = 'Details';*/
 ?>
@@ -60,7 +69,6 @@ $this->params['breadcrumbs'][] = 'Details';*/
         ],
         "pluginEvents" => [
             "select2:select" => "function() {
-            console.log('select');  
               $('#universitycollegecourse-courseid').val(null).trigger('change');
             }",
           ],

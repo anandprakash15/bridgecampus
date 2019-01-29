@@ -25,6 +25,10 @@ use common\models\Accredited;
 use common\models\Affiliate;
 use common\models\CourseDetails;
 use yii\helpers\ArrayHelper;
+use common\models\search\FacilitySearch;
+use common\models\Facility;
+use common\models\search\ReviewSearch;
+use common\models\Review;
 
 
 /**
@@ -262,6 +266,44 @@ class CollegeController extends Controller
 
 
 
+    public function actionFacility($id)
+    {
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        $searchModel = new FacilitySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$college->id,'college');
+        
+        return $this->render('facility', [
+            'college' => $college,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+    public function actionFacilityDetails($id,$fid = null)
+    {
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        if (($model = Facility::findOne(['id'=>$fid])) == null) {
+            $model = new Facility();
+        }
+        
+        $model->coll_univID  = $id;
+        $model->type = 2;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            return $this->redirect(['facility','id'=>$college->id,'type'=>2]);
+        }
+
+        return $this->render('facility-details', [
+            'model' => $model,
+            'college' => $college,
+        ]);
+    }
+    
     public function actionReview($id){
         $this->layout= "college";
         $university = $this->findModel($id);
