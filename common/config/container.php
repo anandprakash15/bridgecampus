@@ -47,7 +47,7 @@ use yii\helpers\Url;
 \Yii::$container->set('yii\bootstrap\ActiveForm', [
     'layout' => 'horizontal',
 	'fieldConfig' => [
-         'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
+        'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
 		'horizontalCssClasses' => [
                  'wrapper' => 'col-sm-8',
                  'error' => '',

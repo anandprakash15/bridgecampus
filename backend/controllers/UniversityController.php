@@ -87,12 +87,9 @@ class UniversityController extends Controller
         $this->layout= "university";
         $university = $this->findModel($id);
 
-        if (($model = Facility::findOne(['id'=>$fid])) == null) {
-            $model = new Facility();
+         if (($model = Review::findOne(['id'=>$rid])) == null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
-        
-        $model->coll_univID  = $id;
-        $model->type = 1;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
@@ -106,27 +103,34 @@ class UniversityController extends Controller
     ]);
    }
 
-
-   public function actionReviewDetails($id,$rid = null)
-   {
+    public function actionReview($id){
         $this->layout= "university";
         $university = $this->findModel($id);
 
+        $searchModel = new ReviewSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('review', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+    public function actionReviewDetails($id,$rid = null)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
 
         if (($model = Review::findOne(['id'=>$rid])) == null) {
             $model = new Review();
         }
 
-        $model->coll_univID  = $id;
-        $model->type = 1;
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-           return $this->redirect(['review','id'=>Yii::$app->params['uID'],'type'=>1]);
-       }
-
-
-       return $this->render('review-details', [
+           return $this->redirect(['review','id'=>$id]);
+        }
+        return $this->render('review-details', [
             'model' => $model,
             'university' => $university,
         ]);
@@ -482,22 +486,6 @@ class UniversityController extends Controller
             }
         }
         return ['error'=>true,'msg'=>'Error occured while deleting the file.'];
-    }
-
-
-
-    public function actionReview($id){
-        $this->layout= "university";
-        $university = $this->findModel($id);
-
-        $searchModel = new ReviewSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
-        
-        return $this->render('review', [
-            'university' => $university,
-            'dataProvider'=> $dataProvider,
-            'searchModel'=> $searchModel,
-        ]);
     }
 
 

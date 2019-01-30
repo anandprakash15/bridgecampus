@@ -303,14 +303,6 @@ class CollegeController extends Controller
             'college' => $college,
         ]);
     }
-    
-    public function actionReview($id){
-        $this->layout= "college";
-        $university = $this->findModel($id);
-        return $this->render('gallery', [
-            'university' => $university,
-        ]);
-    }
 
     /**
      * Creates a new College model.
@@ -418,6 +410,43 @@ class CollegeController extends Controller
             'approved_by' => $approved_by,
             'accredited_by'=>$accredited_by,
             'affiliate_to'=>$affiliate_to
+        ]);
+    }
+
+
+    public function actionReview($id){
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        $searchModel = new ReviewSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$college->id,'college');
+        
+        return $this->render('review', [
+            'college' => $college,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+    public function actionReviewDetails($id,$rid = null)
+    {
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        $model = Review::findOne(['id'=>$rid]);    
+        if (($model = Review::findOne(['id'=>$rid])) == null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+           return $this->redirect(['review','id'=>$id]);
+       }
+
+
+       return $this->render('review-details', [
+            'model' => $model,
+            'college' => $college,
         ]);
     }
 

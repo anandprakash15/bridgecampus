@@ -99,6 +99,14 @@ class Review extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getCourse()
+    {
+        return $this->hasOne(Courses::className(), ['id' => 'courseID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getUpdatedBy0()
     {
         return $this->hasOne(User::className(), ['id' => 'updatedBy']);
