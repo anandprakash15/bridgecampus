@@ -12,7 +12,8 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.6",
@@ -23,7 +24,8 @@
         "yii2mod/yii2-sweet-alert": "*",
         "2amigos/yii2-ckeditor-widget": "^2.1",
         "moonlandsoft/yii2-phpexcel": "*",
-        "softark/yii2-dual-listbox": "dev-master"
+        "softark/yii2-dual-listbox": "dev-master",
+        "iutbay/yii2-kcfinder": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

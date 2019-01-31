@@ -81,6 +81,7 @@ class ComposerStaticInit9c4ae0f1e3be1063039c0f96f3fd7424
         'y' => 
         array (
             'yii\\swiftmailer\\' => 16,
+            'yii\\jui\\' => 8,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
             'yii\\debug\\' => 10,
@@ -127,6 +128,11 @@ class ComposerStaticInit9c4ae0f1e3be1063039c0f96f3fd7424
             'kartik\\base\\' => 12,
             'kartik\\alert\\' => 13,
             'kartik\\affix\\' => 13,
+        ),
+        'i' => 
+        array (
+            'iutbay\\yii2kcfinder\\' => 20,
+            'iutbay\\yii2fontawesome\\' => 23,
         ),
         'd' => 
         array (
@@ -198,6 +204,10 @@ class ComposerStaticInit9c4ae0f1e3be1063039c0f96f3fd7424
         'yii\\swiftmailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer/src',
+        ),
+        'yii\\jui\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-jui',
         ),
         'yii\\gii\\' => 
         array (
@@ -336,6 +346,14 @@ class ComposerStaticInit9c4ae0f1e3be1063039c0f96f3fd7424
         'kartik\\affix\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-affix',
+        ),
+        'iutbay\\yii2kcfinder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/iutbay/yii2-kcfinder',
+        ),
+        'iutbay\\yii2fontawesome\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/iutbay/yii2-fontawesome',
         ),
         'dosamigos\\ckeditor\\' => 
         array (

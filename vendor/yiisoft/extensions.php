@@ -282,4 +282,31 @@ return array (
       '@softark/duallistbox' => $vendorDir . '/softark/yii2-dual-listbox',
     ),
   ),
+  'yiisoft/yii2-jui' => 
+  array (
+    'name' => 'yiisoft/yii2-jui',
+    'version' => '2.0.7.0',
+    'alias' => 
+    array (
+      '@yii/jui' => $vendorDir . '/yiisoft/yii2-jui',
+    ),
+  ),
+  'iutbay/yii2-fontawesome' => 
+  array (
+    'name' => 'iutbay/yii2-fontawesome',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@iutbay/yii2fontawesome' => $vendorDir . '/iutbay/yii2-fontawesome',
+    ),
+  ),
+  'iutbay/yii2-kcfinder' => 
+  array (
+    'name' => 'iutbay/yii2-kcfinder',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@iutbay/yii2kcfinder' => $vendorDir . '/iutbay/yii2-kcfinder',
+    ),
+  ),
 );
