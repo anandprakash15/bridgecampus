@@ -1,17 +1,40 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\bootstrap\ActiveForm;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
-use dosamigos\ckeditor\CKEditor;
+use common\widgets\CKEditor;
 use yii\helpers\Url;
+use iutbay\yii2kcfinder\KCFinder;
+use iutbay\yii2kcfinder\KCFinderInputWidget;
+
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Courses */
 /* @var $form yii\widgets\ActiveForm */
 $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['courses/validate','id'=>$model->id]);
 
+    $kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
+      'uploadURL' => Yii::getAlias('@web').'/upload',
+      'access' => [
+        'files' => [
+          'upload' => true,
+          'delete' => false,
+          'copy' => false,
+          'move' => false,
+          'rename' => false,
+        ],
+        'dirs' => [
+          'create' => true,
+          'delete' => false,
+          'rename' => false,
+        ],
+      ],
+    ]);
+
+    Yii::$app->session->set('KCFINDER', $kcfOptions);
 ?>
 
 <div class="courses-form">
@@ -25,6 +48,11 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
      'options' => ['enctype' => 'multipart/form-data'],
    ]);?>
 
+   <?php
+   echo $form->field($model, 'programID')->widget(KCFinderInputWidget::className(), [
+  'multiple' => true,
+]);
+   ?>
     <?= $form->field($model, 'programID')->widget(Select2::classname(), [
       'options' => ['placeholder' => 'Search Program...'],
       'data' => $program,
@@ -93,7 +121,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
         /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
       ]
     ]) ?>
