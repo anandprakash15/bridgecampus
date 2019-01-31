@@ -127,6 +127,7 @@ AppAsset::register($this);
                 ['label' => 'Affiliate', 'url' => ['/affiliate/index']],
                 ['label' => 'Accredited', 'url' => ['/accredited/index']],
                 ['label' => 'Approved', 'url' => ['/approved/index']],
+                ['label' => 'Front End', 'url' => ['/frontend/index']],
               ],
             ],
           ],
