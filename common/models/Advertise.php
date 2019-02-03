@@ -8,9 +8,15 @@ use Yii;
  * This is the model class for table "advertise".
  *
  * @property int $id
+ * @property int $type 1-unversity, 2-college
+ * @property int $coll_univID
  * @property int $college_university_advpurposeID
  * @property int $programID
  * @property int $courseID
+ * @property int $gtype
+ * @property int $priority
+ * @property string $fromDate
+ * @property string $toDate
  * @property int $cityID
  * @property int $stateID
  * @property int $countryID
@@ -27,7 +33,7 @@ use Yii;
 class Advertise extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -35,30 +41,34 @@ class Advertise extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['college_university_advpurposeID', 'description', 'createdDate', 'status', 'createdBy', 'updatedBy'], 'required'],
-            [['college_university_advpurposeID', 'programID', 'courseID', 'cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['type', 'coll_univID', 'college_university_advpurposeID','status', 'fromDate', 'toDate'], 'required'],
+            [['type', 'coll_univID', 'college_university_advpurposeID', 'programID', 'courseID', 'cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy','priority','gtype'], 'integer'],
+            [['fromDate', 'toDate', 'createdDate', 'updatedDate'], 'safe'],
             [['description'], 'string'],
-            [['createdDate', 'updatedDate'], 'safe'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
+            'type' => 'Type',
+            'coll_univID' => 'Coll Univ ID',
             'college_university_advpurposeID' => 'College University Advpurpose ID',
             'programID' => 'Program ID',
             'courseID' => 'Course ID',
+            'fromDate' => 'From Date',
+            'toDate' => 'To Date',
             'cityID' => 'City ID',
             'stateID' => 'State ID',
             'countryID' => 'Country ID',
@@ -68,7 +78,22 @@ class Advertise extends \yii\db\ActiveRecord
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
+            'gtype' => 'G Type',
+            'priority' => 'Priority',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -85,5 +110,15 @@ class Advertise extends \yii\db\ActiveRecord
     public function getUpdatedBy0()
     {
         return $this->hasOne(User::className(), ['id' => 'updatedBy']);
+    }
+
+    public function getCollege()
+    {
+        return $this->hasOne(College::className(), ['id' => 'coll_univID']);
+    }
+
+    public function getUniversity()
+    {
+        return $this->hasOne(University::className(), ['id' => 'coll_univID']);
     }
 }

@@ -73,6 +73,13 @@ use common\models\ExamCategory;
         return [1 => 'Full Time', 2=>'Part Time'];
     }
 
+    
+
+    public static function getPriority()
+    {
+        return [1 => 'Very High', 2=>'High', 3=>'Moderate', 4=>'low', 5=>'Very Low'];
+    }
+
     public static function getAdvertisePossition()
     {
         return [1 => 'Top', 2=>'Bottom', 3=>'Left', 4=>'Right', 5=>'Center', 6=>'Video'];
@@ -101,6 +108,11 @@ use common\models\ExamCategory;
     public static function getUCE()
     {
         return [1 => 'University', 2=>'College', 3=>'Exam'];
+    }
+
+    public static function getAdvertisetype()
+    {
+        return [1 => 'University', 2=>'College', 3=>'Other'];
     }
 
     

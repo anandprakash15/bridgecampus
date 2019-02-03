@@ -111,6 +111,7 @@ AppAsset::register($this);
             ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>Exam</span>', 'url' => ['/exam/index']],
             ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>News / Articals</span>', 'url' => ['/news-artical/index']],
             ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>User</span>', 'url' => ['/user/index']],
+            ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span> Advertise</span>', 'url' => ['/advertise/index']],
 
             [
               'label' => 'Master',
