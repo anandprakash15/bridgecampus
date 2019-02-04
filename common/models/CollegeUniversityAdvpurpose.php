@@ -26,6 +26,7 @@ class CollegeUniversityAdvpurpose extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $urlImage;
     public static function tableName()
     {
         return 'college_university_advpurpose';
@@ -38,8 +39,10 @@ class CollegeUniversityAdvpurpose extends \yii\db\ActiveRecord
     {
         return [
             [['type', 'coll_univID', 'gtype', 'status'], 'required'],
+            [['urlImage'],'required','on'=>['create']],
             [['type', 'coll_univID', 'gtype', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['createdDate', 'updatedDate','url'], 'safe'],
+            [['createdDate', 'updatedDate','url','urlImage'], 'safe'],
+            ['urlImage', 'file', 'extensions'=>'jpg, jpeg, png'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];

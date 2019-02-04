@@ -47,10 +47,7 @@ $this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name,
 
      <?= $form->field($model, 'gtype')->dropDownList(Yii::$app->myhelper->getAdvertisePossition(),['class'=>'form-control'])?>
 
-      <?php
-      $previewImg = $showPreview = '';  
-      ?>
-      <?php   echo $form->field($model, 'url')->widget(FileInput::classname(), [
+      <?php   /*echo $form->field($model, 'url')->widget(FileInput::classname(), [
         'pluginOptions' => [
           'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
           'initialPreview'=> [$previewImg],
@@ -61,17 +58,40 @@ $this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name,
           'uploadAsync'=>false,
           'maxFileCount' => 1
         ]
-        ]);?>
+      ]);*/
 
-     <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+      ?>
 
-     <div class="form-group" style="margin-left: 18% !important;">
-      <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+      <?php echo $form->field($model, 'urlImage')->widget(FileInput::classname(), [
+        'pluginOptions' => [
+          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+          'options' => ['multiple' => false,'accept' => 'image/*'],
+          'initialPreview'=> $imgPreview,
+          'initialPreviewAsData'=>true,
+          'initialPreviewFileType'=> 'image',
+          'initialPreviewConfig'=>[[
+            //'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
+            'extra'=> ['id'=> 100],
+            'key'=>1
+          ]
+        ],
+          'overwriteInitial'=>true,
+          'dropZoneEnabled'=> false,
+          'showCaption' => true,
+          'showRemove' => false,
+          'showUpload' => false,
+        ],
+      ]);?>
+
+      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+      <div class="form-group" style="margin-left: 18% !important;">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+      </div>
+
+      <?php ActiveForm::end(); ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
   </div>
-</div>
 </div>
 <?php 
 $this->registerCss("
@@ -80,5 +100,3 @@ $this->registerCss("
   }
   ");
   ?>
-
-  <?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>

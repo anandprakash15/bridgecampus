@@ -17,7 +17,7 @@ use iutbay\yii2kcfinder\KCFinderInputWidget;
 $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['courses/validate','id'=>$model->id]);
 
     $kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
-      'uploadURL' => Yii::getAlias('@web').'/upload',
+      'uploadURL' => Yii::getAlias('@web').'/uploads',
       'access' => [
         'files' => [
           'upload' => true,
@@ -48,11 +48,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
      'options' => ['enctype' => 'multipart/form-data'],
    ]);?>
 
-   <?php
-   echo $form->field($model, 'programID')->widget(KCFinderInputWidget::className(), [
-  'multiple' => true,
-]);
-   ?>
     <?= $form->field($model, 'programID')->widget(Select2::classname(), [
       'options' => ['placeholder' => 'Search Program...'],
       'data' => $program,

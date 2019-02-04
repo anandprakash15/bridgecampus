@@ -71,3 +71,5 @@ $this->registerCss("
 	}
 	");
 	?>
+
+        <?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>
