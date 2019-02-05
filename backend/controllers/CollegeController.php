@@ -29,7 +29,8 @@ use common\models\search\FacilitySearch;
 use common\models\Facility;
 use common\models\search\ReviewSearch;
 use common\models\Review;
-
+use common\models\CollegeUniversityAdvpurpose;
+use common\models\search\CollegeUniversityAdvpurposeSearch;
 
 /**
  * CollegeController implements the CRUD actions for College model.
@@ -413,6 +414,75 @@ class CollegeController extends Controller
         ]);
     }
 
+
+
+     public function actionAdvertiseMaterials($id)
+    {
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        $searchModel = new CollegeUniversityAdvpurposeSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$college->id,'college');
+        
+        return $this->render('advertise-materials', [
+            'college' => $college,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+    public function actionAdvertiseMaterialsDetails($id,$fid = null)
+    {
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        if (($model = CollegeUniversityAdvpurpose::findOne(['id'=>$fid])) == null) {
+            $model = new CollegeUniversityAdvpurpose();
+            $model->scenario = "create";
+
+        }
+       
+        $model->coll_univID  = $id;
+        $model->type = 2;
+        $imgPreview = [];
+        $oldImg = "";
+        $uploadPath = Yii::$app->myhelper->getUploadPath(2,$college->id)."advertisement/";
+        $fViewPath= Yii::$app->myhelper->getFileBasePath(2,$college->id)."advertisement/";
+        if(!empty($model->url)){
+          $imgPreview = [$fViewPath.$model->url];
+          $oldImg = $uploadPath.$model->url;
+        }
+        //print_r($model);exit;
+        if ($model->load(Yii::$app->request->post())) {
+            $urlImage = UploadedFile::getInstance($model, 'urlImage');
+
+            if(!empty($urlImage))
+            {
+                $model->url = time().".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                $model->urlImage = $urlImage->name;
+            }
+            if($model->save()){
+                
+                FileHelper::createDirectory($uploadPath,0777,true);
+                if(!empty($urlImage))
+                {
+                    $urlImage->saveAs($uploadPath.$model->url);
+                    if($oldImg != ""){
+                        @unlink($oldImg);
+                    }
+                }
+            }
+           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+           return $this->redirect(['advertise-materials','id'=>$college->id]);
+        }
+
+
+        return $this->render('advertise-materials-details', [
+            'model' => $model,
+            'college' => $college,
+            'imgPreview'=>$imgPreview,
+        ]);
+     }
 
     public function actionReview($id){
         $this->layout= "college";

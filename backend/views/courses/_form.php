@@ -5,10 +5,9 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\ActiveForm;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
-use common\widgets\CKEditor;
 use yii\helpers\Url;
+use common\widgets\CKEditor;
 use iutbay\yii2kcfinder\KCFinder;
-use iutbay\yii2kcfinder\KCFinderInputWidget;
 
 
 /* @var $this yii\web\View */
@@ -17,19 +16,19 @@ use iutbay\yii2kcfinder\KCFinderInputWidget;
 $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['courses/validate','id'=>$model->id]);
 
     $kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
-      'uploadURL' => Yii::getAlias('@web').'/uploads',
+      'uploadURL' => Yii::$app->myhelper->getFileBasePath(),
       'access' => [
         'files' => [
           'upload' => true,
-          'delete' => false,
-          'copy' => false,
-          'move' => false,
-          'rename' => false,
+          'delete' => true,
+          'copy' => true,
+          'move' => true,
+          'rename' => true,
         ],
         'dirs' => [
           'create' => true,
-          'delete' => false,
-          'rename' => false,
+          'delete' => true,
+          'rename' => true,
         ],
       ],
     ]);

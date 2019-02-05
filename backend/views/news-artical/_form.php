@@ -6,10 +6,29 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\FileInput;
 use app\components\CustomUrlRule;
-use dosamigos\ckeditor\CKEditor;
 use kartik\widgets\DatePicker;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
+use common\widgets\CKEditor;
+use iutbay\yii2kcfinder\KCFinder;
+
+$kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
+  'uploadURL' => Yii::$app->myhelper->getFileBasePath(),
+  'access' => [
+    'files' => [
+      'upload' => true,
+      'delete' => true,
+      'copy' => true,
+      'move' => true,
+      'rename' => true,
+    ],
+    'dirs' => [
+      'create' => true,
+      'delete' => true,
+      'rename' => true,
+    ],
+  ],
+]);
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Specialization */

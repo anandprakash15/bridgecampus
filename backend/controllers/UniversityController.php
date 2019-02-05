@@ -191,8 +191,8 @@ class UniversityController extends Controller
         $model->type = 1;
         $imgPreview = [];
         $oldImg = "";
-        $uploadPath = Yii::$app->myhelper->getUploadPath(1,$university->id)."advertise/";
-        $fViewPath= Yii::$app->myhelper->getFileBasePath(1,$university->id)."advertise/";
+        $uploadPath = Yii::$app->myhelper->getUploadPath(1,$university->id)."advertisement/";
+        $fViewPath= Yii::$app->myhelper->getFileBasePath(1,$university->id)."advertisement/";
         if(!empty($model->url)){
           $imgPreview = [$fViewPath.$model->url];
           $oldImg = $uploadPath.$model->url;
@@ -212,10 +212,10 @@ class UniversityController extends Controller
                 if(!empty($urlImage))
                 {
                     $urlImage->saveAs($uploadPath.$model->url);
-                    @unlink($oldImg);
+                    if($oldImg != ""){
+                        @unlink($oldImg);
+                    }
                 }
-            }else{
-                print_r($model);exit;
             }
            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
            return $this->redirect(['advertise-materials','id'=>Yii::$app->params['uID']]);

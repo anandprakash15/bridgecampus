@@ -6,7 +6,26 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\FileInput;
 use app\components\CustomUrlRule;
-use dosamigos\ckeditor\CKEditor;
+use common\widgets\CKEditor;
+use iutbay\yii2kcfinder\KCFinder;
+
+$kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
+  'uploadURL' => Yii::$app->myhelper->getFileBasePath(),
+  'access' => [
+    'files' => [
+      'upload' => true,
+      'delete' => true,
+      'copy' => true,
+      'move' => true,
+      'rename' => true,
+    ],
+    'dirs' => [
+      'create' => true,
+      'delete' => true,
+      'rename' => true,
+    ],
+  ],
+]);
 /* @var $this yii\web\View */
 /* @var $model common\models\Specialization */
 /* @var $form yii\widgets\ActiveForm */
@@ -29,7 +48,7 @@ use dosamigos\ckeditor\CKEditor;
                       'options' => ['rows' => 6],
                       'preset' => 'standard',
                       'clientOptions'=>[
-                      'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+                      'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
                      /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
                       ]
                       ]) ?>

@@ -178,7 +178,7 @@ use common\models\ExamCategory;
         }
 
         $ucID = $this->getEncryptID($ucID);
-        $uploadPath=Yii::getAlias('@backend') .'/uploads/'.$ucType.'/'.$ucID.'/';
+        $uploadPath=Yii::getAlias('@webroot') .'/uploads/'.$ucType.'/'.$ucID.'/';
 
         if($fileType == 1){
             $uploadPath .= "images/";
@@ -189,20 +189,23 @@ use common\models\ExamCategory;
         return $uploadPath;
     }
 
-    public function getFileBasePath($ucType,$ucID,$fileType=""){
+    public function getFileBasePath($ucType="",$ucID="",$fileType=""){
         if($ucType == 1){
-            $ucType = "university";
-        }else{
-            $ucType = "college";
-        }
-        $ucID = $this->getEncryptID($ucID);
-        $fileViewPath =  '../../uploads/'.$ucType.'/'.$ucID.'/';
-        if($fileType == 1){
-            $fileViewPath .= "images/";
-        }elseif($fileType == 2){
-            $fileViewPath .= "videos";
+            $ucType = "/university";
+        }else if($ucType == 2){
+            $ucType = "/college";
         }
         
-        return $fileViewPath;
+        if($ucID !=""){
+            $ucID = "/".$this->getEncryptID($ucID);
+        }
+
+        if($fileType == 1){
+            $fileType = "/images";
+        }elseif($fileType == 2){
+            $fileType = "/videos";
+        }
+        
+        return Yii::getAlias('@web') .'/uploads'.$ucType.$ucID.$fileType."/";
     }
 }
