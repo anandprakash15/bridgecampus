@@ -83,7 +83,7 @@ class UserController extends Controller
     }
 
     /*Get coursewise state list and default: India*/
-    public function actionGetStateslist($countryID=101){
+    public static function actionGetStateslist($countryID=101){
       $result = '';
       $model = \common\models\States::find()
       ->where(['countryID'=>$countryID])

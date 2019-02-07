@@ -160,12 +160,12 @@ use common\models\ExamCategory;
 
     public static function getEncryptID($id)
     {
-        return CustomUrlRule::encryptor("encrypt",$id);
+        return @CustomUrlRule::encryptor("encrypt",$id);
     }
 
     public static function getDecryptID($id)
     {
-        return CustomUrlRule::encryptor("decrypt",$id);
+        return @CustomUrlRule::encryptor("decrypt",$id);
     }
 
 
