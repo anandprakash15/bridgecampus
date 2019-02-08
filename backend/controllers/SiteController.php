@@ -6,6 +6,10 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\University;
+use common\models\College;
+use common\models\Advertise;
+use common\models\Exam;
 
 /**
  * Site controller
@@ -82,7 +86,13 @@ class SiteController extends Controller
     }
 
     public function actionDashboard(){
-        return $this->render('dashboard');
+        $data['university'] = University::find()->count();
+        $data['college'] = College::find()->count();
+        $data['advertise'] = Advertise::find()->count();
+        $data['exam'] = Exam::find()->count();
+        return $this->render('dashboard', [
+                'data' => $data,
+            ]);
     }
 
     /**

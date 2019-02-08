@@ -135,7 +135,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
        <?= $form->field($model, 'contact')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],

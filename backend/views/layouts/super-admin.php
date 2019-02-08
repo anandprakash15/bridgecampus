@@ -60,12 +60,11 @@ AppAsset::register($this);
                   
 
                   <p>
-                    Chetan Ambelkar - Web Developer
-                    <small>Member since Nov. 2018</small>
+                    <?= \Yii::$app->user->identity->fullname;?>
                   </p>
                 </li>
                 <!-- Menu Body -->
-                <li class="user-body">
+               <!--  <li class="user-body">
                   <div class="row">
                     <div class="col-xs-4 text-center">
                       <a href="#">Followers</a>
@@ -77,10 +76,10 @@ AppAsset::register($this);
                       <a href="#">Friends</a>
                     </div>
                   </div>
-                  <!-- /.row -->
-                </li>
+                
+                </li> -->
                 <!-- Menu Footer-->
-                <li class="user-footer">
+                <li class="user-footer" style="background-color: #367fa9;">
                   <div class="pull-left">
                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                   </div>
@@ -108,10 +107,10 @@ AppAsset::register($this);
             ['label' => '<i class="fa fa-book" aria-hidden="true"></i> <span>Courses</span>', 'url' => ['/courses/index']],
             ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>University</span>', 'url' => ['/university/index']],
             ['label' => '<i class="fa fa-university" aria-hidden="true"></i> <span>Colleges</span>', 'url' => ['/college/index']],
-            ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>Exam</span>', 'url' => ['/exam/index']],
-            ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>News / Articals</span>', 'url' => ['/news-artical/index']],
+            ['label' => '<i class="fa fa-file" aria-hidden="true"></i> <span>Exam</span>', 'url' => ['/exam/index']],
+            ['label' => '<i class="fa fa-file-text" aria-hidden="true"></i> <span>News / Articals</span>', 'url' => ['/news-artical/index']],
             ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span>User</span>', 'url' => ['/user/index']],
-            ['label' => '<i class="fa fa-user" aria-hidden="true"></i> <span> Advertise</span>', 'url' => ['/advertise/index']],
+            ['label' => '<i class="fa fa-tasks" aria-hidden="true"></i> <span> Advertise</span>', 'url' => ['/advertise/index']],
 
             [
               'label' => 'Master',
