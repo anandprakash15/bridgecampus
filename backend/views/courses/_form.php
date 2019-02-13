@@ -71,47 +71,28 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       ],
     ]);?>
 
-     <?= $form->field($model, 'program_categoryID')->widget(Select2::classname(), [
-      'options' => ['placeholder' => 'Search...'],
-      'data' => $program_categoryID,
-      'size' => Select2::SMALL,
-      'pluginOptions' => [
-        'allowClear' => true,
-        'minimumInputLength' => 1,
-        'language' => [
-          'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-        ],
-        'ajax' => [
-          'url' => \yii\helpers\Url::to(['program-category/search-list']),
-          'dataType' => 'json',
-          'data' => new JsExpression('function(params) { 
-            console.log($("#courses-programid").val());
-            return {q:params.term,type:$("#courses-programid").val()}; }')
-        ],
-        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-        'templateResult' => new JsExpression('function(type) { return type.text; }'),
-        'templateSelection' => new JsExpression('function (type) { return type.text; }'),
-      ],
-    ]);?>
-
-
+    
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'short_name')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
 
 
-    <?= $form->field($model, 'courselevel')->textInput() ?>
-
-    <?= $form->field($model, 'full_part_time')->dropDownList(Yii::$app->myhelper->getFullPartTime(),['class'=>'form-control'])?>
+    <?= $form->field($model, 'courselevel')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
 
     <?= $form->field($model, 'type')->dropDownList(Yii::$app->myhelper->getCDType(),['class'=>'form-control'])?>
 
+    <?= $form->field($model, 'full_part_time')->dropDownList(Yii::$app->myhelper->getFullPartTime(),['class'=>'form-control'])?>
+
+    
+
     <?= $form->field($model, 'courseType')->dropDownList(Yii::$app->myhelper->getCourseType(),['class'=>'form-control'])?>
 
+    <?= $form->field($model, 'duration')->dropDownList(Yii::$app->myhelper->getCourseDuration(),['class'=>'form-control'])?>
 
-    <?= $form->field($model, 'description')->widget(CKEditor::className(), [
+
+    <?= $form->field($model, 'required_skillset')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -120,6 +101,131 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       ]
     ]) ?>
 
+    <?= $form->field($model, 'elagibility_criteria')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+
+    <?= $form->field($model, 'course_curriculam')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'job_profiles')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'top_recruiters')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'medium_of_teaching')->dropDownList(Yii::$app->myhelper->getMedium(),['class'=>'form-control'])?>
+
+
+
+
+    <?= $form->field($model, 'course_high_lights')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'entrance_exams_accepted')->widget(Select2::classname(), [
+      'options' => ['placeholder' => 'Search Program...'],
+      'data' => $program,
+      'size' => Select2::SMALL,
+      'pluginOptions' => [
+        'allowClear' => true,
+        'minimumInputLength' => 1,
+        'language' => [
+          'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+        ],
+        'ajax' => [
+          'url' => \yii\helpers\Url::to(['exam/exam-list']),
+          'dataType' => 'json',
+          'data' => new JsExpression('function(params) { 
+            
+            return {q:params.term}; 
+          }')
+        ],
+        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+        'templateResult' => new JsExpression('function(type) { return type.text; }'),
+        'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+      ],
+    ]);?>
+
+    <?= $form->field($model, 'admission_process')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'important_dates')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'no_of_seats')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'seat_brakeup')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'placement_details')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'course_credits')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'course_duration_hours')->textInput(['maxlength' => true]) ?>
+
+    
 
     <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 

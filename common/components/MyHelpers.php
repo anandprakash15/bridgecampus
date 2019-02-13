@@ -73,6 +73,11 @@ use common\models\ExamCategory;
         return [1 => 'Full Time', 2=>'Part Time'];
     }
 
+    public static function getCourseLevel()
+    {
+        return [1 => 'Under Graduate', 2=>'Post Graduate'];
+    }
+
     
 
     public static function getPriority()
@@ -88,7 +93,17 @@ use common\models\ExamCategory;
 
     public static function getCourseType()
     {
-        return [1 => 'University', 2=>'autonomas'];
+        return [1 => 'Autonomous', 2=>'Affiliated'];
+    }
+
+    public static function getCourseDuration()
+    {
+        return [1 => '1 Day', 2=>'1 Week', 3=>'2 Week'];
+    }
+
+    public static function getMedium()
+    {
+        return [1 => 'English', 2=>'Hindi'];
     }
 
     public static function getCDType()

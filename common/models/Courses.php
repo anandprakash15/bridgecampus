@@ -1,20 +1,35 @@
 <?php
 
-namespace common\models;
+namespace common\models; 
 
-use Yii;
+use Yii; 
 
 /** 
  * This is the model class for table "courses". 
  * 
  * @property int $id
  * @property int $programID
- * @property int $program_categoryID 
  * @property string $name
- * @property string $sortname
+ * @property string $short_name
  * @property string $code
+ * @property int $duration
+ * @property string $required _skillset
+ * @property string $elagibility_criteria
+ * @property string $course_curriculam
+ * @property string $job_profiles
+ * @property string $top_recruiters
+ * @property int $medium_of_teaching
+ * @property string $course_high_lights
+ * @property string $entrance_exams_accepted
+ * @property string $admission_process
+ * @property string $important_dates
+ * @property int $no_of_seats
+ * @property string $seat_brakeup
+ * @property string $placement_details
+ * @property string $course_credits
  * @property int $sortno
- * @property string $courselevel
+ * @property string $course_duration _hours
+ * @property int $courselevel
  * @property string $createdDate
  * @property string $updatedDate
  * @property int $status
@@ -46,22 +61,24 @@ class Courses extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+
+    public function rules() 
+    { 
         return [
-            [['programID', 'name', 'sortname', 'status', 'type','courseType'], 'required'],
-            [['programID', 'sortno', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
-            [['createdDate', 'updatedDate','description','courselevel','program_categoryID'], 'safe'],
+           [['programID', 'name', 'short_name', 'status', 'type','courseType'], 'required'],
+
+            [['programID', 'duration', 'medium_of_teaching', 'no_of_seats', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
+            [['required_skillset', 'elagibility_criteria', 'course_curriculam', 'job_profiles', 'top_recruiters', 'course_high_lights', 'entrance_exams_accepted', 'admission_process', 'important_dates', 'seat_brakeup', 'placement_details', 'course_credits', 'course_duration_hours', 'description'], 'string'],
+            [['createdDate', 'updatedDate'], 'safe'],
             [['name'], 'string', 'max' => 300],
+            [['short_name'], 'string', 'max' => 100],
             [['code'], 'string', 'max' => 20],
             ['code', 'codeunique'],
-            [['sortname'], 'string', 'max' => 100],
-
             [['programID'], 'exist', 'skipOnError' => true, 'targetClass' => Program::className(), 'targetAttribute' => ['programID' => 'id']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
-        ];
-    }
+        ]; 
+    } 
 
     public function codeunique($attribute,$params)
     {
@@ -80,29 +97,43 @@ class Courses extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
-        return [
+    public function attributeLabels() 
+    { 
+        return [ 
             'id' => 'ID',
-            'programID' => 'Program',
-            'program_categoryID' => 'Program Category',
-            'specializationID' => 'Specialization',
-            'name' => 'Name',
-            'code' => 'Code',
-            'sortno' => 'Sort No.',
-           'sortname' => 'Sortname',
+            'programID' => 'Program Name',
+            'Course Name' => 'Name',
+            'short_name' => 'Short Name',
+            'code' => 'Course Code',
+            'duration' => 'Course Duration',
+            'required_skillset' => 'Required Skillset',
+            'elagibility_criteria' => 'Elagibility Criteria',
+            'course_curriculam' => 'Course Curriculam',
+            'job_profiles' => 'Job Profiles',
+            'top_recruiters' => 'Top Recruiters',
+            'medium_of_teaching' => 'Medium Of Teaching',
+            'course_high_lights' => 'Course High Lights',
+            'entrance_exams_accepted' => 'Entrance Exams Accepted',
+            'admission_process' => 'Admission Process',
+            'important_dates' => 'Important Dates',
+            'no_of_seats' => 'No Of Seats',
+            'seat_brakeup' => 'Seat Brakeup',
+            'placement_details' => 'Placement Details',
+            'course_credits' => 'Course Credits',
+            'sortno' => 'Sortno',
+            'course_duration_hours' => 'Course Duration in Hours',
             'courselevel' => 'Course Level',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
-            'full_part_time' => 'Full Part Time',
-            'type' => 'Type',
-            'description' => 'Description',
-            'courseType' => 'Course Type',
-        ];
-    }
+            'full_part_time' => 'Course Type',
+            'type' => 'Qualification Type',
+            'description' => 'Course Overview',
+            'courseType' => 'Course Affiliation Type',
+        ]; 
+    } 
 
     public function beforeSave($insert)
     {
