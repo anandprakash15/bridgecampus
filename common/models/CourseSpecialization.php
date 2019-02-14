@@ -36,7 +36,7 @@ class CourseSpecialization extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['courseID', 'specializationID', 'createdDate', 'createdBy', 'updatedBy'], 'required'],
+            [['courseID', 'specializationID'], 'required'],
             [['courseID', 'specializationID', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['courseID'], 'exist', 'skipOnError' => true, 'targetClass' => Courses::className(), 'targetAttribute' => ['courseID' => 'id']],
@@ -44,6 +44,19 @@ class CourseSpecialization extends \yii\db\ActiveRecord
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->createdBy = \Yii::$app->user->identity->id;
+                $this->createdDate = date('Y-m-d H:i:s');
+            }
+            $this->updatedBy = \Yii::$app->user->identity->id;
+            return true;
+        }
+        return false;
     }
 
     /**

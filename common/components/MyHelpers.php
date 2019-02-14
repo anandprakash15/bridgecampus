@@ -230,4 +230,8 @@ use common\models\ExamCategory;
         
         return Yii::getAlias('@web') .'/uploads'.$ucType.$ucID.$fileType."/";
     }
+
+    public function getCourseCode($code){
+        return "C".str_pad($code, 4, '0', STR_PAD_LEFT);
+    }
 }
