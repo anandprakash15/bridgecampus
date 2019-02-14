@@ -8,10 +8,6 @@ use common\models\search\ExamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\db\Query;
-use yii\helpers\ArrayHelper;
-use common\models\ExamCategory;
-use common\models\Courses;
 
 /**
  * ExamController implements the CRUD actions for Exam model.
@@ -19,7 +15,7 @@ use common\models\Courses;
 class ExamController extends Controller
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function behaviors()
     {
@@ -56,12 +52,6 @@ class ExamController extends Controller
      */
     public function actionView($id)
     {
-        //$model = Exam::find()->joinWith(['course'])->where(['exam.id'=>$id])->one();
-        /*if ($model == null) {
-           throw new NotFoundHttpException('The requested page does not exist.');
-        }*/
-
-        
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -75,17 +65,13 @@ class ExamController extends Controller
     public function actionCreate()
     {
         $model = new Exam();
-        $examcatID= []; $courseID = [];
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'examcatID'=> $examcatID,
-            'courseID' => $courseID,
         ]);
     }
 
@@ -100,27 +86,12 @@ class ExamController extends Controller
     {
         $model = $this->findModel($id);
 
-        $examcatID= []; $courseID = [];
-
-        if(!empty($model->examcatID)){
-           
-            $examcatID = ArrayHelper::map(ExamCategory::find()->where(['id'=>$model->examcatID])->asArray()->all(),'id','name');
-        }
-
-        if(!empty($model->courseID)){
-            $courseID = ArrayHelper::map(Courses::find()->where(['id'=>$model->courseID])->asArray()->all(),'id','name');
-        }
-
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'examcatID'=> $examcatID,
-            'courseID' => $courseID,
         ]);
     }
 
@@ -152,22 +123,5 @@ class ExamController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function actionExamList($q = null) {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $out = ['results' => ['id' => '', 'text' => '']];
-        if (!is_null($q)) {
-            $query = new Query;
-            $query->select(["id", new \yii\db\Expression("name AS text")])
-            ->from('exam')
-            ->where(['like', 'name', $q])
-            ->andWhere(['status'=>1])
-            ->limit(20);
-            $command = $query->createCommand();
-            $data = $command->queryAll();
-            $out['results'] = array_values($data);
-        }
-        return $out;
     }
 }

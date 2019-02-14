@@ -18,7 +18,7 @@ class ProgramSearch extends Program
     public function rules()
     {
         return [
-            [['id', 'sortno', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['id', 'program_code', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['name', 'createdDate', 'updatedDate', 'description'], 'safe'],
         ];
     }
@@ -60,7 +60,7 @@ class ProgramSearch extends Program
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'sortno' => $this->sortno,
+            'program_code' => $this->program_code,
             'status' => $this->status,
             'createdDate' => $this->createdDate,
             'updatedDate' => $this->updatedDate,

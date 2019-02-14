@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
 /* @var $model common\models\Exam */
 
@@ -13,8 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="exam-create">
     <?= $this->render('_form', [
         'model' => $model,
-        'examcatID'=> $examcatID,
-		'courseID' => $courseID,
     ]) ?>
 
 </div>

@@ -1,21 +1,24 @@
 <?php
 
-namespace common\models;
+namespace common\models; 
 
-use Yii;
+use Yii; 
 
-/**
- * This is the model class for table "specialization".
- *
+/** 
+ * This is the model class for table "specialization". 
+ * 
  * @property int $id
  * @property string $name
+ * @property string $specialisation_short_name
+ * @property int $specialisation_type
+ * @property string $course_overview
  * @property string $createdDate
  * @property string $updatedDate
  * @property int $status
  * @property int $createdBy
  * @property int $updatedBy
- *
- * @property Courses[] $courses
+ * 
+ * @property CourseSpecialization[] $courseSpecializations
  * @property User $createdBy0
  * @property User $updatedBy0
  */
@@ -32,17 +35,19 @@ class Specialization extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+
+    public function rules() 
+    { 
         return [
             [['name', 'status'], 'required'],
+            [['specialisation_short_name', 'course_overview'], 'string'],
+            [['specialisation_type', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
-            [['status', 'createdBy', 'updatedBy'], 'integer'],
             [['name'], 'string', 'max' => 200],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
-        ];
-    }
+        ]; 
+    } 
 
     public function beforeSave($insert)
     {
@@ -62,15 +67,18 @@ class Specialization extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return [
+        return [ 
             'id' => 'ID',
             'name' => 'Name',
+            'specialisation_short_name' => 'Short Name',
+            'specialisation_type' => 'Specialisation Type',
+            'course_overview' => 'Course Overview',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
-        ];
+        ]; 
     }
 
     /**

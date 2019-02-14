@@ -17,61 +17,77 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'examcatID') ?>
+    <?= $form->field($model, 'programID') ?>
 
     <?= $form->field($model, 'courseID') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'exam_name') ?>
 
-    <?= $form->field($model, 'exam_dates') ?>
+    <?= $form->field($model, 'type') ?>
 
-    <?php // echo $form->field($model, 'exam_fullname') ?>
+    <?php // echo $form->field($model, 'short_name') ?>
 
-    <?php // echo $form->field($model, 'conductedBy') ?>
+    <?php // echo $form->field($model, 'exam_course_level') ?>
 
-    <?php // echo $form->field($model, 'process') ?>
+    <?php // echo $form->field($model, 'overview') ?>
 
-    <?php // echo $form->field($model, 'highlight') ?>
+    <?php // echo $form->field($model, 'registration_end_date') ?>
 
-    <?php // echo $form->field($model, 'eligibility') ?>
+    <?php // echo $form->field($model, 'registration_extended_date_from') ?>
 
-    <?php // echo $form->field($model, 'appform') ?>
+    <?php // echo $form->field($model, 'registration_extended_date_to') ?>
 
-    <?php // echo $form->field($model, 'exam_center') ?>
+    <?php // echo $form->field($model, 'admit_card_download_start_date') ?>
 
-    <?php // echo $form->field($model, 'r_book') ?>
+    <?php // echo $form->field($model, 'admit_card_download_end_date') ?>
 
-    <?php // echo $form->field($model, 'result') ?>
+    <?php // echo $form->field($model, 'online_exam_date') ?>
 
-    <?php // echo $form->field($model, 'cutt_off') ?>
+    <?php // echo $form->field($model, 'paper_based_test_date') ?>
 
-    <?php // echo $form->field($model, 'selection_process') ?>
+    <?php // echo $form->field($model, 'result_date') ?>
 
-    <?php // echo $form->field($model, 'main_stream') ?>
+    <?php // echo $form->field($model, 'result_overview') ?>
 
-    <?php // echo $form->field($model, 'summary') ?>
-
-    <?php // echo $form->field($model, 'analysis') ?>
-
-    <?php // echo $form->field($model, 'bylocation') ?>
-
-    <?php // echo $form->field($model, 'question_paper') ?>
-
-    <?php // echo $form->field($model, 'ans_key') ?>
-
-    <?php // echo $form->field($model, 'counselling') ?>
+    <?php // echo $form->field($model, 'cut_off') ?>
 
     <?php // echo $form->field($model, 'syllabus') ?>
 
-    <?php // echo $form->field($model, 'admit_card') ?>
+    <?php // echo $form->field($model, 'exam_pattern') ?>
 
-    <?php // echo $form->field($model, 'upload_guide') ?>
+    <?php // echo $form->field($model, 'exam_duration') ?>
+
+    <?php // echo $form->field($model, 'no_of_questions') ?>
+
+    <?php // echo $form->field($model, 'total_marks') ?>
+
+    <?php // echo $form->field($model, 'language_of_paper') ?>
+
+    <?php // echo $form->field($model, 'marks_per_question') ?>
+
+    <?php // echo $form->field($model, 'negative_marks_per_question') ?>
+
+    <?php // echo $form->field($model, 'do_dont_during_the_exam') ?>
+
+    <?php // echo $form->field($model, 'exam_registration_website') ?>
+
+    <?php // echo $form->field($model, 'couducting_authority') ?>
+
+    <?php // echo $form->field($model, 'exam_centres') ?>
+
+    <?php // echo $form->field($model, 'exam_helpline_nos') ?>
+
+    <?php // echo $form->field($model, 'number_of_exam_cities') ?>
+
+    <?php // echo $form->field($model, 'exam_books_guide') ?>
+
+    <?php // echo $form->field($model, 'question_papers') ?>
+
+    <?php // echo $form->field($model, 'exam_FAQ') ?>
 
     <?php // echo $form->field($model, 'createdDate') ?>
 
     <?php // echo $form->field($model, 'updatedDate') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
 
     <?php // echo $form->field($model, 'createdBy') ?>
 

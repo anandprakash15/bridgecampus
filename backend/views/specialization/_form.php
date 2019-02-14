@@ -8,6 +8,8 @@ use yii\helpers\ArrayHelper;
 use app\models\User;
 use kartik\widgets\FileInput;
 use app\components\CustomUrlRule;
+use common\widgets\CKEditor;
+use iutbay\yii2kcfinder\KCFinder;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Specialization */
@@ -23,18 +25,22 @@ use app\components\CustomUrlRule;
          'enableClientValidation' => true,
          'enableAjaxValidation' => false,
          'options' => ['enctype' => 'multipart/form-data'],
-         'fieldConfig' => [
-             'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
-             'horizontalCssClasses' => [
-                 'wrapper' => 'col-sm-4',
-                 'error' => '',
-                 'label' => 'col-sm-2',
-                 'hint' => '',
-             ],
-         ],
      ]);?>
      <br/>
      <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+     <?= $form->field($model, 'specialisation_short_name')->textInput(['maxlength' => true]) ?>
+
+     <?= $form->field($model, 'course_overview')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+    <?= $form->field($model, 'specialisation_type')->dropDownList(Yii::$app->myhelper->getSpecialisationType(),['class'=>'form-control']); ?>
 
      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 

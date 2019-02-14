@@ -2,7 +2,6 @@
 
 namespace common\models\search;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Exam;
@@ -13,18 +12,18 @@ use common\models\Exam;
 class ExamSearch extends Exam
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'examcatID', 'courseID', 'r_book', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['name', 'exam_dates', 'exam_fullname', 'conductedBy', 'process', 'highlight', 'eligibility', 'appform', 'exam_center', 'result', 'cutt_off', 'selection_process', 'main_stream', 'summary', 'analysis', 'bylocation', 'question_paper', 'ans_key', 'counselling', 'syllabus', 'admit_card', 'upload_guide', 'createdDate', 'updatedDate'], 'safe'],
+            [['id', 'programID', 'courseID', 'exam_course_level', 'status','createdBy', 'updatedBy'], 'integer'],
+            [['exam_name', 'type', 'short_name', 'overview', 'registration_end_date', 'registration_extended_date_from', 'registration_extended_date_to', 'admit_card_download_start_date', 'admit_card_download_end_date', 'online_exam_date', 'paper_based_test_date', 'result_date', 'result_overview', 'cut_off', 'syllabus', 'exam_pattern', 'exam_duration', 'no_of_questions', 'total_marks', 'language_of_paper', 'marks_per_question', 'negative_marks_per_question', 'do_dont_during_the_exam', 'exam_registration_website', 'couducting_authority', 'exam_centres', 'exam_helpline_nos', 'number_of_exam_cities', 'exam_books_guide', 'question_papers', 'exam_FAQ', 'createdDate', 'updatedDate'], 'safe'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function scenarios()
     {
@@ -60,38 +59,46 @@ class ExamSearch extends Exam
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'examcatID' => $this->examcatID,
+            'programID' => $this->programID,
             'courseID' => $this->courseID,
-            'r_book' => $this->r_book,
+            'exam_course_level' => $this->exam_course_level,
             'createdDate' => $this->createdDate,
             'updatedDate' => $this->updatedDate,
-            'status' => $this->status,
             'createdBy' => $this->createdBy,
             'updatedBy' => $this->updatedBy,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'exam_dates', $this->exam_dates])
-            ->andFilterWhere(['like', 'exam_fullname', $this->exam_fullname])
-            ->andFilterWhere(['like', 'conductedBy', $this->conductedBy])
-            ->andFilterWhere(['like', 'process', $this->process])
-            ->andFilterWhere(['like', 'highlight', $this->highlight])
-            ->andFilterWhere(['like', 'eligibility', $this->eligibility])
-            ->andFilterWhere(['like', 'appform', $this->appform])
-            ->andFilterWhere(['like', 'exam_center', $this->exam_center])
-            ->andFilterWhere(['like', 'result', $this->result])
-            ->andFilterWhere(['like', 'cutt_off', $this->cutt_off])
-            ->andFilterWhere(['like', 'selection_process', $this->selection_process])
-            ->andFilterWhere(['like', 'main_stream', $this->main_stream])
-            ->andFilterWhere(['like', 'summary', $this->summary])
-            ->andFilterWhere(['like', 'analysis', $this->analysis])
-            ->andFilterWhere(['like', 'bylocation', $this->bylocation])
-            ->andFilterWhere(['like', 'question_paper', $this->question_paper])
-            ->andFilterWhere(['like', 'ans_key', $this->ans_key])
-            ->andFilterWhere(['like', 'counselling', $this->counselling])
+        $query->andFilterWhere(['like', 'exam_name', $this->exam_name])
+            ->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'short_name', $this->short_name])
+            ->andFilterWhere(['like', 'overview', $this->overview])
+            ->andFilterWhere(['like', 'registration_end_date', $this->registration_end_date])
+            ->andFilterWhere(['like', 'registration_extended_date_from', $this->registration_extended_date_from])
+            ->andFilterWhere(['like', 'registration_extended_date_to', $this->registration_extended_date_to])
+            ->andFilterWhere(['like', 'admit_card_download_start_date', $this->admit_card_download_start_date])
+            ->andFilterWhere(['like', 'admit_card_download_end_date', $this->admit_card_download_end_date])
+            ->andFilterWhere(['like', 'online_exam_date', $this->online_exam_date])
+            ->andFilterWhere(['like', 'paper_based_test_date', $this->paper_based_test_date])
+            ->andFilterWhere(['like', 'result_date', $this->result_date])
+            ->andFilterWhere(['like', 'result_overview', $this->result_overview])
+            ->andFilterWhere(['like', 'cut_off', $this->cut_off])
             ->andFilterWhere(['like', 'syllabus', $this->syllabus])
-            ->andFilterWhere(['like', 'admit_card', $this->admit_card])
-            ->andFilterWhere(['like', 'upload_guide', $this->upload_guide]);
+            ->andFilterWhere(['like', 'exam_pattern', $this->exam_pattern])
+            ->andFilterWhere(['like', 'exam_duration', $this->exam_duration])
+            ->andFilterWhere(['like', 'no_of_questions', $this->no_of_questions])
+            ->andFilterWhere(['like', 'total_marks', $this->total_marks])
+            ->andFilterWhere(['like', 'language_of_paper', $this->language_of_paper])
+            ->andFilterWhere(['like', 'marks_per_question', $this->marks_per_question])
+            ->andFilterWhere(['like', 'negative_marks_per_question', $this->negative_marks_per_question])
+            ->andFilterWhere(['like', 'do_dont_during_the_exam', $this->do_dont_during_the_exam])
+            ->andFilterWhere(['like', 'exam_registration_website', $this->exam_registration_website])
+            ->andFilterWhere(['like', 'couducting_authority', $this->couducting_authority])
+            ->andFilterWhere(['like', 'exam_centres', $this->exam_centres])
+            ->andFilterWhere(['like', 'exam_helpline_nos', $this->exam_helpline_nos])
+            ->andFilterWhere(['like', 'number_of_exam_cities', $this->number_of_exam_cities])
+            ->andFilterWhere(['like', 'exam_books_guide', $this->exam_books_guide])
+            ->andFilterWhere(['like', 'question_papers', $this->question_papers])
+            ->andFilterWhere(['like', 'exam_FAQ', $this->exam_FAQ]);
 
         return $dataProvider;
     }

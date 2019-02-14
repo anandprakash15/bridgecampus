@@ -73,6 +73,13 @@ use common\models\ExamCategory;
         return [1 => 'Full Time', 2=>'Part Time'];
     }
 
+    public static function getSpecialisationType()
+    {
+        return [1 => 'Single Specialisation', 2=>'Dual Specialisation'];
+    }
+
+
+
     public static function getCourseLevel()
     {
         return [1 => 'Under Graduate', 2=>'Post Graduate'];

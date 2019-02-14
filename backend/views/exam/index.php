@@ -9,11 +9,10 @@ use kartik\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Exams';
-$this->params['subtitle'] = '<h1>Exam Categorie '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
+$this->params['subtitle'] = '<h1>Exam '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
 $program = Yii::$app->myhelper->getProgram();
 $status = Yii::$app->myhelper->getActiveInactive();
-$examcatID = Yii::$app->myhelper->getExamCategory();
 echo Yii::$app->message->display();
 ?>
 
@@ -34,14 +33,14 @@ echo Yii::$app->message->display();
                     ['class' => 'kartik\grid\SerialColumn'],
 
                     [
-                        'attribute' => 'examcatID',
-                        'filter' => $examcatID,
-                        'value' => function($model)use($examcatID){
-                            return $examcatID[$model['examcatID']];
+                        'attribute' => 'programID',
+                        'filter' => $program,
+                        'value' => function($model)use($program){
+                            return $program[$model['programID']];
                         }
 
                     ],
-                    'name',
+                    'exam_name',
                     [
                         'attribute' => 'status',
                         'filter' => $status,
