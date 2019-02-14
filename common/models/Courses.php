@@ -77,8 +77,23 @@ class Courses extends \yii\db\ActiveRecord
             [['programID'], 'exist', 'skipOnError' => true, 'targetClass' => Program::className(), 'targetAttribute' => ['programID' => 'id']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
+            ['short_name','validateShortName'],
         ]; 
     } 
+
+    public function validateShortName($attribute, $params, $validator)
+    {
+        $query = Courses::find()->where(['programID'=>$this->programID,'LOWER(short_name)'=>strtolower($this->short_name)]);
+        
+        if(!$this->isNewRecord)
+        {
+            $query->andWhere(['<>','id', $this->id]);
+        }
+        $check = $query->one();
+        if(!empty($check)){
+            $this->addError($attribute, $this->short_name.' short name has already been taken.');
+        }
+    }
 
     public function codeunique($attribute,$params)
     {
@@ -139,6 +154,11 @@ class Courses extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
+                $maxcode = Courses::find()->max('code');
+                if(empty($maxcode)){
+                    $maxcode = 0;
+                }
+                $this->code = $maxcode + 1; 
                 $this->createdBy = \Yii::$app->user->identity->id;
                 $this->createdDate = date('Y-m-d H:i:s');
             }

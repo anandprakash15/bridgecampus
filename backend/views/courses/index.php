@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\CoursesSearch */
@@ -65,10 +66,22 @@ echo Yii::$app->message->display();
                     }
 
                 ],
-                
+                [
+                  'class' => 'yii\grid\ActionColumn',
+                  'template' => '{specialization}',
+                  'buttons' => [
+                    'specialization' => function ($url, $model) {
+                        return Html::a(Yii::t('app', 'Add Specializations'), Url::to(['add-specializations','id'=>$model->id]), [
+                            'title' => Yii::t('app', 'Add Specializations'),
+                            'class'=>'btn btn-primary btn btn-xs'
+                        ]);
+                    }
+                ],
             ],
-        ]); ?>
-    </div>
+
+        ],
+    ]); ?>
+</div>
 </div>
 </div>
 <?php 

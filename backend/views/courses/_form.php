@@ -8,7 +8,7 @@ use yii\web\JsExpression;
 use yii\helpers\Url;
 use common\widgets\CKEditor;
 use iutbay\yii2kcfinder\KCFinder;
-
+use common\models\Courses;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Courses */
@@ -34,6 +34,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
     ]);
 
     Yii::$app->session->set('KCFINDER', $kcfOptions);
+    
 ?>
 
 <div class="courses-form">
@@ -76,8 +77,11 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
 
     <?= $form->field($model, 'short_name')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
-
+    <?php if (!$model->isNewRecord) {
+        $model->code = Yii::$app->myhelper->getCourseCode($model->code);
+      ?>
+      <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true,'disabled'=>true]) ?>
+    <?php } ?>
 
     <?= $form->field($model, 'courselevel')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
 

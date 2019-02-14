@@ -15,6 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\bootstrap\ActiveForm;
 use common\models\ProgramCategory;
+use common\models\CourseSpecialization;
 
 /**
  * CoursesController implements the CRUD actions for Courses model.
@@ -136,6 +137,53 @@ class CoursesController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAddSpecializations($id){
+        $course = $this->findModel($id);
+        $specializations = ArrayHelper::map(Specialization::find()->where(['status'=>1])->all(),'id','name');
+        $csmodel = new CourseSpecialization();
+
+
+        $oldSpecializations = ArrayHelper::getColumn(CourseSpecialization::find()->where(['courseID'=>$course->id])->asArray()->all(),'specializationID');
+
+
+        
+        $csmodel->specializationID = $oldSpecializations;
+
+        $csmodel->courseID = $course->id;
+
+        if ($csmodel->load(Yii::$app->request->post())) {
+
+            $newSpecializations = array_diff((array)$csmodel['specializationID'], (array)$oldSpecializations);
+
+            $deletedSpecializations = array_diff((array)$oldSpecializations,(array)$csmodel['specializationID']);
+
+            foreach ($newSpecializations as $key => $specialization) {
+                $ncsmodel = new CourseSpecialization();
+                $ncsmodel->courseID = $course->id;
+                $ncsmodel->specializationID = $specialization;
+                if(!$ncsmodel->save()){
+                    //print_r($nucmodel);exit;
+                }    
+            }
+
+            if(!empty($deletedSpecializations))
+            {
+                CourseSpecialization::deleteAll(['courseID' => $course->id, 'specializationID' =>  array_values($deletedSpecializations)]);
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Specializations successfully added in course '.$course->name.".");
+            
+            return $this->redirect(['add-specializations','id'=>$course->id]);
+        }
+
+        
+        return $this->render('add_specializations', [
+            'course' => $course,
+            'specializations'=>$specializations,
+            'csmodel' => $csmodel,
+        ]);
     }
 
     /**
