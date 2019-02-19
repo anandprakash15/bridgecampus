@@ -52,7 +52,11 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
 
    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+   <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
+
    <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
+
+   <?= $form->field($model, 'ctype')->dropDownList(Yii::$app->myhelper->getCollegetype(),['class'=>'form-control'])?>
 
    <?= $form->field($model, 'address')->widget(CKEditor::className(), [
     'options' => ['rows' => 6],
@@ -63,7 +67,11 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
     ]
   ]) ?>
 
+   <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
 
+  <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
+
+  <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
 
    <?php
 
@@ -110,12 +118,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
        '])?>
 
        <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
-
-
-
-       <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
-
-       <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 

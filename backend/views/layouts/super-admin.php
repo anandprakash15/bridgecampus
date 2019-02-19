@@ -123,7 +123,6 @@ AppAsset::register($this);
               'items' => [
                 ['label' => 'Specialization', 'url' => ['/specialization/index']],
                 ['label' => 'Program', 'url' => ['/program/index']],
-                ['label' => 'Exam Category', 'url' => ['/exam-category/index']],
                 ['label' => 'Affiliate', 'url' => ['/affiliate/index']],
                 ['label' => 'Accredited', 'url' => ['/accredited/index']],
                 ['label' => 'Approved', 'url' => ['/approved/index']],

@@ -63,7 +63,23 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+   <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
+
    <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
+
+
+   <?= $form->field($model, 'utype')->dropDownList(Yii::$app->myhelper->getUniversitytype(),['class'=>'form-control'])?>
+
+   
+
+   <?= $form->field($model, 'approving_government_authority')->widget(CKEditor::className(), [
+    'options' => ['rows' => 6],
+    'preset' => 'standard',
+    'clientOptions'=>[
+      'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+      /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+    ]
+  ]) ?>
 
    <?= $form->field($model, 'address')->widget(CKEditor::className(), [
     'options' => ['rows' => 6],
@@ -99,6 +115,10 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
   }
   ?>
 
+  <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
+  <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
+  <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
+  
   <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
     'onchange'=>'$.get("../user/get-stateslist?countryID="+$(this).val(), function( data ) {
       data = $.parseJSON(data);
@@ -119,19 +139,8 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
        });
        });
        '])?>
+    <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
 
-       <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
-
-
-
-       <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
-
-       <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
-
-       <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
-
-
-       <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 
@@ -154,6 +163,15 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
       <?= $form->field($model, 'websiteurl')->textInput(['maxlength' => true]) ?>
 
       <?= $form->field($model, 'establish_year')->textInput(['maxlength' => true]) ?>
+
+      <?= $form->field($model, 'about')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
 
 
       <?= $form->field($model, 'approved_by')->widget(Select2::classname(), [
@@ -205,14 +223,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
       <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
 
 
-      <?= $form->field($model, 'about')->widget(CKEditor::className(), [
-        'options' => ['rows' => 6],
-        'preset' => 'standard',
-        'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-        ]
-      ]) ?>
+      
 
       <?php
       $bannerImgPreview = $brochureFilePreview = $logoImgPreview = "";

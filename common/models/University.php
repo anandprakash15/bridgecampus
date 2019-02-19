@@ -13,6 +13,8 @@ use Yii;
  * @property string $bannerURL
  * @property string $area
  * @property string $code
+ * @property string $utype
+ * @property string $approving_government_authority
  * @property string $address
  * @property int $cityID
  * @property int $stateID
@@ -65,7 +67,7 @@ class University extends \yii\db\ActiveRecord
             [['bannerImg','logoImg'], 'file', 'extensions'=>'jpg, jpeg, png'],
             [['brochureFile'], 'file', 'extensions'=>'pdf, doc, docx'],
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['about'], 'string'],
+            [['about','approving_government_authority','utype'], 'string'],
             [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by'], 'safe'],
 
             [['name'], 'string', 'max' => 300],
@@ -101,8 +103,8 @@ class University extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'sortname' => 'Sortname',
+            'name' => 'University Name',
+            'sortname' => 'Short Name',
             'bannerURL' => 'Banner Url',
             'area' => 'Area',
             'code' => 'Code',
@@ -130,8 +132,10 @@ class University extends \yii\db\ActiveRecord
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
             'bannerImg' => 'Banner Image',
-            'brochureImg' => 'Brochure Image',
-            'logoImg' => 'Logo',
+            'brochureImg' => 'Brochure Upload',
+            'logoImg' => 'University Logo',
+            'utype' => 'University Type',
+            'approving_government_authority' => 'Approving Government Authority',
         ];
     }
 

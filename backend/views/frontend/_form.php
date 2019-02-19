@@ -77,6 +77,125 @@ $kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
     <?= $form->field($model, 'term_condition_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
 
+    <?= $form->field($model, 'vision')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'vision_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+
+    <?= $form->field($model, 'mission')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'mission_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+    <?= $form->field($model, 'disclaimer')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'disclaimer_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+    <?= $form->field($model, 'faq')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'faq_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+    <?= $form->field($model, 'contact_us')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'contact_us_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+    <?= $form->field($model, 'site_map')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'site_map_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+
+    <?= $form->field($model, 'why_choose_us')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'wcu_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+
+    <?= $form->field($model, 'management_team')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'mt_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+
+
+
+    <?= $form->field($model, 'careers')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'careers_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+    <?= $form->field($model, 'our_blog')->widget(CKEditor::className(), [
+            'options' => ['rows' => 6],
+            'preset' => 'standard',
+            'clientOptions'=>[
+              'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+              /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+          ]
+      ]) ?>
+
+    <?= $form->field($model, 'ob_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+
+
+
+
   <div class="form-group" style="margin-left: 18% !important;">
      <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
  </div>

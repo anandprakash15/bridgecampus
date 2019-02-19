@@ -137,6 +137,16 @@ use common\models\ExamCategory;
         return [1 => 'University', 2=>'College', 3=>'Other'];
     }
 
+    public static function getUniversitytype()
+    {
+        return [1 => 'Private University', 2=>'Public University', 3=>'State University',4=>'Central University',5=>'Deemed University', 6=>'Deemed to be University', 7=>'Autonomous Institute'];
+    }
+
+    public static function getCollegetype()
+    {
+        return [1 => 'Autonomous', 2=>'Affiliated'];
+    }
+
     
 
     public function getProgram(){

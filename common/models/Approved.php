@@ -11,6 +11,8 @@ use Yii;
  * @property string $name
  * @property string $shortname
  * @property string $createdDate
+  * @property string $description
+ 
  * @property int $createdBy
  * @property string $updatedDate
  * @property int $updatedBy
@@ -33,7 +35,7 @@ class Approved extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'shortname', 'status'], 'required'],
-            [['createdDate', 'updatedDate'], 'safe'],
+            [['createdDate', 'updatedDate','description'], 'safe'],
             [['createdBy', 'updatedBy', 'status'], 'integer'],
             [['name'], 'string', 'max' => 200],
             [['shortname'], 'string', 'max' => 30],
@@ -67,6 +69,7 @@ class Approved extends \yii\db\ActiveRecord
             'updatedDate' => 'Updated Date',
             'updatedBy' => 'Updated By',
             'status' => 'Status',
+            'description' => 'Description',
         ];
     }
 }

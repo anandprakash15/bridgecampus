@@ -25,7 +25,7 @@ class Message extends Component{
 		        'options' => [
 		            'title' => '<strong>'.$key.'</strong>',
 		            //'text' => $message,
-				     'showConfirmButton'=> false
+				     'showConfirmButton'=> true
 			        ]
 			    ]); 
 
@@ -35,7 +35,7 @@ class Message extends Component{
 			        'timer'=>'3000',
 			        'options' => [
 			            'title' => 'Error',
-						'showConfirmButton'=> false
+						'showConfirmButton'=> true
 			        ]
 			    ]);
 			}

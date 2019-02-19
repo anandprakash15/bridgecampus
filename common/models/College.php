@@ -100,8 +100,8 @@ class College extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'sortname' => 'Sortname',
-            'bannerURL' => 'Banner Url',
+            'sortname' => 'Short Name',
+            'bannerURL' => 'College Image',
             'area' => 'Area',
             'code' => 'Code',
             'address' => 'Address',
@@ -123,12 +123,13 @@ class College extends \yii\db\ActiveRecord
             'about' => 'About',
             'vission' => 'Vission',
             'mission' => 'Mission',
-            'logourl' => 'Logourl',
+            'logourl' => 'College Logo',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
+            'ctype' => 'College Type',
         ];
     }
 
