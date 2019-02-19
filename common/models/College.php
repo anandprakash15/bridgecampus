@@ -136,6 +136,11 @@ class College extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
+                $maxcode = College::find()->max('code');
+                if(empty($maxcode)){
+                    $maxcode = 0;
+                }
+                $this->code = $maxcode+1;
                 $this->createdBy = \Yii::$app->user->identity->id;
                 $this->createdDate = date('Y-m-d H:i:s');
             }

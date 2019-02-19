@@ -31,6 +31,8 @@ use common\models\search\ReviewSearch;
 use common\models\Review;
 use common\models\CollegeUniversityAdvpurpose;
 use common\models\search\CollegeUniversityAdvpurposeSearch;
+use common\models\CourseSpecialization;
+use common\models\UniversityCollegeCourseSpecialization;
 
 /**
  * CollegeController implements the CRUD actions for College model.
@@ -163,6 +165,61 @@ class CollegeController extends Controller
             'college' => $college,
             'university' => $university,
             'course' => $course,
+        ]);
+    }
+
+    
+    public function actionAddSpecializations($id)
+    {
+        $this->layout= "college";
+        $courseDetails = UniversityCollegeCourse::findOne($id);
+        Yii::$app->params['cTitle'] = $courseDetails->college->name;
+        Yii::$app->params['cID'] = $courseDetails->college->id;
+
+        $specializations = ArrayHelper::map(CourseSpecialization::find()->joinWith(['specialization'])->where(['courseID'=>$courseDetails->course->id])->all(),'id','specialization.name');
+
+        $ucsmodel = new UniversityCollegeCourseSpecialization();
+        $ucsmodel->type = 2;
+
+        $oldSpecializations = ArrayHelper::getColumn(UniversityCollegeCourseSpecialization::find()->where(['coll_univID'=>$courseDetails->id,'type'=>2])->asArray()->all(),'course_specializationID');
+
+        
+        $ucsmodel->course_specializationID = $oldSpecializations;
+
+        $ucsmodel->coll_univID = $courseDetails->id;
+
+        if ($ucsmodel->load(Yii::$app->request->post())) {
+
+            $newSpecializations = array_diff((array)$ucsmodel['course_specializationID'], (array)$oldSpecializations);
+
+            $deletedSpecializations = array_diff((array)$oldSpecializations,(array)$ucsmodel['course_specializationID']);
+
+            foreach ($newSpecializations as $key => $specialization) {
+                $nucsmodel = new UniversityCollegeCourseSpecialization();
+                $nucsmodel->coll_univID = $courseDetails->id;
+                $nucsmodel->course_specializationID = $specialization;
+                $nucsmodel->type = 2;
+                $nucsmodel->status = 1;
+                if(!$nucsmodel->save()){
+                    //print_r($nucsmodel);exit;
+                }    
+            }
+
+            if(!empty($deletedSpecializations))
+            {
+                UniversityCollegeCourseSpecialization::deleteAll(['coll_univID' => $courseDetails->id, 'course_specializationID' =>  array_values($deletedSpecializations)]);
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Specializations successfully added in course '.$courseDetails->course->name.".");
+            
+            return $this->redirect(['add-specializations','id'=>$courseDetails->id]);
+        }
+
+        
+        return $this->render('add-specializations', [
+            'courseDetails' => $courseDetails,
+            'specializations'=>$specializations,
+            'ucsmodel' => $ucsmodel,
         ]);
     }
 
@@ -315,6 +372,7 @@ class CollegeController extends Controller
         $model = new College();
 
         if ($model->load(Yii::$app->request->post())) {
+           
             $model->approved_by = implode(",",(array) $model->approved_by);
             $model->accredited_by = implode(",",(array) $model->accredited_by);
             $model->affiliate_to = implode(",",(array) $model->affiliate_to);
@@ -401,6 +459,7 @@ class CollegeController extends Controller
 
                 \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
             }else{
+                print_r($model);exit;
                 \Yii::$app->getSession()->setFlash('error', 'Error occured while creating.');
             }
             return $this->redirect(['index']);

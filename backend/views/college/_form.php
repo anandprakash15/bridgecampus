@@ -52,7 +52,11 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
 
    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-   <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
+    <?php if (!$model->isNewRecord) {
+        $model->code = Yii::$app->myhelper->getCollegeCode($model->code);
+      ?>
+      <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true,'disabled'=>true]) ?>
+    <?php } ?>
 
    <?= $form->field($model, 'address')->widget(CKEditor::className(), [
     'options' => ['rows' => 6],

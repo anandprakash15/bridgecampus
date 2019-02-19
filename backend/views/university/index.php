@@ -36,7 +36,14 @@ echo Yii::$app->message->display();
                 ['class' => 'yii\grid\SerialColumn'],
 
                 'name',
-                'code',
+                [
+                    'label'=>'Code',
+                    'contentOptions' => ['style' => 'width:25%;'],
+                    'attribute' => 'code',
+                    'value' => function($model){
+                        return  Yii::$app->myhelper->getUniversityCode($model->code);
+                    }
+                ],
                 'address',
                 'cityID',
             //'stateID',

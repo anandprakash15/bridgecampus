@@ -234,4 +234,10 @@ use common\models\ExamCategory;
     public function getCourseCode($code){
         return "C".str_pad($code, 4, '0', STR_PAD_LEFT);
     }
+    public function getUniversityCode($code){
+        return "U".str_pad($code, 4, '0', STR_PAD_LEFT);
+    }
+    public function getCollegeCode($code){
+        return "C".str_pad($code, 4, '0', STR_PAD_LEFT);
+    }
 }

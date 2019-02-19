@@ -62,12 +62,15 @@ echo Yii::$app->message->display();
                     'width'=>'30%',
                     'buttons' => [
                         'info' => function ($url, $model, $key)use($university) {
-                            $btn = Html::button("Details",['class'=>'btn btn-primary btn btn-xs connect_icon']);
+                            $btn = Html::button("Details",['class'=>'btn btn-success btn btn-xs connect_icon']);
                             return Html::a($btn,["university/course-details", 'id' => $model->id],['title'=>'Info']);
-
+                        },
+                        'specializations' => function ($url, $model, $key) {
+                            $btn = Html::button("Add Specializations",['class'=>'btn btn-primary btn btn-xs connect_icon']);
+                            return Html::a($btn,["university/add-specializations", 'id' => $model->id],['title'=>'Info']);
                         },
                     ],
-                    'template' => '{info}'
+                    'template' => '{info} {specializations}'
                 ],
             ],
         ]); ?>
