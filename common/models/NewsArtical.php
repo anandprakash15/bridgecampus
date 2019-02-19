@@ -23,6 +23,11 @@ use Yii;
  * @property int $status
  * @property int $createdBy
  * @property int $updatedBy
+ * @property int $countryID
+ * @property int $cityID    
+ * @property int $stateID
+
+
  *
  * @property User $createdBy0
  * @property User $updatedBy0
@@ -44,7 +49,7 @@ class NewsArtical extends \yii\db\ActiveRecord
     {
         return [
             [['natype', 'type', 'title', 'description', 'national_international'], 'required'],
-            [['natype', 'type', 'coll_univ_examID', 'programID', 'courseID', 'national_international', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['natype', 'type', 'coll_univ_examID', 'programID', 'courseID', 'national_international', 'status', 'createdBy', 'updatedBy','countryID','cityID','stateID'], 'integer'],
             [['title', 'description'], 'string'],
             [['startDate', 'endDate', 'createdDate', 'updatedDate'], 'safe'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
@@ -87,6 +92,9 @@ class NewsArtical extends \yii\db\ActiveRecord
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
+            'countryID' => 'Country',
+            'cityID' => 'City',
+            'stateID' => 'State',
         ];
     }
 

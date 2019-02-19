@@ -73,11 +73,11 @@ class NewsArticalController extends Controller
         $model = new NewsArtical();
 
         if ($model->load(Yii::$app->request->post())) {
-            if(Yii::$app->request->post('startDate')){
-                $model->startDate = date('Y-m-d',strtotime(Yii::$app->request->post('startDate')));
+            if(isset($_POST['NewsArtical']['startDate']) && !empty($_POST['NewsArtical']['startDate'])){
+                $model->startDate = date('Y-m-d',strtotime($_POST['NewsArtical']['startDate']));
             }
-            if(Yii::$app->request->post('endDate')){
-                $model->endDate = date('Y-m-d',strtotime(Yii::$app->request->post('endDate')));
+            if(isset($_POST['NewsArtical']['endDate']) && !empty($_POST['NewsArtical']['endDate'])){
+                $model->endDate = date('Y-m-d',strtotime($_POST['NewsArtical']['endDate']));
             }
             $model->save();
             \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');

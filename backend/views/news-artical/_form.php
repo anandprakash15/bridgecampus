@@ -11,6 +11,7 @@ use kartik\widgets\Select2;
 use yii\web\JsExpression;
 use common\widgets\CKEditor;
 use iutbay\yii2kcfinder\KCFinder;
+use backend\controllers\UserController;
 
 $kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
   'uploadURL' => Yii::$app->myhelper->getFileBasePath(),
@@ -137,6 +138,52 @@ $kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
   ]);?>
 
   <?= $form->field($model, 'national_international')->dropDownList(Yii::$app->myhelper->getNationalInternational(),['class'=>'form-control'])?>
+
+   <?php
+
+   $contriesList = UserController::actionGetCountrieslist();
+   if($model->isNewRecord){
+    $stateLists = UserController::actionGetStateslist();
+    $citiesLists = UserController::actionGetCitieslist();
+    $model->countryID = 101;/*india*/
+    $model->stateID = 22;/*maharsahtra*/
+  }else{
+    if(!empty($model->countryID)){
+
+      $stateLists = UserController::actionGetStateslist($model->countryID);
+    }else{
+      $stateLists = UserController::actionGetStateslist(101);
+    }
+    if(!empty($model->stateID)){
+      $citiesLists = UserController::actionGetCitieslist($model->stateID);
+    }else{
+      $citiesLists = UserController::actionGetCitieslist(22);
+    }
+  }
+  ?>
+
+  <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
+    'onchange'=>'$.get("../user/get-stateslist?countryID="+$(this).val(), function( data ) {
+      data = $.parseJSON(data);
+      $(\'#newsartical-stateid\').empty().append("<option value=\'\'>-- Select State --</option>");
+      $(\'#newsartical-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
+      $.each(data, function(index, value) {
+       $(\'#newsartical-stateid\').append($(\'<option>\').text(value).attr(\'value\', index));
+       });
+       });
+       ','prompt'=>'-- Select Country --'])?>
+
+  <?= $form->field($model, 'stateID')->dropDownList(json_decode($stateLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select State --',
+    'onchange'=>'$.get("../user/get-citieslist?stateID="+$(this).val(), function( data ) {
+     data = $.parseJSON(data);
+     $(\'#newsartical-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
+     $.each(data, function(index, value) {
+       $(\'#newsartical-cityid\').append($(\'<option>\').text(value).attr(\'value\', index));
+       });
+       });
+       '])?>
+
+       <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
 
   <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
