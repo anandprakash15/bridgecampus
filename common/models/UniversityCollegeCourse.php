@@ -99,6 +99,11 @@ class UniversityCollegeCourse extends \yii\db\ActiveRecord
         return $this->hasOne(University::className(), ['id' => 'universityID']);
     }
 
+    public function getCollege()
+    {
+        return $this->hasOne(College::className(), ['id' => 'collegeID']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

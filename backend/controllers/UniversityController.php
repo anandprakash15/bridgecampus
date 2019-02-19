@@ -29,6 +29,8 @@ use common\models\search\ReviewSearch;
 use common\models\Review;
 use common\models\CollegeUniversityAdvpurpose;
 use common\models\search\CollegeUniversityAdvpurposeSearch;
+use common\models\CourseSpecialization;
+use common\models\UniversityCollegeCourseSpecialization;
 
 
 /**
@@ -87,9 +89,12 @@ class UniversityController extends Controller
         $this->layout= "university";
         $university = $this->findModel($id);
 
-         if (($model = Review::findOne(['id'=>$rid])) == null) {
-            throw new NotFoundHttpException('The requested page does not exist.');
+        if (($model = Facility::findOne(['id'=>$fid])) == null) {
+            $model = new Facility();
         }
+        
+        $model->coll_univID  = $id;
+        $model->type = 1;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
@@ -158,6 +163,61 @@ class UniversityController extends Controller
        return $this->render('course-details', [
             'model' => $model,
             'universityandcourse' => $universityandcourse,
+        ]);
+    }
+
+    public function actionAddSpecializations($id)
+    {
+        $this->layout= "university";
+        $courseDetails = UniversityCollegeCourse::findOne($id);
+        Yii::$app->params['uTitle'] = $courseDetails->university->name;
+        Yii::$app->params['uID'] = $courseDetails->university->id;
+        //print_r(CourseSpecialization::find()->joinWith(['specialization'])->where(['courseID'=>$courseDetails->course->id])->asArray()->all());exit;
+        $specializations = ArrayHelper::map(CourseSpecialization::find()->joinWith(['specialization'])->where(['courseID'=>$courseDetails->course->id])->all(),'id','specialization.name');
+
+        $ucsmodel = new UniversityCollegeCourseSpecialization();
+        $ucsmodel->type = 1;
+
+        $oldSpecializations = ArrayHelper::getColumn(UniversityCollegeCourseSpecialization::find()->where(['coll_univID'=>$courseDetails->id,'type'=>1])->asArray()->all(),'course_specializationID');
+
+
+        
+        $ucsmodel->course_specializationID = $oldSpecializations;
+
+        $ucsmodel->coll_univID = $courseDetails->id;
+
+        if ($ucsmodel->load(Yii::$app->request->post())) {
+
+            $newSpecializations = array_diff((array)$ucsmodel['course_specializationID'], (array)$oldSpecializations);
+
+            $deletedSpecializations = array_diff((array)$oldSpecializations,(array)$ucsmodel['course_specializationID']);
+
+            foreach ($newSpecializations as $key => $specialization) {
+                $nucsmodel = new UniversityCollegeCourseSpecialization();
+                $nucsmodel->coll_univID = $courseDetails->id;
+                $nucsmodel->course_specializationID = $specialization;
+                $nucsmodel->type = 1;
+                $nucsmodel->status = 1;
+                if(!$nucsmodel->save()){
+                    //print_r($nucsmodel);exit;
+                }    
+            }
+
+            if(!empty($deletedSpecializations))
+            {
+                UniversityCollegeCourseSpecialization::deleteAll(['coll_univID' => $courseDetails->id, 'course_specializationID' =>  array_values($deletedSpecializations)]);
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Specializations successfully added in course '.$courseDetails->course->name.".");
+            
+            return $this->redirect(['add-specializations','id'=>$courseDetails->id]);
+        }
+
+        
+        return $this->render('add-specializations', [
+            'courseDetails' => $courseDetails,
+            'specializations'=>$specializations,
+            'ucsmodel' => $ucsmodel,
         ]);
     }
 

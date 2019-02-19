@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>                  
                     <tr>
                         <th class="col-md-4">Code:</th>
-                        <td class="col-md-8"><?= $model->code ?></td>
+                        <td class="col-md-8"><?= Yii::$app->myhelper->getCollegeCode($model->code) ?></td>
                     </tr>
                     <tr>
                         <th class="col-md-4">Establish Year:</th>
@@ -112,15 +112,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tbody>                  
                     <tr>
                         <th class="col-md-4">Country:</th>
-                        <td class="col-md-8"><?= $model->country->name ?></td>
+                        <td class="col-md-8"><?= isset($model->country->name)?$model->country->name:"" ?></td>
                     </tr>
                     <tr>
                         <th class="col-md-4">State:</th>
-                        <td class="col-md-8"><?= $model->state->name ?></td>
+                       <td class="col-md-8"><?= isset($model->state->name)?$model->state->name:"" ?></td>
                     </tr>
                     <tr>
                         <th class="col-md-4">City:</th>
-                        <td class="col-md-8"><?= $model->city->name ?></td>
+                        <td class="col-md-8"><?= isset($model->city->name)?$model->city->name:"" ?></td>
                     </tr>
                     <tr>
                         <th class="col-md-4">Taluka:</th>

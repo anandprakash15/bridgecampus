@@ -36,18 +36,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
 
 $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['university/validate','id'=>$model->id]);
 ?>
-<style type="text/css">
 
-.download_link {
-  background-color: #f5f5f5;
-  border: 1px solid #dcdcdc;
-  font-weight: bold;
-  margin: 5px 0px;
-  overflow-y: hidden;
-  padding: 4px 4px 4px 8px;
-  max-width: 373px;
-}
-</style>
 <div class="exam-category-form">
   <div class="custumbox box box-info">
    <div class="box-body">
@@ -65,7 +54,11 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
    <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
 
-   <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
+   <?php if (!$model->isNewRecord) {
+        $model->code = Yii::$app->myhelper->getUniversityCode($model->code);
+      ?>
+      <?= $form->field($model, 'code')->textInput(['maxlength' => true,'disabled'=>true]) ?>
+    <?php } ?>
 
 
    <?= $form->field($model, 'utype')->dropDownList(Yii::$app->myhelper->getUniversitytype(),['class'=>'form-control'])?>
@@ -292,14 +285,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           ],
         ]);?>
 
-        <?php  if(!empty($model->brochureurl)){ ?>
-         <!--  <div class="col-sm-10 col-sm-offset-2 certificate_link" style="padding-bottom: 15px">
-            <div class="download_link col-sm-12">
-              <a href="#" onclick="window.open('<?= $brochureFilePreview ?>');"><div class="col-sm-10" style="padding: 0"><?= ucwords($model->brochureurl) ?></div></a>
-            </div>
-            &nbsp;<a class="btn btn-success btn-sm" href="/courses/certificate-preview?id=U0Iydm1USStCMXM9" target="blank" style="margin-top: 5px; pointer-events: auto;" disabled="disabled">Preview</a>
-          </div> -->
-        <?php } ?>
+
         <?php echo $form->field($model, 'brochureFile')->widget(FileInput::classname(), [
           'pluginOptions' => [
             'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
