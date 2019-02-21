@@ -504,20 +504,27 @@ class CollegeController extends Controller
         $model->coll_univID  = $id;
         $model->type = 2;
         $imgPreview = [];
-        $oldImg = "";
+        $imgPreviewConfig = [];
+        $oldFile = "";
         $uploadPath = Yii::$app->myhelper->getUploadPath(2,$college->id)."advertisement/";
         $fViewPath= Yii::$app->myhelper->getFileBasePath(2,$college->id)."advertisement/";
         if(!empty($model->url)){
-          $imgPreview = [$fViewPath.$model->url];
-          $oldImg = $uploadPath.$model->url;
+            $imgPreview = [$fViewPath.$model->url];
+            if($model->gtype == 6)
+            {
+                $imgPreviewConfig = ["type" => "video", "filetype"=> "video/mp4","downloadUrl"=> $fViewPath.$model->url,'showRemove'=>false];
+            }else{
+                $imgPreviewConfig = ["downloadUrl"=> true,'showRemove'=>false,"downloadUrl"=> $fViewPath.$model->url];
+            }
+            $oldFile = $uploadPath.$model->url;
         }
-        //print_r($model);exit;
+
         if ($model->load(Yii::$app->request->post())) {
             $urlImage = UploadedFile::getInstance($model, 'urlImage');
-
+            $filename = time();
             if(!empty($urlImage))
             {
-                $model->url = time().".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                $model->url = $filename.".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
                 $model->urlImage = $urlImage->name;
             }
             if($model->save()){
@@ -525,23 +532,34 @@ class CollegeController extends Controller
                 FileHelper::createDirectory($uploadPath,0777,true);
                 if(!empty($urlImage))
                 {
-                    $urlImage->saveAs($uploadPath.$model->url);
-                    if($oldImg != ""){
-                        @unlink($oldImg);
+                    $filePath = $uploadPath.$model->url;
+                    $urlImage->saveAs($filePath);
+
+                    if($oldFile != ""){
+                        @unlink($oldFile);
+                        if($model->gtype == 6){
+                            @unlink($uploadPath.pathinfo($oldFile, PATHINFO_FILENAME )."-thumb.png");
+                        }
+                    }
+                    if($model->gtype == 6){
+                        $thumbPath = $uploadPath.$filename."-thumb.png";
+                        $cmd = 'ffmpeg -y -i '.$filePath.' -vframes 1   '.$thumbPath." 2>&1";
+                        exec($cmd, $output, $return);
                     }
                 }
             }
-           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-           return $this->redirect(['advertise-materials','id'=>$college->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            return $this->redirect(['advertise-materials','id'=>$college->id]);
         }
 
 
-        return $this->render('advertise-materials-details', [
-            'model' => $model,
-            'college' => $college,
-            'imgPreview'=>$imgPreview,
-        ]);
-     }
+       return $this->render('advertise-materials-details', [
+        'model' => $model,
+        'college' => $college,
+        'imgPreview'=>$imgPreview,
+        'imgPreviewConfig'=> $imgPreviewConfig
+    ]);
+    }
 
     public function actionReview($id){
         $this->layout= "college";

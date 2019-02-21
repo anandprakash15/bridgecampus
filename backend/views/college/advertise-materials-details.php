@@ -42,52 +42,33 @@ if($model->isNewRecord){
 
 
      <?= $form->field($model, 'gtype')->dropDownList(Yii::$app->myhelper->getAdvertisePossition(),['class'=>'form-control'])?>
+     <?php echo $form->field($model, 'urlImage')->widget(FileInput::classname(), [
+      'pluginOptions' => [
+        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+        'options' => ['multiple' => false],
 
-      <?php   /*echo $form->field($model, 'url')->widget(FileInput::classname(), [
-        'pluginOptions' => [
-          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-          'initialPreview'=> [$previewImg],
-          'showPreview' => $showPreview,
-          'showCaption' => true,
-          'showRemove' => false,
-          'showUpload' => false,
-          'uploadAsync'=>false,
-          'maxFileCount' => 1
-        ]
-      ]);*/
-
-      ?>
-
-      <?php echo $form->field($model, 'urlImage')->widget(FileInput::classname(), [
-        'pluginOptions' => [
-          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-          'options' => ['multiple' => false,'accept' => 'image/*'],
-          'initialPreview'=> $imgPreview,
-          'initialPreviewAsData'=>true,
-          'initialPreviewFileType'=> 'image',
-          'initialPreviewConfig'=>[[
-            //'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
-            'extra'=> ['id'=> 100],
-            'key'=>1
-          ]
+        'initialPreview'=> $imgPreview,
+        'initialPreviewConfig'=> [
+          $imgPreviewConfig
         ],
-          'overwriteInitial'=>true,
-          'dropZoneEnabled'=> false,
-          'showCaption' => true,
-          'showRemove' => false,
-          'showUpload' => false,
-        ],
-      ]);?>
+        'initialPreviewAsData'=>true,
+        'overwriteInitial'=>true,
+        'dropZoneEnabled'=> false,
+        'showCaption' => true,
+        'showRemove' => false,
+        'showUpload' => false,
+      ],
+    ]);?>
 
-      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+    <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
-      <div class="form-group" style="margin-left: 18% !important;">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
-      </div>
-
-      <?php ActiveForm::end(); ?>
+    <div class="form-group" style="margin-left: 18% !important;">
+      <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
     </div>
+
+    <?php ActiveForm::end(); ?>
   </div>
+</div>
 </div>
 <?php 
 $this->registerCss("

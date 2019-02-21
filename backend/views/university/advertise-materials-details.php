@@ -47,34 +47,17 @@ $this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name,
 
      <?= $form->field($model, 'gtype')->dropDownList(Yii::$app->myhelper->getAdvertisePossition(),['class'=>'form-control'])?>
 
-      <?php   /*echo $form->field($model, 'url')->widget(FileInput::classname(), [
-        'pluginOptions' => [
-          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-          'initialPreview'=> [$previewImg],
-          'showPreview' => $showPreview,
-          'showCaption' => true,
-          'showRemove' => false,
-          'showUpload' => false,
-          'uploadAsync'=>false,
-          'maxFileCount' => 1
-        ]
-      ]);*/
-
-      ?>
 
       <?php echo $form->field($model, 'urlImage')->widget(FileInput::classname(), [
         'pluginOptions' => [
           'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-          'options' => ['multiple' => false,'accept' => 'image/*'],
+          'options' => ['multiple' => false],
+
           'initialPreview'=> $imgPreview,
+          'initialPreviewConfig'=> [
+            $imgPreviewConfig
+          ],
           'initialPreviewAsData'=>true,
-          'initialPreviewFileType'=> 'image',
-          'initialPreviewConfig'=>[[
-            //'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
-            'extra'=> ['id'=> 100],
-            'key'=>1
-          ]
-        ],
           'overwriteInitial'=>true,
           'dropZoneEnabled'=> false,
           'showCaption' => true,

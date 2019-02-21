@@ -42,9 +42,23 @@ class CollegeUniversityAdvpurpose extends \yii\db\ActiveRecord
             [['urlImage'],'required','on'=>['create']],
             [['type', 'coll_univID', 'gtype', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate','url','urlImage'], 'safe'],
-            ['urlImage', 'file', 'extensions'=>'jpg, jpeg, png'],
+            ['urlImage', 'file', 'extensions'=>'jpg, jpeg, png', 'when' => function ($model) {
+                return $model->gtype != 6;
+                },'whenClient' => "function (attribute, value) {
+                    console.log($('#collegeuniversityadvpurpose-gtype').val());
+                    return $('#collegeuniversityadvpurpose-gtype').val() != 6;
+                }"
+            ],
+            ['urlImage', 'file', 'extensions'=>'mp4, avi, mkv', 'when' => function ($model) {
+                return $model->gtype == 6;
+                },'whenClient' => "function (attribute, value) {
+                    console.log($('#collegeuniversityadvpurpose-gtype').val());
+                    return $('#collegeuniversityadvpurpose-gtype').val() == 6;
+                }"
+            ],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
+            
         ];
     }
 
