@@ -95,7 +95,7 @@ class UserController extends Controller
     }
 
     /*Get statewise city list and default: Maharastra*/
-    public function actionGetCitieslist($stateID=22){
+    public static function actionGetCitieslist($stateID=22){
       $result = '';
       $model = \common\models\Cities::find()
       ->where(['stateID'=>$stateID])
