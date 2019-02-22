@@ -275,9 +275,7 @@ class CollegeController extends Controller
                         if($type == 2){
                             //-vf scale=300:300
                             $thumbPath = $uploadPath.$filename."-thumb.png";
-                            /*C:\\ffmpeg\\bin\\*/
-                            $cmd = 'ffmpeg -y -i '.$filePath.' -vframes 1   '.$thumbPath." 2>&1";
-                            exec($cmd, $output, $return);
+                            Yii::$app->myhelper->videoThumb($filePath,$thumbPath);
                         }
                     }
                 }else{
@@ -543,8 +541,7 @@ class CollegeController extends Controller
                     }
                     if($model->gtype == 6){
                         $thumbPath = $uploadPath.$filename."-thumb.png";
-                        $cmd = 'ffmpeg -y -i '.$filePath.' -vframes 1   '.$thumbPath." 2>&1";
-                        exec($cmd, $output, $return);
+                        Yii::$app->myhelper->videoThumb($filePath,$thumbPath);
                     }
                 }
             }
