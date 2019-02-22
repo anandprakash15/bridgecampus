@@ -335,7 +335,7 @@ use common\models\ExamCategory;
     }
 
     public function videoThumb($source,$destination){
-        $command = "cd ".Yii::getAlias('@ffmpegPath')." && ffmpeg -y -i ".$source." -vframes 1   ".$destination." 2>&1";
+        $command = "cd ".Yii::getAlias('@ffmpegPath')." && ./ffmpeg -y -i ".$source." -vframes 1   ".$destination." 2>&1";
         exec( $command, $output, $return_var );
     }
 
