@@ -82,7 +82,7 @@ use common\models\ExamCategory;
 
     public static function getCourseLevel()
     {
-        return [1 => 'Under Graduate', 2=>'Post Graduate'];
+        return [1 => 'Under Graduate', 2=>'Post Graduate', 3 =>'Advanced Masters', 4=>'After 10th', 5=>'Doctorate', 6=>'Post Doctorate', 7=>'Post Masters'];
     }
 
     
@@ -105,17 +105,110 @@ use common\models\ExamCategory;
 
     public static function getCourseDuration()
     {
-        return [1 => '1 Day', 2=>'1 Week', 3=>'2 Week'];
+        return [1 => '1 Day Workshop', 2=>'1 Week Workshop', 3=>'3 months', 4=>'6 month', 5=>'9 months',6=>'1 Year',7=>'1.5 Years', 8=>'2 Years',9=>'3 Years', 10=>'4 Years', 11=>'5 Years'];
     }
 
     public static function getMedium()
     {
-        return [1 => 'English', 2=>'Hindi'];
+        return [0 => 'Afrikaans',
+    1 => 'Albanian',
+    2 => 'Amharic',
+    3 => 'Arabic (Egyptian Spoken)',
+    4 => 'Arabic (Levantine)',
+    5 => 'Arabic (Modern Standard)',
+    6 => 'Arabic (Moroccan Spoken)',
+    7 => 'Arabic (Overview)',
+    8 => 'Aramaic',
+    9 => 'Armenian',
+    10 => 'Assamese',
+    11 => 'Aymara',
+    12 => 'Azerbaijani',
+    13 => 'Balochi',
+    14 => 'Bamanankan',
+    15 => 'Bashkort (Bashkir)',
+    16 => 'Basque',
+    17 => 'Belarusan',
+    18 => 'Bengali',
+    19 => 'Bhojpuri',
+    20 => 'Bislama',
+    21 => 'Bosnian',
+    22 => 'Brahui',
+    23 => 'Bulgarian',
+    24 => 'Burmese',
+    25 => 'Cantonese',
+    26 => 'Catalan',
+    27 => 'Cebuano',
+    28 => 'Chechen',
+    29 => 'Cherokee',
+    30 => 'Croatian',
+    31 => 'Czech',
+    32 => 'Dakota',
+    33 => 'Danish',
+    34 => 'Dari',
+    35 => 'Dholuo',
+    36 => 'Dutch',
+    37 => 'English',
+    38 => 'Esperanto',
+    39 => 'Estonian',
+    40 => 'Éwé',
+    41 => 'Finnish',
+    42 => 'French',
+    43 => 'Georgian',
+    44 => 'German',
+    45 => 'Gikuyu',
+    46 => 'Greek',
+    47 => 'Guarani',
+    48 => 'Gujarati',
+    49 => 'Haitian Creole',
+    50 => 'Hausa',
+    51 => 'Hawaiian',
+    52 => 'Hawaiian Creole',
+    53 => 'Hebrew',
+    54 => 'Hiligaynon',
+    55 => 'Hindi',
+    56 => 'Hungarian',
+    57 => 'Icelandic',
+    58 => 'Igbo',
+    59 => 'Ilocano',
+    60 => 'Indonesian (Bahasa Indonesia)',
+    61 => 'Inuit/Inupiaq',
+    62 => 'Irish Gaelic',
+    63 => 'Italian',
+    64 => 'Japanese',
+    65 => 'Jarai',
+    66 => 'Javanese',
+    67 => 'Kiche',
+    68 => 'Kabyle',
+    69 => 'Kannada',
+    70 => 'Kashmiri',
+    71 => 'Kazakh',
+    72 => 'Khmer',
+    73 => 'KhoekhoeKorean',
+    74 => 'Kurdish',
+    75 => 'Kyrgyz',
+    76 => 'Lao',
+    77 => 'Latin',
+    78 => 'Latvian',
+    79 => 'Lingala',
+    80 => 'Lithuanian',
+    81 => 'Macedonian',
+    82 => 'Maithili',
+    83 => 'Malagasy',
+    84 => 'Malay (Bahasa Melayu)',
+    85 => 'Malayalam',
+    86 => 'Mandarin (Chinese)',
+    87 => 'Marathi',
+    88 => 'Mende',
+    89 => 'Mongolian',
+    90 => 'Nahuatl',
+    91 => 'Navajo',
+    92 => 'Nepali',
+    93 => 'Norwegian'];
     }
 
     public static function getCDType()
     {
-        return [1 => 'Certificate', 2=>'Degree'];
+        return [1 => 'Degree', 2=>'Diploma', 3=>'Hybrid',4=>'Online', 5=>'Aprentis', 6=>'Certification', 7=>'Vocational',8=>'Correspondence', 9=>'Distance Diploma', 10=>'Doctorate', 11=>'Dual Degree'];
     }
 
     public static function getNationalInternational()

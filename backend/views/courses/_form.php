@@ -37,6 +37,9 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
     
 ?>
 
+
+
+
 <div class="courses-form">
   <div class="custumbox box box-info">
    <div class="box-body">
