@@ -15,7 +15,8 @@ $this->params['breadcrumbs'][] = 'Update';
         'model' => $model,
         'specialization'=> $specialization,
 		'program' => $program,
-		'program_categoryID' => $program_categoryID
+		'program_categoryID' => $program_categoryID,
+		'exams' => $exams,
     ]) ?>
 
 </div>

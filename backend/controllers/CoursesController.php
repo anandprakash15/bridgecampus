@@ -16,6 +16,7 @@ use yii\web\Response;
 use yii\bootstrap\ActiveForm;
 use common\models\ProgramCategory;
 use common\models\CourseSpecialization;
+use common\models\Exam;
 
 /**
  * CoursesController implements the CRUD actions for Courses model.
@@ -74,8 +75,15 @@ class CoursesController extends Controller
     {
         $model = new Courses();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+        if ($model->load(Yii::$app->request->post())) {
+            $model->entrance_exams_accepted = @implode(",", $model->entrance_exams_accepted);
+            if($model->save()){
+
+                \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
+            }else{
+                \Yii::$app->getSession()->setFlash('success', 'Error Occurred.');
+            }
+           
             return $this->redirect(['index']);
         }
 
@@ -84,6 +92,7 @@ class CoursesController extends Controller
             'specialization'=> [],
             'program' => [],
             'program_categoryID' => [],
+            'exams' => [],
         ]);
     }
 
@@ -97,7 +106,7 @@ class CoursesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $program= []; $specialization = $program_categoryID  = [];
+        $program= []; $specialization = $program_categoryID = $exams =[];
 
         if(!empty($model->programID)){
            
@@ -112,8 +121,22 @@ class CoursesController extends Controller
             $program_categoryID = ArrayHelper::map(ProgramCategory::find()->where(['id'=>$model->program_categoryID])->asArray()->all(),'id','name');
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+        if(!empty($model->entrance_exams_accepted)){
+            $model->entrance_exams_accepted = explode(",", $model->entrance_exams_accepted);
+            $exams = ArrayHelper::map(Exam::find()->where(['id'=>$model->entrance_exams_accepted])->asArray()->all(),'id','exam_name');
+
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->entrance_exams_accepted = @implode(",", $model->entrance_exams_accepted);
+
+            if($model->save()){
+                \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            }else{
+                //print_r($model);exit;
+                \Yii::$app->getSession()->setFlash('error', 'Error Occurred.');
+            }
             return $this->redirect(['index']);
         }
 
@@ -122,6 +145,7 @@ class CoursesController extends Controller
             'specialization'=> $specialization,
             'program' => $program,
             'program_categoryID' => $program_categoryID,
+            'exams' => $exams,
         ]);
     }
 

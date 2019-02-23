@@ -160,8 +160,8 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
     ]) ?>
 
     <?= $form->field($model, 'entrance_exams_accepted')->widget(Select2::classname(), [
-      'options' => ['placeholder' => 'Search Program...'],
-      'data' => $program,
+      'options' => ['placeholder' => 'Search Program...','multiple' => true],
+      'data' => $exams,
       'size' => Select2::SMALL,
       'pluginOptions' => [
         'allowClear' => true,
@@ -173,8 +173,8 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
           'url' => \yii\helpers\Url::to(['exam/exam-list']),
           'dataType' => 'json',
           'data' => new JsExpression('function(params) { 
-            
-            return {q:params.term}; 
+            console.log($("#courses-programid").val());
+            return {q:params.term,programID:$("#courses-programid").val()}; 
           }')
         ],
         'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),

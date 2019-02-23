@@ -68,8 +68,8 @@ class Courses extends \yii\db\ActiveRecord
            [['programID', 'name', 'short_name', 'status', 'type','courseType'], 'required'],
 
             [['programID', 'duration', 'medium_of_teaching', 'no_of_seats', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
-            [['required_skillset', 'elagibility_criteria', 'course_curriculam', 'job_profiles', 'top_recruiters', 'course_high_lights', 'entrance_exams_accepted', 'admission_process', 'important_dates', 'seat_brakeup', 'placement_details', 'course_credits', 'course_duration_hours', 'description'], 'string'],
-            [['createdDate', 'updatedDate'], 'safe'],
+            [['required_skillset', 'elagibility_criteria', 'course_curriculam', 'job_profiles', 'top_recruiters', 'course_high_lights', 'admission_process', 'important_dates', 'seat_brakeup', 'placement_details', 'course_credits', 'course_duration_hours', 'description'], 'string'],
+            [['createdDate', 'updatedDate', 'entrance_exams_accepted'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['short_name'], 'string', 'max' => 100],
             [['code'], 'string', 'max' => 20],
