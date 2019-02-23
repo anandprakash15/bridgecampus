@@ -34,7 +34,7 @@ echo Yii::$app->message->display();
                     [
                         'attribute' => 'status',
                         'filter' => $type,
-                        'value' => function($model)use($status){
+                        'value' => function($model)use($type){
                             return $type[$model['type']];
                         }
                     ],
@@ -70,7 +70,7 @@ echo Yii::$app->message->display();
                     [
                         'attribute' => 'status',
                         'filter' => $type,
-                        'value' => function($model)use($status){
+                        'value' => function($model)use($type){
                             return $type[$model['type']];
                         }
                     ],

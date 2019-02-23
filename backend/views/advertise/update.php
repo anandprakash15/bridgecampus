@@ -12,10 +12,14 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="advertise-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+	<h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+	<?= $this->render('_form', [
+		'model' => $model,
+		'coll_univID' => $coll_univID,
+		'program' => $program,
+		'course' => $course,
+		'col_uni_adv'=>$col_uni_adv
+	]) ?>
 
 </div>

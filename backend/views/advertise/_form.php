@@ -10,6 +10,7 @@ use dosamigos\ckeditor\CKEditor;
 use kartik\widgets\DatePicker;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
+use yii\web\View;
 use backend\controllers\UserController;
 
 /* @var $this yii\web\View */
@@ -51,6 +52,91 @@ use backend\controllers\UserController;
         'templateSelection' => new JsExpression('function (type) { return type.text; }'),
       ],
     ]);?>
+
+    <?= $form->field($model, 'gtype')->dropDownList(Yii::$app->myhelper->getAdvertisePossition(),['class'=>'form-control'])?>
+    <style type="text/css">
+      #select2-advertise-college_university_advpurposeid-results{
+        /*min-height: 500px !important;*/
+      }
+      
+    </style>
+    <?php
+$formatJs = <<< 'JS'
+var formatRepocuadd = function (repo) {
+    if (repo.loading) {
+        return repo.text;
+    }
+
+    if (repo.gtype == 6) {
+      markup = '<div class="row">' + 
+          '<div class="col-sm-5">' +
+              '<video class="img-responsive" controls  controlsList="nodownload"  >' +
+                '<source src="' + repo.fullpath + '" type="video/mp4">' +
+               ' Your browser does not support the video tag.' +
+              '</video>' +
+          '</div>' +
+          '<div class="col-sm-7" style="padding-left:5px">' + repo.url + '</div>' + 
+      '</div>';
+    }else{
+      markup = '<div class="row">' + 
+          '<div class="col-sm-5">' +
+              '<img src="' + repo.fullpath + '" class="img-responsive" />' +
+          '</div>' +
+          '<div class="col-sm-7" style="padding-left:5px">' + repo.url + '</div>' + 
+      '</div>';
+    }
+    return '<div style="overflow:hidden;">' + markup + '</div>';
+};
+var formatRepoSelectioncuadd = function (repo) {
+    return repo.url;
+}
+JS;
+ 
+// Register the formatting script
+$this->registerJs($formatJs, View::POS_HEAD);
+ 
+// script to parse the results into the format expected by Select2
+$resultsJs = <<< JS
+function (data, params) {
+    params.page = params.page || 1;
+    return {
+        results: data.items,
+        pagination: {
+            more: (params.page * 1000) < data.total_count
+        }
+    };
+}
+JS;
+// render your widget
+
+echo $form->field($model, 'college_university_advpurposeID')->widget(Select2::classname(), [
+    'options' => ['placeholder' => 'Search Program...'],
+    'size' => Select2::SMALL,
+    'data' => $col_uni_adv,
+    'pluginOptions' => [
+        'allowClear' => true,
+        'minimumInputLength' => 0,
+        'language' => [
+          'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+        ],
+        'ajax' => [
+           'url' => \yii\helpers\Url::to(['advertise/get-advertise-content']),
+            'dataType' => 'json',
+            'delay' => 250,
+            'data' => new JsExpression('function(params) { return {q: params.term,
+            type:$("#advertise-type").val(),
+            coll_univID:$("#advertise-coll_univid").val(),
+            gtype:$("#advertise-gtype").val()
+          }; }'),
+            'processResults' => new JsExpression($resultsJs),
+            'cache' => true
+        ],
+        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+        'templateResult' => new JsExpression('formatRepocuadd'),
+        'templateSelection' => new JsExpression('formatRepoSelectioncuadd'),
+    ],
+]);
+    ?>
 
 
    <?= $form->field($model, 'programID')->widget(Select2::classname(), [
@@ -181,9 +267,8 @@ use backend\controllers\UserController;
 
     <?= $form->field($model, 'priority')->dropDownList(Yii::$app->myhelper->getPriority(),['class'=>'form-control'])?>
 
-    <?= $form->field($model, 'gtype')->dropDownList(Yii::$app->myhelper->getAdvertisePossition(),['class'=>'form-control'])?>
 
-   
+
 
 
      <?= $form->field($model, 'description')->widget(CKEditor::className(), [

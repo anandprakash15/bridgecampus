@@ -4,12 +4,18 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Advertise;
+use common\models\University;
+use common\models\Courses;
+use common\models\College;
+use common\models\Program;
+use common\models\CollegeUniversityAdvpurpose;
 use common\models\search\AdvertiseSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * AdvertiseController implements the CRUD actions for Advertise model.
@@ -83,6 +89,7 @@ class AdvertiseController extends Controller
             'coll_univID' => [],
             'program' => [],
             'course' => [],
+            'col_uni_adv'=>[]
         ]);
     }
 
@@ -96,6 +103,23 @@ class AdvertiseController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $coll_univID = $program = $course = $col_uni_adv = [];
+        if($model->type == 1){
+            $coll_univID = ArrayHelper::map(University::find()->where(['id'=>$model->coll_univID])->asArray()->all(),'id','name');
+        }else{
+            $coll_univID = ArrayHelper::map(College::find()->where(['id'=>$model->coll_univID])->asArray()->all(),'id','name');
+        }
+
+        if(!empty($model->college_university_advpurposeID)){
+            $col_uni_adv = ArrayHelper::map(CollegeUniversityAdvpurpose::find()->where(['id'=>$model->college_university_advpurposeID])->asArray()->all(),'id','url');
+        }
+        if(!empty($model->programID)){
+            $program = ArrayHelper::map(Program::find()->where(['id'=>$model->programID])->asArray()->all(),'id','name');
+        }
+
+        if(!empty($model->courseID)){
+            $course = ArrayHelper::map(Courses::find()->where(['id'=>$model->courseID])->asArray()->all(),'id','name');
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -103,6 +127,10 @@ class AdvertiseController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'coll_univID' => $coll_univID,
+            'program' => $program,
+            'course' => $course,
+            'col_uni_adv'=>$col_uni_adv
         ]);
     }
 
@@ -207,5 +235,26 @@ class AdvertiseController extends Controller
             }
         }
         return $out;
+    }
+
+    public function actionGetAdvertiseContent($q="",$type,$coll_univID,$gtype){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $query = new Query;
+        $items = [];
+        if(!empty($type) && !empty($coll_univID) && !empty($gtype)){
+
+
+            $query->select(['*'])
+            ->from('college_university_advpurpose')
+            ->where(['like', 'url', $q])
+            ->andWhere(['status'=>1,'type'=>$type,'coll_univID'=>$coll_univID,"gtype"=>$gtype]);
+            $command = $query->createCommand();
+            $items = $command->queryAll();
+            foreach ($items as $key => $item) {
+                $items[$key]['fullpath'] = Yii::$app->myhelper->getFileBasePath($item['type'],$item['coll_univID'])."advertisement/".$item['url'];
+            }
+        }
+        return ['items'=>$items];
     }
 }
