@@ -90,6 +90,9 @@ class CollegeUniversityAdvpurpose extends \yii\db\ActiveRecord
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
+            'urlImage' => 'Select File',
+
+            
         ];
     }
 

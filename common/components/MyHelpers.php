@@ -92,9 +92,85 @@ use common\models\ExamCategory;
         return [1 => 'Very High', 2=>'High', 3=>'Moderate', 4=>'low', 5=>'Very Low'];
     }
 
+    public static function getAdvertisePossitionArray()
+    {
+
+        return $data = [
+        1 => "Main banner",
+        2 => "Featured Colleges",
+        6 => "Featured videos",
+        3 => "Sponsored colleges",
+        4 => "Bottom banner",
+        5 => "Top banner",
+        7 => "Left banner",
+        8 => "Right banner",
+        9 => "Middle banner",
+        10 => "Featured colleges",
+        11 => "Top Platinum",
+        12 => "Middle Gold",
+        13 => "Middle Silver",
+        14 => "Middle bronze",
+        15 => "Right floating",
+        16 => "Bottom featured",
+        17 => "Featured ads of colleges accepting the exam",
+        18 => "Right banners",
+        19 => "Bottom banner",
+        20 => "Top Banner",
+        21 => "Featured colleges offering the course",
+        22 => "Right banners",
+        23 => "Bottom banner",
+        24 => "Top Banner",
+        25 => "Right",
+        26 => "Top",
+];
+
+    }
+
     public static function getAdvertisePossition()
     {
-        return [1 => 'Top', 2=>'Bottom', 3=>'Left', 4=>'Right', 5=>'Center', 6=>'Video'];
+
+        return $data = [
+    "Home page" => [
+        1 => "Main banner",
+        2 => "Featured Colleges",
+        6 => "Featured videos",
+        3 => "Sponsored colleges",
+        4 => "Bottom banner",
+    ],
+    "Inner pages - college/University" => [
+        5 => "Top banner",
+        7 => "Left banner",
+        8 => "Right banner",
+        9 => "Middle banner",
+        10 => "Featured colleges",
+    ],
+    "Landing pages - college/University" => [
+        11 => "Top Platinum",
+        12 => "Middle Gold",
+        13 => "Middle Silver",
+        14 => "Middle bronze",
+        15 => "Right floating",
+        16 => "Bottom featured",
+    ],
+    "Exam page" => [
+        17 => "Featured ads of colleges accepting the exam",
+        18 => "Right banners",
+        19 => "Bottom banner",
+        20 => "Top Banner",
+    ],
+    "Course page" => [
+        21 => "Featured colleges offering the course",
+        22 => "Right banners",
+        23 => "Bottom banner",
+        24 => "Top Banner",
+    ],
+    "General" => [
+        25 => "Right",
+        26 => "Top",
+    ]
+];
+
+       // return [1 => 'Top', 2=>'Bottom', 3=>'Left', 4=>'Right', 5=>'Center', 6=>'Video'];
     }
 
 

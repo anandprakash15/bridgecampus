@@ -18,9 +18,10 @@ $this->params['breadcrumbs'][] = $college->name;
 $this->params['breadcrumbs'][] = 'Advertise Materials';
 
 $status = Yii::$app->myhelper->getActiveInactive();
-$gtype = Yii::$app->myhelper->getAdvertisePossition();
+$gtype = Yii::$app->myhelper->getAdvertisePossitionArray();
 
 echo Yii::$app->message->display();
+
 ?>
 
 <div class="college-index">
@@ -51,6 +52,7 @@ echo Yii::$app->message->display();
                             return $gtype[$model['gtype']];
                         }
                     ],
+
                     [
                         'attribute' => 'status',
                         'filter' => $status,

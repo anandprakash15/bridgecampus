@@ -53,7 +53,14 @@ use backend\controllers\UserController;
       ],
     ]);?>
 
-    <?= $form->field($model, 'gtype')->dropDownList(Yii::$app->myhelper->getAdvertisePossition(),['class'=>'form-control'])?>
+   <?= $form->field($model, 'gtype')->widget(Select2::classname(), [
+    'data' => Yii::$app->myhelper->getAdvertisePossition(),
+    'options' => ['placeholder' => 'Select...'],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]);?>
+    
     <style type="text/css">
       #select2-advertise-college_university_advpurposeid-results{
         /*min-height: 500px !important;*/
