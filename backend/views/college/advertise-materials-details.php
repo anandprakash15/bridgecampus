@@ -78,10 +78,13 @@ if($model->isNewRecord){
   </div>
 </div>
 </div>
+<?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../college/view')."");?>
+
 <?php 
 $this->registerCss("
   .app-title{
     display: none;
   }
   ");
-  ?>
+  
+

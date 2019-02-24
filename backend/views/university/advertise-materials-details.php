@@ -76,6 +76,7 @@ $this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name,
     </div>
   </div>
 </div>
+<?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/view')."");?>
 <?php 
 $this->registerCss("
   .app-title{
