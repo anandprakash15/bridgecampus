@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $university->name;
 $this->params['breadcrumbs'][] = 'Advertise Materials';
 
 $status = Yii::$app->myhelper->getActiveInactive();
-$gtype = Yii::$app->myhelper->getAdvertisePossition();
+$gtype = Yii::$app->myhelper->getAdvertisePossitionArray();
 
 echo Yii::$app->message->display();
 ?>
@@ -71,5 +71,4 @@ $this->registerCss("
 	}
 	");
 	?>
-
-        <?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>
+<?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>

@@ -7,7 +7,8 @@ use yii\helpers\ArrayHelper;
 use kartik\widgets\FileInput;
 use app\components\CustomUrlRule;
 use dosamigos\ckeditor\CKEditor;
-
+use kartik\widgets\Select2;
+use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\UniversitySearch */
@@ -45,7 +46,13 @@ $this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name,
      ]);?>
 
 
-     <?= $form->field($model, 'gtype')->dropDownList(Yii::$app->myhelper->getAdvertisePossition(),['class'=>'form-control'])?>
+     <?= $form->field($model, 'gtype')->widget(Select2::classname(), [
+        'data' => Yii::$app->myhelper->getAdvertisePossition(),
+        'options' => ['placeholder' => 'Select...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);?>
 
 
       <?php echo $form->field($model, 'urlImage')->widget(FileInput::classname(), [
