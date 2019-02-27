@@ -39,7 +39,7 @@ class Program extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'status'], 'required'],
-            [['sortno', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['program_code', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 200],
@@ -69,7 +69,7 @@ class Program extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'sortno' => 'Sortno',
+            'program_code' => 'Program Code',
             'status' => 'Status',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',

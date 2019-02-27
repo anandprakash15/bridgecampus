@@ -10,7 +10,7 @@ use common\components\CustomUrlRule;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Course';
-$this->params['subtitle'] = '<h1>Course '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'program-category/create?id='.CustomUrlRule::encryptor("encrypt",$program['id']),'Add').'</h1>';
+$this->params['subtitle'] = '<h1>Course List</h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Programs', 'url' => ['/program/index']];
 $this->params['breadcrumbs'][] = $program['name'];
 $this->params['breadcrumbs'][] = $this->title;
