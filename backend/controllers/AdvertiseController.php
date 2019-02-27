@@ -58,12 +58,12 @@ class AdvertiseController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    /*public function actionView($id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
+    }*/
 
     /**
      * Creates a new Advertise model.
@@ -81,7 +81,8 @@ class AdvertiseController extends Controller
                 print_r($model);
                 exit;
             }
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -122,7 +123,8 @@ class AdvertiseController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

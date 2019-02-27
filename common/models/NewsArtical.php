@@ -48,7 +48,7 @@ class NewsArtical extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['natype', 'type', 'title', 'description', 'national_international'], 'required'],
+            [['natype', 'type', 'title', 'description', 'national_international','startDate', 'endDate'], 'required'],
             [['natype', 'type', 'coll_univ_examID', 'programID', 'courseID', 'national_international', 'status', 'createdBy', 'updatedBy','countryID','cityID','stateID'], 'integer'],
             [['title', 'description'], 'string'],
             [['startDate', 'endDate', 'createdDate', 'updatedDate'], 'safe'],
