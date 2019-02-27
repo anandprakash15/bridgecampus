@@ -4,12 +4,16 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Exam;
+use common\models\Courses;
+use common\models\College;
+use common\models\Program;
 use common\models\search\ExamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
-
+use yii\web\Response;
+use yii\helpers\ArrayHelper;
 /**
  * ExamController implements the CRUD actions for Exam model.
  */
@@ -68,11 +72,14 @@ class ExamController extends Controller
         $model = new Exam();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'program' => [],
+            'course' => [],
         ]);
     }
 
@@ -86,13 +93,24 @@ class ExamController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+         $program = $course= [];
+        if(!empty($model->programID)){
+            $program = ArrayHelper::map(Program::find()->where(['id'=>$model->programID])->asArray()->all(),'id','name');
+        }
+
+        if(!empty($model->courseID)){
+            $course = ArrayHelper::map(Courses::find()->where(['id'=>$model->courseID])->asArray()->all(),'id','name');
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'program' => $program,
+            'course' => $course,
         ]);
     }
 

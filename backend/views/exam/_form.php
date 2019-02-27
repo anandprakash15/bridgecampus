@@ -46,7 +46,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
 
      <?= $form->field($model, 'programID')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'Search...'],
-        //'data' => $examcatID,
+        'data' => $program,
         'size' => Select2::SMALL,
         'pluginOptions' => [
             'allowClear' => true,
@@ -67,7 +67,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
 
      <?= $form->field($model, 'courseID')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'Search...'],
-        // 'data' => $courseID,
+        'data' => $course,
         'size' => Select2::SMALL,
         'pluginOptions' => [
             'allowClear' => true,
