@@ -47,6 +47,23 @@ class ProgramController extends Controller
     }
 
     /**
+     * Lists all Program models.
+     * @return mixed
+     */
+    public function actionCourses($id)
+    {
+        $program = Program::findOne($id);
+        $searchModel = new ProgramSearch();
+        $dataProvider = $searchModel->courses(Yii::$app->request->queryParams,$id);
+        //print_r($dataProvider->getModels());exit;
+        return $this->render('courses', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'program' => $program
+        ]);
+    }
+
+    /**
      * Displays a single Program model.
      * @param integer $id
      * @return mixed

@@ -1,15 +1,18 @@
-
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\grid\GridView;
+use common\components\CustomUrlRule;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\SpecializationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Programs';
-$this->params['subtitle'] = '<h1>Program '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
+$this->title = 'Courses';
+$this->params['subtitle'] = '<h1>Course List</h1>';
+$this->params['breadcrumbs'][] = ['label' => 'Programs', 'url' => ['/program/index']];
+$this->params['breadcrumbs'][] = $program['name'];
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
 
@@ -22,40 +25,21 @@ echo Yii::$app->message->display();
             <?= GridView::widget([
                 'striped'=>false,
                 'hover'=>true,
-                'panel'=>['type'=>'default', 'heading'=>'Programs List','after'=>false],
+                'panel'=>['type'=>'default', 'heading'=>'Course List','after'=>false],
                 'toolbar'=> [
                     '{export}',
                     '{toggleData}',
                 ],
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
+                'rowOptions' => function ($model, $key, $index, $grid) {
+                    $url = Url::to(['courses/update','id'=> $model['id']]);
+                    return ['onclick' => 'location.href="'.$url.'"'];
+                },
                 'columns' => [
                     ['class' => 'kartik\grid\SerialColumn'],
-
-                    'name',
-                    [
-                        'attribute' => 'status',
-                        'filter' => $status,
-                        'value' => function($model)use($status){
-                            return $status[$model['status']];
-                        }
-
+                        'name'
                     ],
-
-                     [
-                        'class' => 'kartik\grid\ActionColumn',
-                        'width'=>'30%',
-                        'buttons' => [
-
-                            'info' => function ($url, $model, $key) {
-                                $btn = Html::button("Courses",['class'=>'btn btn-primary btn btn-xs connect_icon']);
-                                return Html::a($btn,["program/courses", 'id' => $model->id],['title'=>'Info']);
-
-                            },
-                        ],
-                        'template' => '{info}'
-                    ],
-                ],
                
                 'exportConfig'=> [
                     GridView::CSV=>[
