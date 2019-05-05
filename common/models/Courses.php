@@ -117,7 +117,7 @@ class Courses extends \yii\db\ActiveRecord
         return [ 
             'id' => 'ID',
             'programID' => 'Program Name',
-            'Course Name' => 'Name',
+            'name' => 'Course Name',
             'short_name' => 'Short Name',
             'code' => 'Course Code',
             'duration' => 'Course Duration',
@@ -126,18 +126,18 @@ class Courses extends \yii\db\ActiveRecord
             'course_curriculam' => 'Course Curriculam',
             'job_profiles' => 'Job Profiles',
             'top_recruiters' => 'Top Recruiters',
-            'medium_of_teaching' => 'Medium Of Teaching',
+            'medium_of_teaching' => 'Medium of Teaching',
             'course_high_lights' => 'Course High Lights',
             'entrance_exams_accepted' => 'Entrance Exams Accepted',
             'admission_process' => 'Admission Process',
             'important_dates' => 'Important Dates',
-            'no_of_seats' => 'No Of Seats',
+            'no_of_seats' => 'No of Seats',
             'seat_brakeup' => 'Seat Brakeup',
             'placement_details' => 'Placement Details',
             'course_credits' => 'Course Credits',
             'sortno' => 'Sortno',
             'course_duration_hours' => 'Course Duration in Hours',
-            'courselevel' => 'Course Level',
+            'courselevel' => 'Certification Type',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
@@ -145,8 +145,9 @@ class Courses extends \yii\db\ActiveRecord
             'updatedBy' => 'Updated By',
             'full_part_time' => 'Course Type',
             'type' => 'Qualification Type',
-            'description' => 'Course Overview',
-            'courseType' => 'Course Affiliation Type',
+            'description' => 'Course Description',
+            
+            'courseType' => 'Affiliation Type',
         ]; 
     } 
 

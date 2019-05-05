@@ -228,15 +228,6 @@ return array (
       '@yii2mod/alert' => $vendorDir . '/yii2mod/yii2-sweet-alert',
     ),
   ),
-  '2amigos/yii2-ckeditor-widget' => 
-  array (
-    'name' => '2amigos/yii2-ckeditor-widget',
-    'version' => '2.1.0.0',
-    'alias' => 
-    array (
-      '@dosamigos/ckeditor' => $vendorDir . '/2amigos/yii2-ckeditor-widget/src',
-    ),
-  ),
   'moonlandsoft/yii2-phpexcel' => 
   array (
     'name' => 'moonlandsoft/yii2-phpexcel',
@@ -307,6 +298,15 @@ return array (
     'alias' => 
     array (
       '@iutbay/yii2kcfinder' => $vendorDir . '/iutbay/yii2-kcfinder',
+    ),
+  ),
+  '2amigos/yii2-ckeditor-widget' => 
+  array (
+    'name' => '2amigos/yii2-ckeditor-widget',
+    'version' => '2.2.0.0',
+    'alias' => 
+    array (
+      '@dosamigos/ckeditor' => $vendorDir . '/2amigos/yii2-ckeditor-widget/src',
     ),
   ),
 );

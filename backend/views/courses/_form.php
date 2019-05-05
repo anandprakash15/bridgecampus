@@ -37,9 +37,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
     
 ?>
 
-
-
-
 <div class="courses-form">
   <div class="custumbox box box-info">
    <div class="box-body">
@@ -98,6 +95,16 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
 
     <?= $form->field($model, 'duration')->dropDownList(Yii::$app->myhelper->getCourseDuration(),['class'=>'form-control'])?>
 
+    <?= $form->field($model, 'medium_of_teaching')->dropDownList(Yii::$app->myhelper->getMedium(),['class'=>'form-control'])?>
+
+    <?= $form->field($model, 'description')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
 
     <?= $form->field($model, 'required_skillset')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
@@ -108,7 +115,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       ]
     ]) ?>
 
-    <?= $form->field($model, 'elagibility_criteria')->widget(CKEditor::className(), [
+    <?= $form->field($model, 'course_high_lights')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -117,15 +124,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       ]
     ]) ?>
 
-
-    <?= $form->field($model, 'course_curriculam')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
 
     <?= $form->field($model, 'job_profiles')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
@@ -145,73 +143,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       ]
     ]) ?>
 
-    <?= $form->field($model, 'medium_of_teaching')->dropDownList(Yii::$app->myhelper->getMedium(),['class'=>'form-control'])?>
-
-
-
-
-    <?= $form->field($model, 'course_high_lights')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
-
-    <?= $form->field($model, 'entrance_exams_accepted')->widget(Select2::classname(), [
-      'options' => ['placeholder' => 'Search Program...','multiple' => true],
-      'data' => $exams,
-      'size' => Select2::SMALL,
-      'pluginOptions' => [
-        'allowClear' => true,
-        'minimumInputLength' => 1,
-        'language' => [
-          'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-        ],
-        'ajax' => [
-          'url' => \yii\helpers\Url::to(['exam/exam-list']),
-          'dataType' => 'json',
-          'data' => new JsExpression('function(params) { 
-            console.log($("#courses-programid").val());
-            return {q:params.term,programID:$("#courses-programid").val()}; 
-          }')
-        ],
-        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-        'templateResult' => new JsExpression('function(type) { return type.text; }'),
-        'templateSelection' => new JsExpression('function (type) { return type.text; }'),
-      ],
-    ]);?>
-
-    <?= $form->field($model, 'admission_process')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
-
-    <?= $form->field($model, 'important_dates')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
-
-    <?= $form->field($model, 'no_of_seats')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'seat_brakeup')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
-
     <?= $form->field($model, 'placement_details')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
@@ -220,17 +151,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
         /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
       ]
     ]) ?>
-
-    <?= $form->field($model, 'course_credits')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
-
-    <?= $form->field($model, 'course_duration_hours')->textInput(['maxlength' => true]) ?>
 
     
 
