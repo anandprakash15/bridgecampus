@@ -33,6 +33,7 @@ use common\models\CollegeUniversityAdvpurpose;
 use common\models\search\CollegeUniversityAdvpurposeSearch;
 use common\models\CourseSpecialization;
 use common\models\UniversityCollegeCourseSpecialization;
+use common\models\Exam;
 
 /**
  * CollegeController implements the CRUD actions for College model.
@@ -126,36 +127,62 @@ class CollegeController extends Controller
             $uccModel = new UniversityCollegeCourse();
             $model = new CourseDetails();
         }else{
-            $uccModel = UniversityCollegeCourse::findOne($uccID);
+            $uccModel = UniversityCollegeCourse::find()->joinWith(['course'])->where(['university_college_course.id'=>$uccID])->one();
             $model = CourseDetails::findOne(['uccID'=>$uccModel->id]);
         }
+        $model->scenario = CourseDetails::SCENARIO_COLLEGE_COURSE;
         $university =  $course = [];
 
         if(!empty($uccModel->universityID)){
             $university = ArrayHelper::map(University::find()->where(['id'=>$uccModel->universityID])->asArray()->all(),'id','name');
         }
 
-
         if($uccModel->courseID){
             $course = ArrayHelper::map(Courses::find()->where(['id'=>$uccModel->courseID])->asArray()->all(),'id','name');
         }
 
         $uccModel->collegeID = $college->id;
-        if ($model->load(Yii::$app->request->post()) && $uccModel->load(Yii::$app->request->post())) {
-             $uccModel->status = 1;
+        if(empty($model->affiliation_type)){
+            $model->affiliation_type = 1;
+        }
+
+        $approved_by = $exams =  [];
+
+        if(!empty($model->approved_by)){
+
+            $approved_by = ArrayHelper::map(Approved::find()->where(new \yii\db\Expression("id IN(".$model->approved_by.")"))->asArray()->all(),'id','name');
+            $model->approved_by = explode(",",$model->approved_by);
+        }
+
+        if(!empty($model->entrance_exams_accepted)){
+            $model->entrance_exams_accepted = explode(",", $model->entrance_exams_accepted);
+            $exams = ArrayHelper::map(Exam::find()->where(['id'=>$model->entrance_exams_accepted])->asArray()->all(),'id','exam_name');
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $uccModel->load(Yii::$app->request->post())) 
+        {
+            $model->approved_by = implode(",",(array) $model->approved_by);
+            $model->entrance_exams_accepted = @implode(",", $model->entrance_exams_accepted);
+            if($model->affiliation_type == 1){
+                $uccModel->universityID = "";
+            }else{
+                $model->course_mode = "";
+                $model->eligibility_criteria = "";
+                $model->course_curriculum = "";
+                $model->entrance_exams_accepted = "";
+            }
+
+            $uccModel->status = 1;
             if($uccModel->save()){
                $model->uccID =  $uccModel->id;
-              
-               if($model->save()){
-                \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-               }else{
-                print_r($model);exit;
-               }
-            }else{
-                 print_r($uccModel);exit;
+                if($model->save()){
+                    \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+                }else{
+                    //print_r($model);exit;
+                    \Yii::$app->getSession()->setFlash('error', 'Error Occurred.');
+                }
             }
-        
-         return $this->redirect(['courses','id'=>$college->id]);
+            return $this->redirect(['courses','id'=>$college->id]);
         }
         
 
@@ -165,6 +192,8 @@ class CollegeController extends Controller
             'college' => $college,
             'university' => $university,
             'course' => $course,
+            'exams' => $exams,
+            'approved_by'=>$approved_by
         ]);
     }
 

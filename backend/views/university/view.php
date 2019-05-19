@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box-body">
             <table class="table table-bordered">
                 <tbody>
-                   <tr>
+                 <tr>
                     <th class="col-md-4">Logo:</th>
                     <td class="col-md-8"><?= Html::img(Url::to($fBasePath.$model->logourl),['class' => 'img-responsive','style'=>'width:100px;height:100px']) ?></td>
                 </tr>                  
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td class="col-md-8"><?= $model->grade ?></td>
                 </tr>
                 <tr>
-                    <th class="col-md-4">Website Url:</th>
+                    <th class="col-md-4">Website URL:</th>
                     <td class="col-md-8"><a target="_blank" href="<?= $model->websiteurl ?>"><?= $model->websiteurl ?></a></td>
                 </tr>
                 <tr>
@@ -55,21 +55,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th class="col-md-4">Approved By:</th>
                     <td class="col-md-8">
                         <?php foreach($model->approved_by as $id => $approved_by ){ ?>
-                         <a href="<?= Url::to(['approved/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $approved_by ?></a> 
-                     <?php } ?>
-                 </td>
-             </tr>
-             <tr>
+                           <a href="<?= Url::to(['approved/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $approved_by ?></a> 
+                       <?php } ?>
+                   </td>
+               </tr>
+               <tr>
                 <th class="col-md-4">Accredited By:</th>
                 <td class="col-md-8">
                     <?php foreach($model->accredited_by as $id => $accredited_by ){ ?>
-                     <a href="<?= Url::to(['accredited/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $accredited_by ?></a> 
-                 <?php } ?>
-             </td>
-         </tr>
-
-     </tbody>
- </table>
+                       <a href="<?= Url::to(['accredited/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $accredited_by ?></a> 
+                   <?php } ?>
+               </td>
+           </tr>
+           <tr>
+            <th class="col-md-4">Affiliate To:</th>
+            <td class="col-md-8">
+                <?php foreach($model->affiliate_to as $id => $affiliate_to ){ ?>
+                 <a href="<?= Url::to(['affiliate/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $affiliate_to ?></a> 
+             <?php } ?>
+         </td>
+     </tr>
+ </tbody>
+</table>
 </div>
 </div>
 <div class="custumbox box box-success">
@@ -82,6 +89,58 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="box-body">
         <?= $model->about ?>
+    </div>
+</div>
+
+<div class="custumbox box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">Vision</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <?= $model->vision ?>
+    </div>
+</div>
+
+<div class="custumbox box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">Mission</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <?= $model->mission ?>
+    </div>
+</div>
+
+<div class="custumbox box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">Motto</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <?= $model->moto ?>
+    </div>
+</div>
+
+<div class="custumbox box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">Motto</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <?= $model->moto ?>
     </div>
 </div>
 

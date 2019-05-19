@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $name
- * @property string $sortname
+ * @property string $shortname
  * @property string $createdDate
  * @property int $createdBy
  * @property string $updatedDate
@@ -32,11 +32,11 @@ class Accredited extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'sortname','status'], 'required'],
+            [['name', 'shortname','status'], 'required'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['createdBy', 'updatedBy', 'status'], 'integer'],
             [['name'], 'string', 'max' => 200],
-            [['sortname'], 'string', 'max' => 30],
+            [['shortname'], 'string', 'max' => 30],
         ];
     }
 
@@ -61,7 +61,7 @@ class Accredited extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'sortname' => 'Short Name',
+            'shortname' => 'Short Name',
             'createdDate' => 'Created Date',
             'createdBy' => 'Created By',
             'updatedDate' => 'Updated Date',

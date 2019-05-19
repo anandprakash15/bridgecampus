@@ -19,7 +19,7 @@ class CoursesSearch extends Courses
     public function rules()
     {
         return [
-            [['id', 'programID', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'description', 'courseType'], 'integer'],
+            [['id', 'programID', 'sortno', 'certification_type', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
             [['name', 'code', 'createdDate', 'updatedDate','program'], 'safe'],
         ];
     }
@@ -63,7 +63,7 @@ class CoursesSearch extends Courses
             'id' => $this->id,
             'programID' => $this->programID,
             'sortno' => $this->sortno,
-            'courselevel' => $this->courselevel,
+            'certification_type' => $this->certification_type,
             'createdDate' => $this->createdDate,
             'updatedDate' => $this->updatedDate,
             'courses.status' => $this->status,
@@ -71,7 +71,6 @@ class CoursesSearch extends Courses
             'updatedBy' => $this->updatedBy,
             'full_part_time' => $this->full_part_time,
             'type' => $this->type,
-            'description' => $this->description,
             'courseType' => $this->courseType,
         ]);
 

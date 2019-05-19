@@ -83,7 +83,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true,'disabled'=>true]) ?>
     <?php } ?>
 
-    <?= $form->field($model, 'courselevel')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
+    <?= $form->field($model, 'certification_type')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
 
     <?= $form->field($model, 'type')->dropDownList(Yii::$app->myhelper->getCDType(),['class'=>'form-control'])?>
 
@@ -96,15 +96,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
     <?= $form->field($model, 'duration')->dropDownList(Yii::$app->myhelper->getCourseDuration(),['class'=>'form-control'])?>
 
     <?= $form->field($model, 'medium_of_teaching')->dropDownList(Yii::$app->myhelper->getMedium(),['class'=>'form-control'])?>
-
-    <?= $form->field($model, 'description')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,image,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
 
     <?= $form->field($model, 'required_skillset')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],

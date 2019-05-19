@@ -7,6 +7,8 @@ use yii\helpers\ArrayHelper;
 use kartik\widgets\FileInput;
 use app\components\CustomUrlRule;
 use dosamigos\ckeditor\CKEditor;
+use kartik\widgets\Select2;
+use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\UniversitySearch */
@@ -30,11 +32,82 @@ $this->params['breadcrumbs'][] = 'Details';
                'options' => ['enctype' => 'multipart/form-data'],
            ]);?>
 
-            <?= $form->field($model, 'duration')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'course_mode')->dropDownList(Yii::$app->myhelper->getCourseMode(),['class'=>'form-control','prompt'=>'Select Course Mode'])?>
 
-            <?= $form->field($model, 'fees')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'eligibility_criteria')->widget(CKEditor::className(), [
+              'options' => ['rows' => 6],
+              'preset' => 'standard',
+              'clientOptions'=>[
+                'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+                /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+              ]
+            ]) ?>
+
+            <?= $form->field($model, 'course_curriculum')->widget(CKEditor::className(), [
+              'options' => ['rows' => 6],
+              'preset' => 'standard',
+              'clientOptions'=>[
+                'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+                /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+              ]
+            ]) ?>
+
+            <?= Html::hiddenInput('name', $universityandcourse->course->programID,['id'=>'courses-programid']); ?>
+            <?= $form->field($model, 'entrance_exams_accepted')->widget(Select2::classname(), [
+              'options' => ['placeholder' => 'Search Program...','multiple' => true],
+              'data' => $exams,
+              'size' => Select2::SMALL,
+              'pluginOptions' => [
+                'allowClear' => true,
+                'minimumInputLength' => 1,
+                'language' => [
+                  'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+                ],
+                'ajax' => [
+                  'url' => \yii\helpers\Url::to(['exam/exam-list']),
+                  'dataType' => 'json',
+                  'data' => new JsExpression('function(params) { 
+                    console.log($("#courses-programid").val());
+                    return {q:params.term,programID:$("#courses-programid").val()}; 
+                  }')
+                ],
+                'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                'templateResult' => new JsExpression('function(type) { return type.text; }'),
+                'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+              ],
+            ]);?>
 
             
+
+            <?= $form->field($model, 'admission_process')->widget(CKEditor::className(), [
+              'options' => ['rows' => 6],
+              'preset' => 'standard',
+              'clientOptions'=>[
+                'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+                /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+              ]
+            ]) ?>
+
+
+            <?= $form->field($model, 'important_dates')->widget(CKEditor::className(), [
+              'options' => ['rows' => 6],
+              'preset' => 'standard',
+              'clientOptions'=>[
+                'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+                /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+              ]
+            ]) ?>
+
+            <?= $form->field($model, 'hereunder')->dropDownList(Yii::$app->myhelper->getHereunder(),['class'=>'form-control','prompt'=>'Select hereunder'])?>
+
+            <?= $form->field($model, 'course_credits')->widget(CKEditor::className(), [
+              'options' => ['rows' => 6],
+              'preset' => 'standard',
+              'clientOptions'=>[
+                'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+                /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+              ]
+            ]) ?>
 
             <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 

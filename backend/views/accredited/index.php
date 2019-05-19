@@ -32,7 +32,7 @@ echo Yii::$app->message->display();
                     ['class' => 'kartik\grid\SerialColumn'],
 
                     'name',
-                    'sortname',
+                    'shortname',
                     [
                         'attribute' => 'status',
                         'filter' => $status,

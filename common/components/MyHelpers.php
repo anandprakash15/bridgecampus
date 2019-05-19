@@ -54,6 +54,18 @@ use common\models\ExamCategory;
     }
 
 
+    public static function getCourseMode(){
+        return [1 => 'Regular', 2=>'Distance Learning', 3 =>'Correspondence', 4=>'Online Mode', 5=>'Hybrid Mode', 6=>'MOOCs (massive open online courses)'];
+    }
+
+    public static function getHereunder(){
+        return [1 => 'Admission Start Date', 2=>'Last Date to Apply', 3 =>'GD-PI Date', 4=>'Internal Entrance Exam Dates', 5=>'Merit List Date', 6=>'Admission Last Date'];
+    }
+
+    public static function getShift(){
+        return [1 => 'First Shift', 2=>'Second Shift', 3 =>'Third Shift'];
+    }
+
     public static function getActiveInactive()
     {
         return [1 => 'Active', 0=>'Inactive'];
@@ -308,7 +320,7 @@ use common\models\ExamCategory;
 
     public static function getUniversitytype()
     {
-        return [1 => 'Private University', 2=>'Public University', 3=>'State University',4=>'Central University',5=>'Deemed University', 6=>'Deemed to be University', 7=>'Autonomous Institute'];
+        return [1 => 'Private University', 2=>'Public University', 3=>'State University',4=>'Central University',5=>'Deemed University', 6=>'Deemed to be University', 7=>'Autonomous Institute', 8=>'Open Universities'];
     }
 
     public static function getCollegetype()

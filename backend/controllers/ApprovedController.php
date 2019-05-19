@@ -117,9 +117,9 @@ class ApprovedController extends Controller
         $out = ['results' => ['id' => '', 'text' => '']];
         if (!is_null($q)) {
             $query = new Query;
-            $query->select(["id", new \yii\db\Expression("name AS text")])
+            $query->select(["id", new \yii\db\Expression("shortname AS text")])
             ->from('approved')
-            ->where(['like', 'name', $q])
+            ->where(['like', 'shortname', $q])
             ->andWhere(['status'=>1])
             ->limit(20);
             $command = $query->createCommand();

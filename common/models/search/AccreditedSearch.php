@@ -18,7 +18,7 @@ class AccreditedSearch extends Accredited
     {
         return [
             [['id', 'createdBy', 'updatedBy', 'status'], 'integer'],
-            [['name', 'sortname', 'createdDate', 'updatedDate'], 'safe'],
+            [['name', 'shortname', 'createdDate', 'updatedDate'], 'safe'],
         ];
     }
 
@@ -67,7 +67,7 @@ class AccreditedSearch extends Accredited
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'sortname', $this->sortname]);
+            ->andFilterWhere(['like', 'shortname', $this->shortname]);
 
         return $dataProvider;
     }

@@ -31,6 +31,8 @@ use common\models\CollegeUniversityAdvpurpose;
 use common\models\search\CollegeUniversityAdvpurposeSearch;
 use common\models\CourseSpecialization;
 use common\models\UniversityCollegeCourseSpecialization;
+use common\models\Exam;
+use common\models\Affiliate;
 
 
 /**
@@ -145,24 +147,39 @@ class UniversityController extends Controller
     public function actionCourseDetails($id)
     {
         $this->layout= "university";
-        $universityandcourse = UniversityCollegeCourse::findOne($id);
+        $universityandcourse = UniversityCollegeCourse::find()->joinWith(['course'])->where(['university_college_course.id'=>$id])->one();
+
         Yii::$app->params['uTitle'] = $universityandcourse->university->name;
         Yii::$app->params['uID'] = $universityandcourse->university->id;
 
         if (($model = CourseDetails::findOne(['uccID'=>$id])) == null) {
             $model = new CourseDetails();
         }
+        $model->scenario = CourseDetails::SCENARIO_UNIVERSITY_COURSE;
         $model->uccID = $id;
+        $exams=[];
+        if(!empty($model->entrance_exams_accepted)){
+            $model->entrance_exams_accepted = explode(",", $model->entrance_exams_accepted);
+            $exams = ArrayHelper::map(Exam::find()->where(['id'=>$model->entrance_exams_accepted])->asArray()->all(),'id','exam_name');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-           return $this->redirect(['courses','id'=>Yii::$app->params['uID']]);
-       }
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->entrance_exams_accepted = @implode(",", $model->entrance_exams_accepted);
+            if($model->save()){
+                \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            }else{
+                //print_r($model);exit;
+                \Yii::$app->getSession()->setFlash('error', 'Error Occurred.');
+            }
+            return $this->redirect(['courses','id'=>Yii::$app->params['uID']]);
+        }
 
 
        return $this->render('course-details', [
             'model' => $model,
             'universityandcourse' => $universityandcourse,
+            'exams' => $exams
         ]);
     }
 
@@ -172,7 +189,6 @@ class UniversityController extends Controller
         $courseDetails = UniversityCollegeCourse::findOne($id);
         Yii::$app->params['uTitle'] = $courseDetails->university->name;
         Yii::$app->params['uID'] = $courseDetails->university->id;
-        //print_r(CourseSpecialization::find()->joinWith(['specialization'])->where(['courseID'=>$courseDetails->course->id])->asArray()->all());exit;
         $specializations = ArrayHelper::map(CourseSpecialization::find()->joinWith(['specialization'])->where(['courseID'=>$courseDetails->course->id])->all(),'id','specialization.name');
 
         $ucsmodel = new UniversityCollegeCourseSpecialization();
@@ -322,6 +338,7 @@ class UniversityController extends Controller
 
             $model->approved_by = implode(",",(array) $model->approved_by);
             $model->accredited_by = implode(",",(array) $model->accredited_by);
+            $model->affiliate_to = implode(",",(array) $model->affiliate_to);
             
             $bannerImg = UploadedFile::getInstance($model, 'bannerImg');
             if(!empty($bannerImg))
@@ -342,6 +359,7 @@ class UniversityController extends Controller
             }
 
             if($model->save()){
+
                 $uploadPath = Yii::$app->myhelper->getUploadPath(1,$model->id);
                 FileHelper::createDirectory($uploadPath,0775,true);
                 if(!empty($bannerImg))
@@ -360,6 +378,7 @@ class UniversityController extends Controller
 
                 \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
             }else{
+                //print_r($model);exit;
                 \Yii::$app->getSession()->setFlash('error', 'Error occured while creating.');
             }
             return $this->redirect(['index']);
@@ -369,6 +388,7 @@ class UniversityController extends Controller
             'model' => $model,
             'approved_by' => [],
             'accredited_by' => [],
+            'affiliate_to' => [],
         ]);
     }
 
@@ -386,7 +406,7 @@ class UniversityController extends Controller
         $oldbannerURL = $model->bannerURL;
         $oldbrochureURL = $model->brochureurl;
         $oldlogoURL = $model->logourl;
-        $approved_by = $accredited_by = [];
+        $approved_by = $accredited_by = $affiliate_to = [];
 
         if(!empty($model->approved_by)){
 
@@ -400,10 +420,17 @@ class UniversityController extends Controller
             $model->accredited_by = explode(",",$model->accredited_by);
         }
 
+        if(!empty($model->affiliate_to)){
+           
+            $affiliate_to = ArrayHelper::map(Affiliate::find()->where(new \yii\db\Expression("id IN(".$model->affiliate_to.")"))->asArray()->all(),'id','name');
+            $model->affiliate_to = explode(",",$model->affiliate_to);
+        }
+
         if ($model->load(Yii::$app->request->post())) {
 
             $model->approved_by = implode(",",(array) $model->approved_by);
             $model->accredited_by = implode(",",(array) $model->accredited_by);
+            $model->affiliate_to = implode(",",(array) $model->affiliate_to);
 
             $uploadPath = Yii::$app->myhelper->getUploadPath(1,$model->id);
             FileHelper::createDirectory($uploadPath,0775,true);
@@ -458,6 +485,7 @@ class UniversityController extends Controller
             'model' => $model,
             'approved_by' => $approved_by,
             'accredited_by'=>$accredited_by,
+            'affiliate_to' => $affiliate_to
         ]);
     }
 
@@ -481,6 +509,12 @@ class UniversityController extends Controller
 
         if(!empty($model->accredited_by)){
             $model->accredited_by = ArrayHelper::map(Accredited::find()->where(new \yii\db\Expression("id IN(".$model->accredited_by.")"))->asArray()->all(),'id','name');
+        }else{
+            $model->accredited_by = [];
+        }
+
+        if(!empty($model->affiliate_to)){
+            $model->affiliate_to = ArrayHelper::map(Affiliate::find()->where(new \yii\db\Expression("id IN(".$model->affiliate_to.")"))->asArray()->all(),'id','name');
         }else{
             $model->accredited_by = [];
         }
@@ -705,19 +739,21 @@ class UniversityController extends Controller
     }
 
 
-    public function actionUniversityCourses($q = null,$universityID=null) {
+    public function actionUniversityCourses($q = null,$affiliation_type,$universityID="") {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $out = ['results' => ['id' => '', 'text' => '']];
         if (!is_null($q)) {
             $query = new Query;
-            $query->select(["courses.id", new \yii\db\Expression("courses.name AS text")])
+            $query->select(["courses.id", new \yii\db\Expression("courses.name AS text"),'programID'])
             ->from('courses')
             ->where(['like', 'name', $q]);
-            if($universityID != null){
-            
+            if($affiliation_type == 2){
                 $query->leftJoin("university_college_course","courses.id = university_college_course.courseID ")
                 ->andWhere(['university_college_course.universityID'=>$universityID]);
+            }else{
+                $query->andWhere(['courses.courseType'=>1]);
             }
+
             
             
             $query->andWhere(['courses.status'=>1])

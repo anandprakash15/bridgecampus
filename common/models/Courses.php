@@ -13,23 +13,14 @@ use Yii;
  * @property string $short_name
  * @property string $code
  * @property int $duration
- * @property string $required _skillset
- * @property string $elagibility_criteria
- * @property string $course_curriculam
+ * @property string $required_skillset
  * @property string $job_profiles
  * @property string $top_recruiters
  * @property int $medium_of_teaching
  * @property string $course_high_lights
- * @property string $entrance_exams_accepted
- * @property string $admission_process
- * @property string $important_dates
- * @property int $no_of_seats
- * @property string $seat_brakeup
  * @property string $placement_details
- * @property string $course_credits
  * @property int $sortno
- * @property string $course_duration _hours
- * @property int $courselevel
+ * @property int $certification_type
  * @property string $createdDate
  * @property string $updatedDate
  * @property int $status
@@ -37,7 +28,6 @@ use Yii;
  * @property int $updatedBy
  * @property int $full_part_time 1-fulltime, 2-parttime
  * @property int $type (certi, deg etc)
- * @property string $description
  * @property int $courseType (autonomas, university)
  * 
  * @property CourseSpecialization[] $courseSpecializations
@@ -45,7 +35,7 @@ use Yii;
  * @property User $createdBy0
  * @property User $updatedBy0
  * @property UniversityCollegeCourse[] $universityCollegeCourses
- */ 
+ */
 
 class Courses extends \yii\db\ActiveRecord
 {
@@ -65,19 +55,17 @@ class Courses extends \yii\db\ActiveRecord
     public function rules() 
     { 
         return [
-           [['programID', 'name', 'short_name', 'status', 'type','courseType'], 'required'],
-
-            [['programID', 'duration', 'medium_of_teaching', 'no_of_seats', 'sortno', 'courselevel', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
-            [['required_skillset', 'elagibility_criteria', 'course_curriculam', 'job_profiles', 'top_recruiters', 'course_high_lights', 'admission_process', 'important_dates', 'seat_brakeup', 'placement_details', 'course_credits', 'course_duration_hours', 'description'], 'string'],
-            [['createdDate', 'updatedDate', 'entrance_exams_accepted'], 'safe'],
+            [['programID', 'name', 'short_name', 'status', 'type', 'courseType'], 'required'],
+            [['programID', 'duration', 'medium_of_teaching', 'sortno', 'certification_type', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
+            [['required_skillset', 'job_profiles', 'top_recruiters', 'course_high_lights', 'placement_details'], 'string'],
+            [['createdDate', 'updatedDate'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['short_name'], 'string', 'max' => 100],
-            [['code'], 'string', 'max' => 20],
-            ['code', 'codeunique'],
             [['programID'], 'exist', 'skipOnError' => true, 'targetClass' => Program::className(), 'targetAttribute' => ['programID' => 'id']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
             ['short_name','validateShortName'],
+            ['code', 'codeunique'],
         ]; 
     } 
 
@@ -116,28 +104,19 @@ class Courses extends \yii\db\ActiveRecord
     { 
         return [ 
             'id' => 'ID',
-            'programID' => 'Program Name',
-            'name' => 'Course Name',
+            'programID' => 'Program',
+            'name' => 'Name',
             'short_name' => 'Short Name',
-            'code' => 'Course Code',
+            'code' => 'Code',
             'duration' => 'Course Duration',
             'required_skillset' => 'Required Skillset',
-            'elagibility_criteria' => 'Elagibility Criteria',
-            'course_curriculam' => 'Course Curriculam',
             'job_profiles' => 'Job Profiles',
             'top_recruiters' => 'Top Recruiters',
-            'medium_of_teaching' => 'Medium of Teaching',
+            'medium_of_teaching' => 'Medium Of Teaching',
             'course_high_lights' => 'Course High Lights',
-            'entrance_exams_accepted' => 'Entrance Exams Accepted',
-            'admission_process' => 'Admission Process',
-            'important_dates' => 'Important Dates',
-            'no_of_seats' => 'No of Seats',
-            'seat_brakeup' => 'Seat Brakeup',
             'placement_details' => 'Placement Details',
-            'course_credits' => 'Course Credits',
             'sortno' => 'Sortno',
-            'course_duration_hours' => 'Course Duration in Hours',
-            'courselevel' => 'Certification Type',
+            'certification_type' => 'Certification Type',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
@@ -145,8 +124,6 @@ class Courses extends \yii\db\ActiveRecord
             'updatedBy' => 'Updated By',
             'full_part_time' => 'Course Type',
             'type' => 'Qualification Type',
-            'description' => 'Course Description',
-            
             'courseType' => 'Affiliation Type',
         ]; 
     } 

@@ -31,6 +31,15 @@ use Yii;
  * @property string $accredited_by
  * @property string $grade
  * @property string $about
+ * @property int $campus_size
+ * @property string $vision
+ * @property string $mission
+ * @property string $motto
+ * @property string $colours
+ * @property string $founder
+ * @property string $chancellor
+ * @property string $vice_chancellor
+ * @property string $affiliate_to
  * @property string $brochureurl
  * @property string $logourl
  * @property string $createdDate
@@ -66,13 +75,13 @@ class University extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['bannerImg','logoImg'], 'file', 'extensions'=>'jpg, jpeg, png'],
             [['brochureFile'], 'file', 'extensions'=>'pdf, doc, docx'],
-            [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['about','approving_government_authority','utype'], 'string'],
-            [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by'], 'safe'],
+            [['cityID', 'stateID', 'countryID', 'status', 'campus_size', 'createdBy', 'updatedBy'], 'integer'],
+            [['about','approving_government_authority','utype', 'vision', 'mission', 'motto', 'colours'], 'string'],
+            [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by', 'affiliate_to'], 'safe'],
 
             [['name'], 'string', 'max' => 300],
             [['code', 'pincode', 'establish_year'], 'string', 'max' => 20],
-            [['address'], 'string', 'max' => 500],
+            [['address', 'founder', 'chancellor', 'vice_chancellor'], 'string', 'max' => 500],
             [['taluka', 'district', 'contact', 'fax', 'email', 'brochureurl', 'logourl'], 'string', 'max' => 50],
             [['websiteurl'], 'string', 'max' => 100],
             [['grade'], 'string', 'max' => 10],
@@ -118,12 +127,21 @@ class University extends \yii\db\ActiveRecord
             'contact' => 'Contact',
             'fax' => 'Fax',
             'email' => 'Email',
-            'websiteurl' => 'Website Url',
+            'websiteurl' => 'Website URL',
             'establish_year' => 'Establish Year',
             'approved_by' => 'Approved By',
             'accredited_by' => 'Accredited By',
             'grade' => 'Grade',
             'about' => 'About',
+            'campus_size' => 'Campus Size',
+            'vision' => 'Vision',
+            'mission' => 'Mission',
+            'motto' => 'Motto',
+            'colours' => 'Colours',
+            'founder' => 'Founder',
+            'chancellor' => 'Chancellor',
+            'vice_chancellor' => 'Vice Chancellor',
+            'affiliated_to' => 'Affiliated To',
             'brochureurl' => 'Brochureurl',
             'logourl' => 'Logourl',
             'createdDate' => 'Created Date',

@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'approved_by'=>$approved_by,
         'accredited_by' => $accredited_by,
+        'affiliate_to' => $affiliate_to,
     ]) ?>
 
 </div>

@@ -166,6 +166,74 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
         ]
       ]) ?>
 
+      <?= $form->field($model, 'vision')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+
+      <?= $form->field($model, 'mission')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+
+
+      <?= $form->field($model, 'motto')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+
+
+      <?= $form->field($model, 'colours')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+
+      <?= $form->field($model, 'founder')->textInput(['maxlength' => true]) ?>
+
+      <?= $form->field($model, 'chancellor')->textInput(['maxlength' => true]) ?>
+
+      <?= $form->field($model, 'vice_chancellor')->textInput(['maxlength' => true]) ?>
+
+      <?= $form->field($model, 'campus_size')->textInput(['maxlength' => true]) ?>
+
+      <?= $form->field($model, 'affiliate_to')->widget(Select2::classname(), [
+        'options' => ['placeholder' => 'Affiliate To...'],
+        'data' => $affiliate_to,
+        'size' => Select2::SMALL,
+
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => true,
+          'minimumInputLength' => 1,
+          'language' => [
+            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+          ],
+          'ajax' => [
+            'url' => \yii\helpers\Url::to(['affiliate/affiliate-list']),
+            'dataType' => 'json',
+            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          ],
+          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+          'templateResult' => new JsExpression('function(type) { return type.text; }'),
+          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        ],
+      ]);?>
 
       <?= $form->field($model, 'approved_by')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'Approved By...'],

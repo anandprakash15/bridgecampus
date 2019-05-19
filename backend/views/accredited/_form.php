@@ -25,7 +25,7 @@ use dosamigos\ckeditor\CKEditor;
      <br/>
      <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-     <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
+     <?= $form->field($model, 'shortname')->textInput(['maxlength' => true]) ?>
 
      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
