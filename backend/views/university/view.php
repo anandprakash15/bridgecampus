@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box-body">
             <table class="table table-bordered">
                 <tbody>
-                 <tr>
+                   <tr>
                     <th class="col-md-4">Logo:</th>
                     <td class="col-md-8"><?= Html::img(Url::to($fBasePath.$model->logourl),['class' => 'img-responsive','style'=>'width:100px;height:100px']) ?></td>
                 </tr>                  
@@ -55,27 +55,27 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th class="col-md-4">Approved By:</th>
                     <td class="col-md-8">
                         <?php foreach($model->approved_by as $id => $approved_by ){ ?>
-                           <a href="<?= Url::to(['approved/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $approved_by ?></a> 
-                       <?php } ?>
-                   </td>
-               </tr>
-               <tr>
+                         <a href="<?= Url::to(['approved/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $approved_by ?></a> 
+                     <?php } ?>
+                 </td>
+             </tr>
+             <tr>
                 <th class="col-md-4">Accredited By:</th>
                 <td class="col-md-8">
                     <?php foreach($model->accredited_by as $id => $accredited_by ){ ?>
-                       <a href="<?= Url::to(['accredited/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $accredited_by ?></a> 
-                   <?php } ?>
-               </td>
-           </tr>
-           <tr>
+                     <a href="<?= Url::to(['accredited/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $accredited_by ?></a> 
+                 <?php } ?>
+             </td>
+         </tr>
+         <tr>
             <th class="col-md-4">Affiliate To:</th>
             <td class="col-md-8">
                 <?php foreach($model->affiliate_to as $id => $affiliate_to ){ ?>
-                 <a href="<?= Url::to(['affiliate/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $affiliate_to ?></a> 
-             <?php } ?>
-         </td>
-     </tr>
- </tbody>
+                   <a href="<?= Url::to(['affiliate/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $affiliate_to ?></a> 
+               <?php } ?>
+           </td>
+       </tr>
+   </tbody>
 </table>
 </div>
 </div>
@@ -88,61 +88,46 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="box-body">
-        <?= $model->about ?>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th class="col-md-4">About:</th>
+                    <td class="col-md-8"><?= $model->about ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Vision:</th>
+                    <td class="col-md-8"><?= $model->vision ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Mission:</th>
+                    <td class="col-md-8"><?= $model->mission ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Motto:</th>
+                    <td class="col-md-8"><?= $model->motto ?></td>
+                </tr> 
+                <tr>
+                    <th class="col-md-4">Founder:</th>
+                    <td class="col-md-8"><?= $model->founder ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Chancellor:</th>
+                    <td class="col-md-8"><?= $model->chancellor ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Vice Chancellor:</th>
+                    <td class="col-md-8"><?= $model->vice_chancellor ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Campus Size:</th>
+                    <td class="col-md-8"><?= $model->campus_size ?></td>
+                </tr>
+                      
+            </tbody>
+        </table>
     </div>
 </div>
 
-<div class="custumbox box box-success">
-    <div class="box-header with-border">
-        <h3 class="box-title">Vision</h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-        </div>
-    </div>
-    <div class="box-body">
-        <?= $model->vision ?>
-    </div>
-</div>
-
-<div class="custumbox box box-success">
-    <div class="box-header with-border">
-        <h3 class="box-title">Mission</h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-        </div>
-    </div>
-    <div class="box-body">
-        <?= $model->mission ?>
-    </div>
-</div>
-
-<div class="custumbox box box-success">
-    <div class="box-header with-border">
-        <h3 class="box-title">Motto</h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-        </div>
-    </div>
-    <div class="box-body">
-        <?= $model->moto ?>
-    </div>
-</div>
-
-<div class="custumbox box box-success">
-    <div class="box-header with-border">
-        <h3 class="box-title">Motto</h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-        </div>
-    </div>
-    <div class="box-body">
-        <?= $model->moto ?>
-    </div>
-</div>
 
 <div class="custumbox box box-warning">
     <div class="box-header with-border">
@@ -215,6 +200,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th class="col-md-4">Email:</th>
                     <td class="col-md-8"><a href="mailto:<?= $model->email ?>"><?= $model->email ?></a></td>
                 </tr>
+                <tr>
+                    <th class="col-md-4">Website URL:</th>
+                    <td class="col-md-8"><a href="<?= $model->websiteurl ?>"><?= $model->websiteurl ?></a></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -236,7 +225,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php 
 $this->registerCss("
     .app-title{
-     display: none;
- }
- ");
- ?>
+       display: none;
+   }
+   ");
+   ?>

@@ -10,12 +10,12 @@ use softark\duallistbox\DualListbox;
 /* @var $searchModel common\models\search\UniversitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Facilitys: '.$university->name;
-$this->params['subtitle'] = '<h1>Facility <a class="btn btn-success btn-xs" href="'.Url::to(['facility-details','id'=>$university->id]).'">Add</a></h1>';
+$this->title = 'Facilities: '.$university->name;
+$this->params['subtitle'] = '<h1>Facilities <a class="btn btn-success btn-xs" href="'.Url::to(['facility-details','id'=>$university->id]).'">Add</a></h1>';
 
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $university->name;
-$this->params['breadcrumbs'][] = 'Facility';
+$this->params['breadcrumbs'][] = 'Facilities';
 $status = Yii::$app->myhelper->getActiveInactive();
 $ftype = Yii::$app->myhelper->getFacility();
 
@@ -43,10 +43,11 @@ echo Yii::$app->message->display();
                     ['class' => 'yii\grid\SerialColumn'],
 
                     [
+                        'label' => 'Facility',
                         'attribute' => 'ftype',
                         'filter' => $ftype,
                         'value' => function($model)use($ftype){
-                            return $ftype[$model['ftype']];
+                            return (isset($ftype[$model['ftype']])?$ftype[$model['ftype']]:"");
                         }
 
                     ],

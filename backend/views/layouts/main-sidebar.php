@@ -33,6 +33,7 @@ use yii\widgets\Menu;
                 ['label' => 'Affiliate', 'url' => ['/affiliate/index']],
                 ['label' => 'Accredited', 'url' => ['/accredited/index']],
                 ['label' => 'Approved', 'url' => ['/approved/index']],
+                ['label' => 'Campus Facilities', 'url' => ['/campus-facilities/index']],
                 ['label' => 'Front End', 'url' => ['/frontend/index']],
               ],
             ],

@@ -13,7 +13,7 @@ use yii\db\Query;
 use common\models\Program;
 use common\models\Role;
 use common\models\ExamCategory;
-
+use common\models\CampusFacilities;
 
  class MyHelpers extends Component{
 
@@ -72,7 +72,7 @@ use common\models\ExamCategory;
     }
     public static function getFacility()
     {
-        return [1 => 'Gym', 0=>'Hostel'];
+        return ArrayHelper::map(CampusFacilities::find()->where(['status'=>1])->all(),'id','name');
     }
 
     public static function getGender()
@@ -423,7 +423,9 @@ use common\models\ExamCategory;
     }
 
     public function videoThumb($source,$destination){
-        $command = "cd ".Yii::getAlias('@ffmpegPath')." && ./ffmpeg -y -i ".$source." -vframes 1   ".$destination." 2>&1";
+        $direcotry = Yii::getAlias('@ffmpegPath');
+        chdir($direcotry);
+        $command = "ffmpeg -y -i ".$source." -vframes 1   ".$destination." 2>&1";
         exec( $command, $output, $return_var );
     }
 

@@ -195,7 +195,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
       ]) ?>
 
 
-      <?= $form->field($model, 'colours')->widget(CKEditor::className(), [
+      <?= $form->field($model, 'founder')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],
         'preset' => 'standard',
         'clientOptions'=>[
@@ -204,11 +204,23 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
         ]
       ]) ?>
 
-      <?= $form->field($model, 'founder')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'chancellor')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
 
-      <?= $form->field($model, 'chancellor')->textInput(['maxlength' => true]) ?>
-
-      <?= $form->field($model, 'vice_chancellor')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'vice_chancellor')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
 
       <?= $form->field($model, 'campus_size')->textInput(['maxlength' => true]) ?>
 

@@ -149,7 +149,7 @@ $this->registerCss('
                 ['label' => '<i class="fa fa-circle-o"></i> Courses', 'url' => ['/college/courses','id'=>@Yii::$app->params['cID']]],
                 ['label' => '<i class="fa fa-circle-o"></i> Gallery', 'url' => ['/college/gallery','id'=>@Yii::$app->params['cID'],'type'=>1]],
                 
-                ['label' => '<i class="fa fa-circle-o"></i> Facility', 'url' => ['/college/facility','id'=>@Yii::$app->params['cID'],'type'=>1]],
+                ['label' => '<i class="fa fa-circle-o"></i> Facilities', 'url' => ['/college/facility','id'=>@Yii::$app->params['cID'],'type'=>1]],
                 
                 ['label' => '<i class="fa fa-circle-o"></i> Review', 'url' => ['/college/review','id'=>@Yii::$app->params['cID']]],
                 ['label' => '<i class="fa fa-circle-o"></i> Advertise Materials', 'url' => ['/college/advertise-materials','id'=>@Yii::$app->params['cID']]],

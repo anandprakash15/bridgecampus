@@ -80,7 +80,7 @@ class University extends \yii\db\ActiveRecord
             [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by', 'affiliate_to'], 'safe'],
 
             [['name'], 'string', 'max' => 300],
-            [['code', 'pincode', 'establish_year'], 'string', 'max' => 20],
+            [['pincode', 'establish_year'], 'string', 'max' => 20],
             [['address', 'founder', 'chancellor', 'vice_chancellor'], 'string', 'max' => 500],
             [['taluka', 'district', 'contact', 'fax', 'email', 'brochureurl', 'logourl'], 'string', 'max' => 50],
             [['websiteurl'], 'string', 'max' => 100],

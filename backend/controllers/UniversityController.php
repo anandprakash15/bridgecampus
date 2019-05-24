@@ -33,6 +33,7 @@ use common\models\CourseSpecialization;
 use common\models\UniversityCollegeCourseSpecialization;
 use common\models\Exam;
 use common\models\Affiliate;
+use common\models\FacilityGallery;
 
 
 /**
@@ -70,45 +71,6 @@ class UniversityController extends Controller
         ]);
     }
 
-    
-    public function actionFacility($id)
-    {
-        $this->layout= "university";
-        $university = $this->findModel($id);
-
-        $searchModel = new FacilitySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
-        
-        return $this->render('facility', [
-            'university' => $university,
-            'dataProvider'=> $dataProvider,
-            'searchModel'=> $searchModel,
-        ]);
-    }
-
-    public function actionFacilityDetails($id,$fid = null)
-    {
-        $this->layout= "university";
-        $university = $this->findModel($id);
-
-        if (($model = Facility::findOne(['id'=>$fid])) == null) {
-            $model = new Facility();
-        }
-        
-        $model->coll_univID  = $id;
-        $model->type = 1;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-           return $this->redirect(['facility','id'=>Yii::$app->params['uID'],'type'=>1]);
-       }
-
-
-       return $this->render('facility-details', [
-        'model' => $model,
-        'university' => $university,
-    ]);
-   }
 
     public function actionReview($id){
         $this->layout= "university";
@@ -475,6 +437,7 @@ class UniversityController extends Controller
 
                 \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
             }else{
+                //print_r($model);exit;
                 \Yii::$app->getSession()->setFlash('error', 'Error occured while update.');
             }
             return $this->redirect(['index']);
@@ -525,6 +488,124 @@ class UniversityController extends Controller
         ]);
     }
 
+
+    public function actionFacility($id)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        $searchModel = new FacilitySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('facility', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+
+    public function actionFacilityGalleryDelete($id){
+        $fgID = Yii::$app->request->post('key');
+        if(!empty($fgID))
+        {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if (($model = FacilityGallery::findOne($fgID)) !== null) {
+                $filePath = Yii::$app->myhelper->getUploadPath(1,$id)."facility/".$model->url;
+                @unlink($filePath);
+                if($model->delete()){
+                    return ['success'];
+                }else{
+                    return ['error'];
+                }
+            }
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionFacilityDetails($id,$fid = null)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+        $imagesInitialPreviewConfig= $videosInitialPreviewConfig = $images = $videos=[];
+        $fBasePath = Yii::$app->myhelper->getFileBasePath(1,$university->id)."facility/";
+        if (($model = Facility::findOne(['id'=>$fid])) == null) {
+            $model = new Facility();
+        }else{
+            $images = FacilityGallery::find()->where(['type'=>1,'uc_type'=>1,'facilityID'=>$model->id])->asArray()->all();
+            foreach ($images as $key => $image) {
+                $imagesInitialPreviewConfig[$key]['fileurl'] = $fBasePath.$image['url']; 
+                $imagesInitialPreviewConfig[$key]['caption'] = "Image ".($key+1); 
+                $imagesInitialPreviewConfig[$key]['url'] = Url::to(['university/facility-gallery-delete','id'=>$university->id]); 
+                $imagesInitialPreviewConfig[$key]['key'] = $image['id']; 
+            }
+            $videos = FacilityGallery::find()->where(['type'=>2,'uc_type'=>1,'facilityID'=>$model->id])->all();
+            foreach ($videosInitialPreviewConfig as $key => $video) {
+                $videosInitialPreviewConfig[$key]['fileurl'] = $fBasePath.$video['url']; 
+                $videosInitialPreviewConfig[$key]['caption'] = "Video ".($key+1); 
+                $videosInitialPreviewConfig[$key]['url'] = Url::to(['university/facility-gallery-delete','id'=>$university->id]); 
+                $videosInitialPreviewConfig[$key]['key'] = $video['id']; 
+            }
+        }
+        //print_r($imagesInitialPreviewConfig);exit;
+        
+        $model->coll_univID  = $id;
+        $model->type = 1;
+
+        $facilityGallery = new FacilityGallery();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $uploadPath = Yii::$app->myhelper->getUploadPath(1,$id)."facility/";
+            FileHelper::createDirectory($uploadPath,0775,true);
+
+            $files = UploadedFile::getInstances($facilityGallery, 'image');
+
+            foreach ($files as $key => $file) {
+                $facilityGallery = new FacilityGallery();
+                $facilityGallery->type = 1;
+                $facilityGallery->uc_type = 1;
+                $facilityGallery->facilityID = $model->id;
+                $filename = time().$key;
+                $facilityGallery->url = $filename.'.'.pathinfo($file->name, PATHINFO_EXTENSION);
+                if($facilityGallery->save()){
+                    $filePath = $uploadPath.$facilityGallery->url;
+                    if($file->saveAs($filePath)){
+
+                    }
+                }
+            }
+
+            $files = UploadedFile::getInstances($facilityGallery, 'video');
+            foreach ($files as $key => $file) {
+                $facilityGallery = new FacilityGallery();
+                $facilityGallery->type = 2;
+                $facilityGallery->uc_type = 1;
+                $facilityGallery->facilityID = $model->id;
+                $filename = time().$key;
+                $facilityGallery->url = $filename.'.'.pathinfo($file->name, PATHINFO_EXTENSION);
+                if($facilityGallery->save()){
+                    $filePath = $uploadPath.$facilityGallery->url;
+                    if($file->saveAs($filePath)){
+
+                    }
+                }
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            return $this->redirect(['facility-details','id'=>$university->id,'fid'=>$model->id]);
+        }
+
+
+        return $this->render('facility-details', [
+            'model' => $model,
+            'university' => $university,
+            'facilityGallery'=>$facilityGallery,
+            'imagesInitialPreviewConfig'=>$imagesInitialPreviewConfig,
+            'videos'=>$videos,
+            'videosInitialPreviewConfig'=>$videosInitialPreviewConfig,
+        ]);
+    }
+
+
     public function actionGallery($id,$type){
         $this->layout= "university";
         $university = $this->findModel($id);
@@ -533,10 +614,10 @@ class UniversityController extends Controller
         $fileType = "image";
 
         $fileList = UniversityGallery::find()->where(['universityID'=>$university->id,'type'=>$type])->all();
-        $allowedFileExtensions = ['jpg','jpeg','png'];
+        $allowedFileExtensions = ['jpg','jpeg','png','gif', 'svg'];
         if($type == 2){
             $fileType = "video";
-            $allowedFileExtensions = ['mp4','avi','mkv'];
+            $allowedFileExtensions = ['mp4','avi','mkv','mts','mpv','flv','3gp','avi'];
         }
         $fBasePath = Yii::$app->myhelper->getFileBasePath(1,$university->id,$type);
 

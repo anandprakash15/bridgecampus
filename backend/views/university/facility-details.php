@@ -55,6 +55,27 @@ $this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name,
       ]
     ]) ?>
 
+     <?= $form->field($facilityGallery, 'image[]')->widget(FileInput::classname(), [
+      'options' => ['multiple' => true],
+      'pluginOptions' => [
+        'showUpload' => false,
+        'allowedFileExtensions' => ['jpg','jpeg','png','gif', 'svg'],
+        'initialPreviewAsData'=>true,
+        'initialPreview'=> ArrayHelper::getColumn($imagesInitialPreviewConfig,'fileurl'),
+        'initialPreviewConfig'=>$imagesInitialPreviewConfig
+      ],
+    ]); ?>
+
+     <?= $form->field($facilityGallery, 'video[]')->widget(FileInput::classname(), [
+      'options' => ['multiple' => true],
+      'pluginOptions' => [
+        'showUpload' => false,
+        'allowedFileExtensions' => ['mp4','avi','mkv','mts','mpv','flv','3gp','avi'],
+        'initialPreview'=> ArrayHelper::getColumn($videosInitialPreviewConfig,'fileurl'),
+        'initialPreviewConfig'=>$videosInitialPreviewConfig
+      ],
+    ]); ?>
+
     <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
     <div class="form-group" style="margin-left: 18% !important;">
