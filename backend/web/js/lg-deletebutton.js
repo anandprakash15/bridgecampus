@@ -31,6 +31,7 @@
         this.core.$outer.find('.deletePicture').on('click', function() {
             var imgEl =  $(that.core.$el.children()[that.core.index]).find(".img-thumbnail");
             var key = imgEl.data("key");
+            //var param = imgEl.data("param");
             var flag = false;
             if(key !="" && typeof key !="undefined")
             {
@@ -38,7 +39,9 @@
                 $.ajax({
                     async: false,
                     type: "POST",
-                    url: "delete-gallery-file?id="+key,
+                    url: key,
+                    //data: param,
+                    //url: "delete-gallery-file?id="+key,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {

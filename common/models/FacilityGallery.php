@@ -22,8 +22,7 @@ class FacilityGallery extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public $video;
-    public $image;
+    public $imagevideo;
     public static function tableName()
     {
         return 'facility_gallery';
@@ -38,7 +37,7 @@ class FacilityGallery extends \yii\db\ActiveRecord
             [['uc_type', 'type', 'facilityID', 'url'], 'required'],
             [['uc_type', 'type', 'facilityID', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
-            [['image','video'], 'file','skipOnEmpty' => true, 'maxFiles' => 10],
+            [['imagevideo'], 'file','skipOnEmpty' => true, 'maxFiles' => 20],
             [['url'], 'string', 'max' => 500],
         ];
     }
@@ -67,6 +66,7 @@ class FacilityGallery extends \yii\db\ActiveRecord
             'type' => 'Type',
             'facilityID' => "Facility",
             'url' => 'Url',
+            'imagevideo'=> 'Image/Video',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'createdBy' => 'Created By',

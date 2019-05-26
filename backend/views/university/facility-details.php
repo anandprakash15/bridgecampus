@@ -27,11 +27,16 @@ if($model->isNewRecord){
   $this->params['breadcrumbs'][] = 'Update Facility';
 }
 
-/*$this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $universityandcourse->university->name;
-$this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$universityandcourse->university->id]];
-$this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name, 'url' => ['courses','id'=>$universityandcourse->university->id]];*/
-//$this->params['breadcrumbs'][] = 'Add Facility';
+$this->registerCssFile("@web/css/lightgallery.min.css", ['depends' => [\yii\bootstrap\BootstrapAsset::className()]]);
+
+$this->registerCssFile("@web/css/video-js.css", ['depends' => [\yii\bootstrap\BootstrapAsset::className()]]);
+
+$this->registerJsFile('@web/js/picturefill.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/lightgallery-all.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/jquery.mousewheel.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+
+$this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
 <div class="course-details-form">
   <div class="custumbox box box-info">
@@ -55,26 +60,62 @@ $this->params['breadcrumbs'][] = ['label' => $universityandcourse->course->name,
       ]
     ]) ?>
 
-     <?= $form->field($facilityGallery, 'image[]')->widget(FileInput::classname(), [
+     <?= $form->field($facilityGallery, 'imagevideo[]')->widget(FileInput::classname(), [
       'options' => ['multiple' => true],
       'pluginOptions' => [
         'showUpload' => false,
-        'allowedFileExtensions' => ['jpg','jpeg','png','gif', 'svg'],
+        'overwriteInitial'=>false,
+        'dropZoneEnabled'=>false,
+        //'allowedPreviewTypes'=> ["image", "video"],
+        //'initialPreviewFileType'=>["image", "video"],
+        //'allowedPreviewTypes' => ['image','video'],
         'initialPreviewAsData'=>true,
-        'initialPreview'=> ArrayHelper::getColumn($imagesInitialPreviewConfig,'fileurl'),
-        'initialPreviewConfig'=>$imagesInitialPreviewConfig
+        'allowedFileExtensions' => ['jpg','jpeg','png','gif', 'svg','mp4','avi','mkv','mts','mpv','flv','3gp','avi'],
+        //'initialPreview'=> ArrayHelper::getColumn($initialPreviewConfig,'fileurl'),
+        //'initialPreviewConfig'=>$initialPreviewConfig
       ],
     ]); ?>
 
-     <?= $form->field($facilityGallery, 'video[]')->widget(FileInput::classname(), [
-      'options' => ['multiple' => true],
-      'pluginOptions' => [
-        'showUpload' => false,
-        'allowedFileExtensions' => ['mp4','avi','mkv','mts','mpv','flv','3gp','avi'],
-        'initialPreview'=> ArrayHelper::getColumn($videosInitialPreviewConfig,'fileurl'),
-        'initialPreviewConfig'=>$videosInitialPreviewConfig
-      ],
-    ]); ?>
+    <?php if (!empty($fileList)) {?>
+      <div class="col-md-offset-2 col-md-10">
+        <div class="custumbox box box-default ">
+          <div  id="lightgallery" class="box-body  box-comments">
+            <?php foreach ($fileList as $key => $file) { ?>
+              <div class="col-md-4">
+                <?php 
+                $encID=Yii::$app->myhelper->getEncryptID($file->id);
+                if($file->type == 1){
+                  $fileUrl = $fBasePath.$file->url;
+
+                  ?>
+                  <div class="gallery-file-wrap" data-src="<?= $fileUrl ?>">
+                    <img class="img-responsive img-thumbnail" src="<?= $fileUrl  ?>" data-key="<?= Url::to(['university/facility-gallery-delete','id'=>$file->id,'key'=>$encID]) ?>" />
+                  </div>
+                <?php }else{ 
+                  $videoID= "video".$key;
+                  $fileUrl = $fBasePath.$file->url;
+                  $thumbPath =  $fBasePath.pathinfo($fileUrl, PATHINFO_FILENAME)."-thumb.png";
+                  ?>
+                  <div style="display:none;" id="<?=$videoID?>">
+                    <video class="lg-video-object lg-html5 video-js vjs-default-skin vjs-big-play-button" 
+                    poster="<?= $thumbPath ?>"
+                    controls preload="none">
+                    <source src="<?=$fileUrl?>" type="video/mp4">
+                      Your browser does not support HTML5 video.
+                    </video>
+                  </div>
+                  <div class="gallery-file-wrap" data-poster="<?= $thumbPath ?>"  data-html="#<?= $videoID ?>" >
+                    <img class="img-responsive img-thumbnail" src="<?= $thumbPath ?>" data-key="<?= Url::to(['university/facility-gallery-delete','id'=>$file->id,'key'=>$encID]) ?>" />
+                  </div>
+
+                <?php } ?>
+              </div>
+            <?php } ?>
+          </div>
+        </div>
+      </div>
+      <?php } ?>
+
 
     <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
@@ -92,6 +133,24 @@ $this->registerCss("
     display: none;
   }
   ");
-  ?>
 
+$this->registerJs('
+  $(document).ready(function(){
+    function initFunctions(){
+      $lg = $("#lightgallery");
+      $lg.lightGallery({
+        selector:".gallery-file-wrap",
+        videojs: true,
+        share: false,
+        download: false,
+        });
+        $lg.on("onBeforeOpen.lg",function(event, index, fromTouch, fromThumb){
+          console.log(event, index, fromTouch, fromThumb);
+          });
+        }
+        initFunctions();
+        
+    });
+');
+?>
   <?php $this->registerJs("".Yii::$app->myhelper->formsubmitedbyajax('w0','../university/index')."");?>

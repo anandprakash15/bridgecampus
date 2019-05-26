@@ -132,7 +132,7 @@ $this->registerCss("
 											$fileUrl = $fBasePath.$file->url;
 											?>
 											<div class="gallery-file-wrap" data-src="<?= $fileUrl ?>">
-												<img class="img-responsive img-thumbnail" data-key="<?= Yii::$app->myhelper->getEncryptID($file->id) ?>" src="<?= $fileUrl  ?>" />
+												<img class="img-responsive img-thumbnail" data-key="<?= Url::to(['delete-gallery-file','id'=>$file->id]) ?>" src="<?= $fileUrl  ?>" />
 											</div>
 										<?php }else{ 
 											$videoID= "video".$key;
@@ -148,7 +148,7 @@ $this->registerCss("
 												</video>
 											</div>
 											<div class="gallery-file-wrap" data-poster="<?= $thumbPath ?>"  data-html="#<?= $videoID ?>" >
-												<img data-key="<?= Yii::$app->myhelper->getEncryptID($file->id)?>"  class="img-responsive img-thumbnail" src="<?= $thumbPath ?>"  />
+												<img data-key="<?= Url::to(['delete-gallery-file','id'=>$file->id]) ?>"  class="img-responsive img-thumbnail" src="<?= $thumbPath ?>"  />
 											</div>
 
 										<?php } ?>

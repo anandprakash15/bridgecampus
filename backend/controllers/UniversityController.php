@@ -504,49 +504,38 @@ class UniversityController extends Controller
         ]);
     }
 
-    public function actionFacilityGalleryDelete($id){
-        $fgID = Yii::$app->request->post('key');
+    public function actionFacilityGalleryDelete($id,$key){
+        $fgID = Yii::$app->myhelper->getDecryptID($key);
         if(!empty($fgID))
         {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             if (($model = FacilityGallery::findOne($fgID)) !== null) {
-                $filePath = Yii::$app->myhelper->getUploadPath(1,$id)."facility/".$model->url;
+                $uplaodPath = Yii::$app->myhelper->getUploadPath(1,$id)."facility/";
+                $filePath = $uplaodPath.$model->url;
                 @unlink($filePath);
+                if($model->type == 2){
+                    @unlink($uplaodPath.pathinfo($model->url, PATHINFO_FILENAME)."-thumb.png");
+                }
                 if($model->delete()){
-                    return ['success'];
-                }else{
-                    return ['error'];
+                    return ['success'=>true];
                 }
             }
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+        return ['error'=>true,'msg'=>'Error occured while deleting the file.'];
     }
 
     public function actionFacilityDetails($id,$fid = null)
     {
         $this->layout= "university";
         $university = $this->findModel($id);
-        $imagesInitialPreviewConfig= $videosInitialPreviewConfig = $images = $videos=[];
+        $fileList=[];
         $fBasePath = Yii::$app->myhelper->getFileBasePath(1,$university->id)."facility/";
         if (($model = Facility::findOne(['id'=>$fid])) == null) {
             $model = new Facility();
         }else{
-            $images = FacilityGallery::find()->where(['type'=>1,'uc_type'=>1,'facilityID'=>$model->id])->asArray()->all();
-            foreach ($images as $key => $image) {
-                $imagesInitialPreviewConfig[$key]['fileurl'] = $fBasePath.$image['url']; 
-                $imagesInitialPreviewConfig[$key]['caption'] = "Image ".($key+1); 
-                $imagesInitialPreviewConfig[$key]['url'] = Url::to(['university/facility-gallery-delete','id'=>$university->id]); 
-                $imagesInitialPreviewConfig[$key]['key'] = $image['id']; 
-            }
-            $videos = FacilityGallery::find()->where(['type'=>2,'uc_type'=>1,'facilityID'=>$model->id])->all();
-            foreach ($videosInitialPreviewConfig as $key => $video) {
-                $videosInitialPreviewConfig[$key]['fileurl'] = $fBasePath.$video['url']; 
-                $videosInitialPreviewConfig[$key]['caption'] = "Video ".($key+1); 
-                $videosInitialPreviewConfig[$key]['url'] = Url::to(['university/facility-gallery-delete','id'=>$university->id]); 
-                $videosInitialPreviewConfig[$key]['key'] = $video['id']; 
-            }
+            $fileList = FacilityGallery::find()->where(['uc_type'=>1,'facilityID'=>$model->id])->all();
         }
-        //print_r($imagesInitialPreviewConfig);exit;
+        //print_r($initialPreviewConfig);exit;
         
         $model->coll_univID  = $id;
         $model->type = 1;
@@ -554,30 +543,19 @@ class UniversityController extends Controller
         $facilityGallery = new FacilityGallery();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
+
             $uploadPath = Yii::$app->myhelper->getUploadPath(1,$id)."facility/";
             FileHelper::createDirectory($uploadPath,0775,true);
 
-            $files = UploadedFile::getInstances($facilityGallery, 'image');
-
-            foreach ($files as $key => $file) {
-                $facilityGallery = new FacilityGallery();
-                $facilityGallery->type = 1;
-                $facilityGallery->uc_type = 1;
-                $facilityGallery->facilityID = $model->id;
-                $filename = time().$key;
-                $facilityGallery->url = $filename.'.'.pathinfo($file->name, PATHINFO_EXTENSION);
-                if($facilityGallery->save()){
-                    $filePath = $uploadPath.$facilityGallery->url;
-                    if($file->saveAs($filePath)){
-
-                    }
-                }
-            }
-
-            $files = UploadedFile::getInstances($facilityGallery, 'video');
+            $files = UploadedFile::getInstances($facilityGallery, 'imagevideo');
+            //print_r($files);exit;
             foreach ($files as $key => $file) {
                 $facilityGallery = new FacilityGallery();
                 $facilityGallery->type = 2;
+                if(strpos($file->type, "image/") !== false){
+                    $facilityGallery->type = 1;
+                }
                 $facilityGallery->uc_type = 1;
                 $facilityGallery->facilityID = $model->id;
                 $filename = time().$key;
@@ -585,7 +563,10 @@ class UniversityController extends Controller
                 if($facilityGallery->save()){
                     $filePath = $uploadPath.$facilityGallery->url;
                     if($file->saveAs($filePath)){
-
+                        if($facilityGallery->type == 2){
+                            $thumbPath = $uploadPath.$filename."-thumb.png";
+                            Yii::$app->myhelper->videoThumb($filePath,$thumbPath);
+                        }
                     }
                 }
             }
@@ -594,14 +575,13 @@ class UniversityController extends Controller
             return $this->redirect(['facility-details','id'=>$university->id,'fid'=>$model->id]);
         }
 
-
+        // /print_r($fileList);exit;
         return $this->render('facility-details', [
             'model' => $model,
             'university' => $university,
             'facilityGallery'=>$facilityGallery,
-            'imagesInitialPreviewConfig'=>$imagesInitialPreviewConfig,
-            'videos'=>$videos,
-            'videosInitialPreviewConfig'=>$videosInitialPreviewConfig,
+            'fBasePath'=>$fBasePath,
+            'fileList' => $fileList
         ]);
     }
 
