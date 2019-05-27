@@ -96,7 +96,7 @@ class UniversityController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+           \Yii::$app->getSession()->setFlash('success', 'Successful.');
            return $this->redirect(['review','id'=>$id]);
         }
         return $this->render('review-details', [
@@ -271,7 +271,7 @@ class UniversityController extends Controller
                     }
                 }
             }
-            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            \Yii::$app->getSession()->setFlash('success', 'Successful.');
             return $this->redirect(['advertise-materials','id'=>$university->id]);
         }
 
@@ -543,7 +543,6 @@ class UniversityController extends Controller
         $facilityGallery = new FacilityGallery();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
 
             $uploadPath = Yii::$app->myhelper->getUploadPath(1,$id)."facility/";
             FileHelper::createDirectory($uploadPath,0775,true);
@@ -571,7 +570,7 @@ class UniversityController extends Controller
                 }
             }
 
-            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            \Yii::$app->getSession()->setFlash('success', 'Successful.');
             return $this->redirect(['facility-details','id'=>$university->id,'fid'=>$model->id]);
         }
 

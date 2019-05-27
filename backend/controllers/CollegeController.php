@@ -34,6 +34,7 @@ use common\models\search\CollegeUniversityAdvpurposeSearch;
 use common\models\CourseSpecialization;
 use common\models\UniversityCollegeCourseSpecialization;
 use common\models\Exam;
+use common\models\FacilityGallery;
 
 /**
  * CollegeController implements the CRUD actions for College model.
@@ -366,26 +367,78 @@ class CollegeController extends Controller
         ]);
     }
 
+    public function actionFacilityGalleryDelete($id,$key){
+        $fgID = Yii::$app->myhelper->getDecryptID($key);
+        if(!empty($fgID))
+        {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if (($model = FacilityGallery::findOne($fgID)) !== null) {
+                $uplaodPath = Yii::$app->myhelper->getUploadPath(2,$id)."facility/";
+                $filePath = $uplaodPath.$model->url;
+                @unlink($filePath);
+                if($model->type == 2){
+                    @unlink($uplaodPath.pathinfo($model->url, PATHINFO_FILENAME)."-thumb.png");
+                }
+                if($model->delete()){
+                    return ['success'=>true];
+                }
+            }
+        }
+        return ['error'=>true,'msg'=>'Error occured while deleting the file.'];
+    }
+
     public function actionFacilityDetails($id,$fid = null)
     {
         $this->layout= "college";
         $college = $this->findModel($id);
-
+        $fileList=[];
+        $fBasePath = Yii::$app->myhelper->getFileBasePath(2,$college->id)."facility/";
         if (($model = Facility::findOne(['id'=>$fid])) == null) {
             $model = new Facility();
+        }else{
+            $fileList = FacilityGallery::find()->where(['uc_type'=>2,'facilityID'=>$model->id])->all();
         }
         
-        $model->coll_univID  = $id;
+        $model->coll_univID = $id;
         $model->type = 2;
 
+        $facilityGallery = new FacilityGallery();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
-            return $this->redirect(['facility','id'=>$college->id,'type'=>2]);
+            $uploadPath = Yii::$app->myhelper->getUploadPath(2,$id)."facility/";
+            FileHelper::createDirectory($uploadPath,0775,true);
+
+            $files = UploadedFile::getInstances($facilityGallery, 'imagevideo');
+            foreach ($files as $key => $file) {
+                $facilityGallery = new FacilityGallery();
+                $facilityGallery->type = 2;
+                if(strpos($file->type, "image/") !== false){
+                    $facilityGallery->type = 1;
+                }
+                $facilityGallery->uc_type = 2;
+                $facilityGallery->facilityID = $model->id;
+                $filename = time().$key;
+                $facilityGallery->url = $filename.'.'.pathinfo($file->name, PATHINFO_EXTENSION);
+                if($facilityGallery->save()){
+                    $filePath = $uploadPath.$facilityGallery->url;
+                    if($file->saveAs($filePath)){
+                        if($facilityGallery->type == 2){
+                            $thumbPath = $uploadPath.$filename."-thumb.png";
+                            Yii::$app->myhelper->videoThumb($filePath,$thumbPath);
+                        }
+                    }
+                }
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Successful.');
+            return $this->redirect(['facility-details','id'=>$college->id,'fid'=>$model->id]);
         }
 
         return $this->render('facility-details', [
             'model' => $model,
             'college' => $college,
+            'facilityGallery'=>$facilityGallery,
+            'fBasePath'=>$fBasePath,
+            'fileList' => $fileList
         ]);
     }
 
@@ -574,7 +627,7 @@ class CollegeController extends Controller
                     }
                 }
             }
-            \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+            \Yii::$app->getSession()->setFlash('success', 'Successful.');
             return $this->redirect(['advertise-materials','id'=>$college->id]);
         }
 
@@ -612,7 +665,7 @@ class CollegeController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           \Yii::$app->getSession()->setFlash('success', 'Successfully.');
+           \Yii::$app->getSession()->setFlash('success', 'Successful.');
            return $this->redirect(['review','id'=>$id]);
        }
 

@@ -37,6 +37,7 @@ $this->registerJsFile('@web/js/jquery.mousewheel.min.js',['depends' => [\yii\web
 $this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 
 $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+echo Yii::$app->message->display();
 ?>
 <div class="course-details-form">
   <div class="custumbox box box-info">
