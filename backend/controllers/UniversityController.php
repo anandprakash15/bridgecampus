@@ -479,7 +479,7 @@ class UniversityController extends Controller
         if(!empty($model->affiliate_to)){
             $model->affiliate_to = ArrayHelper::map(Affiliate::find()->where(new \yii\db\Expression("id IN(".$model->affiliate_to.")"))->asArray()->all(),'id','name');
         }else{
-            $model->accredited_by = [];
+            $model->affiliate_to = [];
         }
 
         return $this->render('view', [
