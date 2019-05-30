@@ -12,7 +12,7 @@ $this->params['subtitle'] = '<h1>View '.Html::a('Edit', ['update','id'=>$model->
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-
+echo Yii::$app->message->display();
 ?>
 <div class="university-view">
     <div class="custumbox box box-info">

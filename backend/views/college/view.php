@@ -11,6 +11,7 @@ $this->title = $model->name;
 $this->params['subtitle'] = '<h1>View '.Html::a('Edit', ['update','id'=>$model->id], ['class' => 'btn btn-success btn-xs']).'</h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Colleges', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+echo Yii::$app->message->display();
 ?>
 <div class="college-view">
     <div class="custumbox box box-info">

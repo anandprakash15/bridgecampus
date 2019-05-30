@@ -343,7 +343,7 @@ class UniversityController extends Controller
                 //print_r($model);exit;
                 \Yii::$app->getSession()->setFlash('error', 'Error occured while creating.');
             }
-            return $this->redirect(['index']);
+            return $this->redirect(['view','id'=>$model->id]);
         }
 
         return $this->render('create', [
