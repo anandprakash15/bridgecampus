@@ -95,6 +95,18 @@ class CollegeController extends Controller
             $model->accredited_by = [];
         }
 
+        if(!empty($model->affiliate_to)){
+            $model->affiliate_to = ArrayHelper::map(Affiliate::find()->where(new \yii\db\Expression("id IN(".$model->affiliate_to.")"))->asArray()->all(),'id','name');
+        }else{
+            $model->affiliate_to = [];
+        }
+        
+        $ownership = Yii::$app->myhelper->getOwnership();
+        if(!empty($model->ownership) && isset($ownership[$model->ownership])){
+
+            $model->ownership = $ownership[$model->ownership];
+        } 
+
         return $this->render('view', [
             'model' => $model,
             'fBasePath'=>$fBasePath
@@ -457,15 +469,37 @@ class CollegeController extends Controller
             $model->accredited_by = implode(",",(array) $model->accredited_by);
             $model->affiliate_to = implode(",",(array) $model->affiliate_to);
 
+            $bannerImg = UploadedFile::getInstance($model, 'bannerImg');
+            if(!empty($bannerImg))
+            {
+                $model->bannerURL = "banner.".pathinfo($bannerImg->name, PATHINFO_EXTENSION);
+            }
+
+            $brochureFile = UploadedFile::getInstance($model, 'brochureFile');
+            if(!empty($brochureFile))
+            {
+                $model->brochureurl = "brochure.".pathinfo($brochureFile->name, PATHINFO_EXTENSION);
+            }
+            
             $logoImg = UploadedFile::getInstance($model, 'logoImg');
             if(!empty($logoImg))
             {
                 $model->logourl = "logo.".pathinfo($logoImg->name, PATHINFO_EXTENSION);
             }
+
             if($model->save()){
                 $uploadPath = Yii::$app->myhelper->getUploadPath(2,$model->id);
                 FileHelper::createDirectory($uploadPath,0775,true);
-                 if(!empty($logoImg))
+                if(!empty($bannerImg))
+                {
+                    $bannerImg->saveAs($uploadPath.$model->bannerURL);
+                }
+                if(!empty($brochureFile))
+                {
+                    $brochureFile->saveAs($uploadPath.$model->brochureurl);
+                }
+
+                if(!empty($logoImg))
                 {
                     $logoImg->saveAs($uploadPath.$model->logourl);
                 }
@@ -524,6 +558,20 @@ class CollegeController extends Controller
             $uploadPath = Yii::$app->myhelper->getUploadPath(2,$model->id);
             FileHelper::createDirectory($uploadPath,0775,true);
             
+            $bannerImg = UploadedFile::getInstance($model, 'bannerImg');
+            
+            if(!empty($bannerImg))
+            {
+
+                $model->bannerURL = "banner.".pathinfo($bannerImg->name, PATHINFO_EXTENSION);
+            }
+
+            $brochureFile = UploadedFile::getInstance($model, 'brochureFile');
+            if(!empty($brochureFile))
+            {
+                $model->brochureurl = "brochure.".pathinfo($brochureFile->name, PATHINFO_EXTENSION);
+            }
+            
             $logoImg = UploadedFile::getInstance($model, 'logoImg');
             if(!empty($logoImg))
             {
@@ -531,6 +579,17 @@ class CollegeController extends Controller
             }
 
             if($model->save()){
+                if(!empty($bannerImg))
+                {
+                    @unlink($uploadPath.$oldbannerURL);
+                    $bannerImg->saveAs($uploadPath.$model->bannerURL);
+                }
+                if(!empty($brochureFile))
+                {
+                    @unlink($uploadPath.$oldbrochureURL);
+                    $brochureFile->saveAs($uploadPath.$model->brochureurl);
+                }
+
                 if(!empty($logoImg))
                 {
                     @unlink($uploadPath.$oldlogoURL);
@@ -539,10 +598,10 @@ class CollegeController extends Controller
 
                 \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
             }else{
-                print_r($model);exit;
+                //print_r($model);exit;
                 \Yii::$app->getSession()->setFlash('error', 'Error occured while creating.');
             }
-            return $this->redirect(['index']);
+            return $this->redirect(['view','id'=>$model->id]);
         }
 
         return $this->render('update', [

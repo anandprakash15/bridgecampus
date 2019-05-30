@@ -90,6 +90,10 @@ class ComposerStaticInit9c4ae0f1e3be1063039c0f96f3fd7424
             'yii\\' => 4,
             'yii2mod\\alert\\' => 14,
         ),
+        'w' => 
+        array (
+            'wbraganca\\dynamicform\\' => 22,
+        ),
         's' => 
         array (
             'softark\\duallistbox\\' => 20,
@@ -236,6 +240,10 @@ class ComposerStaticInit9c4ae0f1e3be1063039c0f96f3fd7424
         'yii2mod\\alert\\' => 
         array (
             0 => __DIR__ . '/..' . '/yii2mod/yii2-sweet-alert',
+        ),
+        'wbraganca\\dynamicform\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wbraganca/yii2-dynamicform',
         ),
         'softark\\duallistbox\\' => 
         array (

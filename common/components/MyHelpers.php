@@ -62,6 +62,10 @@ use common\models\CampusFacilities;
         return [1 => 'Admission Start Date', 2=>'Last Date to Apply', 3 =>'GD-PI Date', 4=>'Internal Entrance Exam Dates', 5=>'Merit List Date', 6=>'Admission Last Date'];
     }
 
+    public static function getOwnership(){
+        return [1 => 'Owned by Trust', 2=>'Private College', 3 =>'Public College', 4=>'Self-Financed Institute'];
+    }
+
     public static function getShift(){
         return [1 => 'First Shift', 2=>'Second Shift', 3 =>'Third Shift'];
     }
@@ -419,7 +423,7 @@ use common\models\CampusFacilities;
             $fileType = "/videos";
         }
         
-        return Yii::getAlias('@web') .'/uploads'.$ucType.$ucID.$fileType."/";
+        return Url::home(true).'uploads'.$ucType.$ucID.$fileType."/";
     }
 
     public function videoThumb($source,$destination){

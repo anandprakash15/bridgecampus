@@ -33,6 +33,8 @@ use Yii;
  * @property string $vission
  * @property string $mission
  * @property string $logourl
+ * @property int $ownership
+ * @property string $brochureurl
  * @property string $createdDate
  * @property string $updatedDate
  * @property int $status
@@ -46,7 +48,10 @@ use Yii;
  */
 class College extends \yii\db\ActiveRecord
 {
+    public $bannerImg;
+    public $brochureFile;
     public $logoImg;
+
     /**
      * @inheritdoc
      */
@@ -62,11 +67,12 @@ class College extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            ['logoImg', 'file', 'extensions'=>'jpg, jpeg, png'],
-            [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
+            [['bannerImg','logoImg'], 'file', 'extensions'=>'jpg, jpeg, png'],
+            [['brochureFile'], 'file', 'extensions'=>'pdf, doc, docx'],
+            [['cityID', 'stateID', 'countryID','ownership', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['about', 'vission', 'mission'], 'string'],
             [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by', 'affiliate_to'], 'safe'],
-            [['name', 'address'], 'string', 'max' => 500],
+            [['name', 'address','brochureurl'], 'string', 'max' => 500],
             [['code', 'taluka', 'district', 'contact', 'fax', 'email', 'logourl'], 'string', 'max' => 100],
             [['pincode'], 'string', 'max' => 20],
             ['code', 'codeunique'],
@@ -124,6 +130,8 @@ class College extends \yii\db\ActiveRecord
             'vission' => 'Vission',
             'mission' => 'Mission',
             'logourl' => 'College Logo',
+            'ownership' => 'Ownership',
+            'brochureurl' => 'Brochure File',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',

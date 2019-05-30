@@ -245,17 +245,112 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
         ]
       ]) ?>
 
+      <?= $form->field($model, 'ownership')->dropDownList(Yii::$app->myhelper->getOwnership(),['class'=>'form-control','prompt'=>'Select Ownership'])?>
+
       <?php
-      $logoImgPreview = "";
+      $bannerImgPreview = $brochureFilePreview = $logoImgPreview = "";
       if(!$model->isNewRecord){
+
         $fViewPath= Yii::$app->myhelper->getFileBasePath(2,$model->id);
+        if(!empty($model->bannerURL)){
+          $bannerImgPreview = [$fViewPath.$model->bannerURL];
+        }
+        if(!empty($model->brochureurl)){
+          $brochureFilePreview = $fViewPath.$model->brochureurl;
+        }
         if(!empty($model->logourl)){
           $logoImgPreview = [$fViewPath.$model->logourl];
         }
+
       }
+
       ?>
 
-<?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
+
+      <?php echo $form->field($model, 'bannerImg')->widget(FileInput::classname(), [
+        'pluginOptions' => [
+          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+          'options' => ['multiple' => false,'accept' => 'image/*'],
+          'initialPreview'=> $bannerImgPreview,
+          'initialPreviewAsData'=>true,
+          'initialPreviewFileType'=> 'image',
+          'initialPreviewConfig'=>[[
+            'downloadUrl'=>$bannerImgPreview,
+            'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
+            'extra'=> ['id'=> 100],
+            'key'=>1
+          ]
+        ],
+        'overwriteInitial'=>true,
+        'dropZoneEnabled'=> false,
+        'showCaption' => true,
+        'showRemove' => false,
+        'showUpload' => false,
+      ],
+      'pluginEvents'=>[
+        'filebeforedelete'=>'function(){
+          return new Promise(function(resolve, reject) {
+            $.confirm({
+              title: "Confirmation!",
+              content: "Are you sure you want to delete this file?",
+              type: "red",
+              buttons: {   
+                ok: {
+                  btnClass: "btn-primary text-white",
+                  keys: ["enter"],
+                  action: function(){
+                   console.log();
+                   resolve();
+
+                 }
+                 },
+                 cancel: function(){
+                  $.alert("File deletion was aborted! ");
+                }
+              }
+              });
+              }); 
+            }',
+          ],
+        ]);?>
+
+
+        <?php echo $form->field($model, 'brochureFile')->widget(FileInput::classname(), [
+          'pluginOptions' => [
+            'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+            'options' => ['multiple' => false],
+            'initialPreview'=> $brochureFilePreview,
+            'initialPreviewAsData'=>true,
+            'initialPreviewConfig'=>[[
+              'downloadUrl'=> $brochureFilePreview,
+              'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'brochureurl']):'',
+              'extra'=> ['id'=> 100],
+              'key'=>1
+            ]
+          ],
+          'preferIconicPreview'=> true,
+          'initialPreviewFileType'=> 'image',
+          'previewFileIconSettings'=>[
+            'docx'=> '<i class="fa fa-file text-primary"></i>',
+            'doc'=> '<i class="fa fa-file text-primary"></i>',
+            'xls'=> '<i class="fa fa-file-excel text-success"></i>',
+            'ppt'=> '<i class="fa fa-file-powerpoint text-danger"></i>',
+          ],
+          'previewFileExtSettings'=>[
+            /*'doc'=> 'function(ext) {
+              return ext.match(/(doc|docx)$/i);
+            }',*/
+          ],
+          
+          'overwriteInitial'=>true,
+          'dropZoneEnabled'=> false,
+          'showCaption' => true,
+          'showRemove' => false,
+          'showUpload' => false,
+        ]
+      ]);?>
+
+        <?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
           'pluginOptions' => [
             'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
             'options' => ['multiple' => false,'accept' => 'image/*'],
@@ -263,6 +358,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
             'initialPreviewAsData'=>true,
             'initialPreviewFileType'=> 'image',
             'initialPreviewConfig'=>[[
+              'downloadUrl'=>$logoImgPreview,
               'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'logourl']):'',
               'extra'=> [],
               'key'=>1

@@ -327,6 +327,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           'initialPreviewAsData'=>true,
           'initialPreviewFileType'=> 'image',
           'initialPreviewConfig'=>[[
+             'downloadUrl'=> $bannerImgPreview,
             'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
             'extra'=> ['id'=> 100],
             'key'=>1
@@ -373,6 +374,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
             'initialPreview'=> $brochureFilePreview,
             'initialPreviewAsData'=>true,
             'initialPreviewConfig'=>[[
+              'downloadUrl'=> $brochureFilePreview,
               'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'brochureurl']):'',
               'extra'=> ['id'=> 100],
               'key'=>1
@@ -406,6 +408,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
             'initialPreviewAsData'=>true,
             'initialPreviewFileType'=> 'image',
             'initialPreviewConfig'=>[[
+              'downloadUrl'=> $logoImgPreview,
               'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'logourl']):'',
               'extra'=> [],
               'key'=>1

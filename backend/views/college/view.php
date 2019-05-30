@@ -37,8 +37,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td class="col-md-8"><?= $model->establish_year ?></td>
                     </tr>
                     <tr>
+                        <th class="col-md-4">Ownership:</th>
+                        <td class="col-md-8"><?= $model->ownership ?></td>
+                    </tr>
+                    <tr>
                         <th class="col-md-4">Website Url:</th>
                         <td class="col-md-8"><a target="_blank" href="<?= $model->websiteurl ?>"><?= $model->websiteurl ?></a></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Brochure:</th>
+                        <td class="col-md-8"><a target="_blank" href="<?= Url::to($fBasePath.$model->brochureurl) ?>"><?= $model->brochureurl ?></a></td>
                     </tr>
                     <tr>
                         <th class="col-md-4">Approved By:</th>
@@ -56,7 +64,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php } ?>
                         </td>
                     </tr>
-                    
+                    <tr>
+                        <th class="col-md-4">Affiliate To:</th>
+                        <td class="col-md-8">
+                            <?php foreach($model->affiliate_to as $id => $affiliate_to ){ ?>
+                             <a href="<?= Url::to(['affiliate/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $affiliate_to ?></a> 
+                            <?php } ?>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -174,6 +189,18 @@ $this->params['breadcrumbs'][] = $this->title;
             </table>
         </div>
     </div>
+    <div class="custumbox box box-danger">
+    <div class="box-body">
+        <table class="table table-bordered">
+            <tbody>                  
+                <tr>
+                    <th class="col-md-4">Banner Image:</th>
+                    <td class="col-md-8"><?= Html::img(Url::to($fBasePath.$model->bannerURL),['class' => 'img-responsive','style'=>'width:100px;height:100px']) ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </div>
 <?php 
 $this->registerCss("
