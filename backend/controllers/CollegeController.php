@@ -142,6 +142,9 @@ class CollegeController extends Controller
         }else{
             $uccModel = UniversityCollegeCourse::find()->joinWith(['course'])->where(['university_college_course.id'=>$uccID])->one();
             $model = CourseDetails::findOne(['uccID'=>$uccModel->id]);
+            if(empty($model)){
+                $model = new CourseDetails();
+            }
         }
         $model->scenario = CourseDetails::SCENARIO_COLLEGE_COURSE;
         $university =  $course = [];
