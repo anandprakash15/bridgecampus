@@ -259,7 +259,7 @@ class CollegeController extends Controller
                 UniversityCollegeCourseSpecialization::deleteAll(['coll_univID' => $courseDetails->id, 'course_specializationID' =>  array_values($deletedSpecializations)]);
             }
 
-            \Yii::$app->getSession()->setFlash('success', 'Specializations successfully added in course '.$courseDetails->course->name.".");
+            \Yii::$app->getSession()->setFlash('success', 'Specialization has been successfully saved.');
             
             return $this->redirect(['add-specializations','id'=>$courseDetails->id]);
         }
