@@ -34,6 +34,7 @@ use common\models\UniversityCollegeCourseSpecialization;
 use common\models\Exam;
 use common\models\Affiliate;
 use common\models\FacilityGallery;
+use yii\base\Model;
 
 
 /**
@@ -155,20 +156,23 @@ class UniversityController extends Controller
 
         $ucsmodel = new UniversityCollegeCourseSpecialization();
         $ucsmodel->type = 1;
+        $specializationModels = UniversityCollegeCourseSpecialization::find()->joinWith(['courseSpecialization'])->where(['coll_univID'=>$courseDetails->id,'type'=>1])->all();
+        //print_r($specializationModels);exit;
+        $oldSpecializations = ArrayHelper::getColumn($specializationModels,'course_specializationID');
 
-        $oldSpecializations = ArrayHelper::getColumn(UniversityCollegeCourseSpecialization::find()->where(['coll_univID'=>$courseDetails->id,'type'=>1])->asArray()->all(),'course_specializationID');
-
-
-        
         $ucsmodel->course_specializationID = $oldSpecializations;
 
         $ucsmodel->coll_univID = $courseDetails->id;
 
         if ($ucsmodel->load(Yii::$app->request->post())) {
-
+            Model::loadMultiple($specializationModels, Yii::$app->request->post());
+            foreach ($specializationModels as $key => $specializationModel) {
+                $specializationModel->save();
+            }
             $newSpecializations = array_diff((array)$ucsmodel['course_specializationID'], (array)$oldSpecializations);
 
             $deletedSpecializations = array_diff((array)$oldSpecializations,(array)$ucsmodel['course_specializationID']);
+
 
             foreach ($newSpecializations as $key => $specialization) {
                 $nucsmodel = new UniversityCollegeCourseSpecialization();
@@ -191,11 +195,11 @@ class UniversityController extends Controller
             return $this->redirect(['add-specializations','id'=>$courseDetails->id]);
         }
 
-        
         return $this->render('add-specializations', [
             'courseDetails' => $courseDetails,
             'specializations'=>$specializations,
             'ucsmodel' => $ucsmodel,
+            'specializationModels' => $specializationModels
         ]);
     }
 

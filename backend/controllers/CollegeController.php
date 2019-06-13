@@ -35,6 +35,7 @@ use common\models\CourseSpecialization;
 use common\models\UniversityCollegeCourseSpecialization;
 use common\models\Exam;
 use common\models\FacilityGallery;
+use yii\base\Model;
 
 /**
  * CollegeController implements the CRUD actions for College model.
@@ -225,8 +226,8 @@ class CollegeController extends Controller
 
         $ucsmodel = new UniversityCollegeCourseSpecialization();
         $ucsmodel->type = 2;
-
-        $oldSpecializations = ArrayHelper::getColumn(UniversityCollegeCourseSpecialization::find()->where(['coll_univID'=>$courseDetails->id,'type'=>2])->asArray()->all(),'course_specializationID');
+        $specializationModels = UniversityCollegeCourseSpecialization::find()->joinWith(['courseSpecialization'])->where(['coll_univID'=>$courseDetails->id,'type'=>2])->all();
+        $oldSpecializations = ArrayHelper::getColumn($specializationModels,'course_specializationID');
 
         
         $ucsmodel->course_specializationID = $oldSpecializations;
@@ -234,7 +235,10 @@ class CollegeController extends Controller
         $ucsmodel->coll_univID = $courseDetails->id;
 
         if ($ucsmodel->load(Yii::$app->request->post())) {
-
+            Model::loadMultiple($specializationModels, Yii::$app->request->post());
+            foreach ($specializationModels as $key => $specializationModel) {
+                $specializationModel->save();
+            }
             $newSpecializations = array_diff((array)$ucsmodel['course_specializationID'], (array)$oldSpecializations);
 
             $deletedSpecializations = array_diff((array)$oldSpecializations,(array)$ucsmodel['course_specializationID']);
@@ -265,6 +269,7 @@ class CollegeController extends Controller
             'courseDetails' => $courseDetails,
             'specializations'=>$specializations,
             'ucsmodel' => $ucsmodel,
+            'specializationModels' => $specializationModels
         ]);
     }
 

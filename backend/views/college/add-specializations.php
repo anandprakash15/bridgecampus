@@ -44,11 +44,37 @@ echo Yii::$app->message->display();
 			<?php ActiveForm::end(); ?>
 		</div>
 	</div>
-</div>
-<?php 
-$this->registerCss("
-	.app-title{
-		display: none;
-	}
-	");
-	?>
+	<div class="custumbox box box-primary">
+		<div class="box-header with-border">
+			<h3 class="box-title">Specializations Intake</h3>
+		</div>
+		<div class="box-body">
+			<?php if(!empty($specializationModels)){ ?>
+				<?php $form = ActiveForm::begin(); ?>
+				<table class="table table-responsive table-bordered">
+					<?php  foreach ($specializationModels as $key => $specializationModel) {?>
+						<tr>
+							<td><?= $specializationModel->courseSpecialization->specialization->name ?></td>
+							<td>
+								<?= $form->field($specializationModel, '['.$key.']id')->hiddenInput()->label(false); ?>
+								<?= $form->field($specializationModel, '['.$key.']intake')->textInput(['maxlength' => true])->label(false) ?></td>
+							</tr>
+						<?php } ?>
+					</table>
+					<div class="form-group text-center">
+						<?= Html::submitButton('Save Specializations Intake', ['class' => 'btn btn-success btn-block']) ?>
+					</div>
+					<?php ActiveForm::end(); ?>
+				<?php }else{ ?>
+					<h5>Add Specializations from above list.</h5>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<?php 
+	$this->registerCss("
+		.app-title{
+			display: none;
+		}
+		");
+		?>

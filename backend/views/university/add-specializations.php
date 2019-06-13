@@ -44,11 +44,12 @@ echo Yii::$app->message->display();
 			<?php ActiveForm::end(); ?>
 		</div>
 	</div>
-</div>
-<?php 
-$this->registerCss("
-	.app-title{
-		display: none;
-	}
-	");
-	?>
+
+	</div>
+	<?php 
+	$this->registerCss("
+		.app-title{
+			display: none;
+		}
+		");
+		?>
