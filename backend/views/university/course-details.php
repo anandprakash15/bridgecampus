@@ -98,7 +98,6 @@ $this->params['breadcrumbs'][] = 'Details';
               ]
             ]) ?>
 
-            <?= $form->field($model, 'hereunder')->dropDownList(Yii::$app->myhelper->getHereunder(),['class'=>'form-control','prompt'=>'Select hereunder'])?>
 
             <?= $form->field($model, 'course_credits')->widget(CKEditor::className(), [
               'options' => ['rows' => 6],

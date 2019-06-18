@@ -17,7 +17,6 @@ use Yii;
  * @property string $important_dates
  * @property string $course_credits
  * @property string $fee_breakup
- * @property int $hereunder 1-Admission Start Date 2-Last Date to Apply 3-GD-PI Date 4-Internal Entrance Exam if any Dates 5-Merit List Date 6-Admission Last Date
  * @property string $seat_breakup
  * @property int $approved_intake
  * @property int $stream_wise_intake
@@ -61,7 +60,7 @@ class CourseDetails extends \yii\db\ActiveRecord
     {
         return [
             [['duration','affiliation_type', 'fees', 'uccID', 'description', 'updatedBy', 'createdBy', 'status'], 'required'],
-            [['affiliation_type', 'course_mode', 'hereunder', 'approved_intake', 'stream_wise_intake', 'placement_data', 'accreditation_status', 'shift', 'uccID', 'status'], 'integer'],
+            [['affiliation_type', 'course_mode', 'approved_intake', 'stream_wise_intake', 'placement_data', 'accreditation_status', 'shift', 'uccID', 'status'], 'integer'],
             [['eligibility_criteria', 'course_curriculum', 'admission_process', 'important_dates', 'course_credits', 'fee_breakup', 'seat_breakup', 'nri_quota', 'jk_quota', 'foreign_collaboration', 'duration', 'description'], 'string'],
             [['start_year', 'updatedDate', 'createdDate','approved_by'], 'safe'],
             [['course_mode'], 'required','on'=>self::SCENARIO_UNIVERSITY_COURSE],
@@ -73,8 +72,8 @@ class CourseDetails extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_UNIVERSITY_COURSE] = ['course_mode','eligibility_criteria','course_curriculum','entrance_exams_accepted','admission_process','important_dates','hereunder','course_credits','status'];
-        $scenarios[self::SCENARIO_COLLEGE_COURSE] = ['affiliation_type','course_mode','eligibility_criteria','course_curriculum','entrance_exams_accepted', 'fees','fee_breakup', 'seat_breakup', 'nri_quota', 'jk_quota','admission_process','important_dates','hereunder','course_credits','approved_intake','start_year','accreditation_status','foreign_collaboration','foreign_university','register_url','shift','status','approved_by'];
+        $scenarios[self::SCENARIO_UNIVERSITY_COURSE] = ['course_mode','eligibility_criteria','course_curriculum','entrance_exams_accepted','admission_process','important_dates','course_credits','status'];
+        $scenarios[self::SCENARIO_COLLEGE_COURSE] = ['affiliation_type','course_mode','eligibility_criteria','course_curriculum','entrance_exams_accepted', 'fees','fee_breakup', 'seat_breakup', 'nri_quota', 'jk_quota','admission_process','important_dates','course_credits','approved_intake','start_year','accreditation_status','foreign_collaboration','foreign_university','register_url','shift','status','approved_by'];
         return $scenarios;
     }
 
@@ -107,7 +106,6 @@ class CourseDetails extends \yii\db\ActiveRecord
             'important_dates' => 'Important Dates',
             'course_credits' => 'Course Credits',
             'fee_breakup' => 'Fee Breakup',
-            'hereunder' => 'Hereunder',
             'seat_breakup' => 'Seat Breakup',
             'approved_intake' => 'Approved Intake',
             'stream_wise_intake' => 'Stream Wise Intake',
