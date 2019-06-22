@@ -7,15 +7,15 @@ use kartik\grid\GridView;
 /* @var $searchModel common\models\search\SpecializationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Approveds';
-$this->params['subtitle'] = '<h1>Approve '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
+$this->title = 'Approved by';
+$this->params['subtitle'] = '<h1>Approved by '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
 
 echo Yii::$app->message->display();
 ?>
 
-<div class="Affiliates-index">
+<div class="approved-by-index">
     <div class="custumbox box box-info">
         <div class="box-body">
             <?= GridView::widget([

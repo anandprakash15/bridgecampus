@@ -12,7 +12,7 @@ use dosamigos\ckeditor\CKEditor;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="program-form">
+<div class="affiliation-form">
     <div class="custumbox box box-info">
        <div class="box-body">
 

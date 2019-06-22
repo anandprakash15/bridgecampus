@@ -7,21 +7,21 @@ use kartik\grid\GridView;
 /* @var $searchModel common\models\search\SpecializationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Affiliates';
-$this->params['subtitle'] = '<h1>Affiliate '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
+$this->title = 'Affiliations';
+$this->params['subtitle'] = '<h1>Affiliations '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
 
 echo Yii::$app->message->display();
 ?>
 
-<div class="Affiliates-index">
+<div class="Affiliations-index">
     <div class="custumbox box box-info">
         <div class="box-body">
             <?= GridView::widget([
                 'striped'=>false,
                 'hover'=>true,
-                'panel'=>['type'=>'default', 'heading'=>'Affiliates List','after'=>false],
+                'panel'=>['type'=>'default', 'heading'=>'Affiliations List','after'=>false],
                 'toolbar'=> [
                     '{export}',
                     '{toggleData}',

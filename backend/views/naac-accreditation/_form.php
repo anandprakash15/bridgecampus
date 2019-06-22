@@ -12,28 +12,29 @@ use yii\helpers\ArrayHelper;
 
 <div class="naac-accreditation-form">
     <div class="custumbox box box-info">
-       <div class="box-body">
+     <div class="box-body">
 
         <?php $form = ActiveForm::begin([
-         'layout' => 'horizontal',
-         'enableClientValidation' => true,
-         'enableAjaxValidation' => false,
-         'options' => ['enctype' => 'multipart/form-data'],
-     ]);?>
-     <br/>
+           'layout' => 'horizontal',
+           'enableClientValidation' => true,
+           'enableAjaxValidation' => false,
+           'options' => ['enctype' => 'multipart/form-data'],
+       ]);?>
+       <br/>
 
-     <?= $form->field($model, 'institutional_cgpa')->textInput() ?>
+       <?= $form->field($model, 'institutional_cgpa')->textInput() ?>
 
-     <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
 
-     <?= $form->field($model, 'performance_descriptor')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'performance_descriptor')->textInput(['maxlength' => true]) ?>
 
-     <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
+       <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
-     <div class="form-group" style="margin-left: 18% !important;">
-         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
-     </div>
+       <div class="form-group" style="margin-left: 18% !important;">
+           <button id="back_btn" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
+           <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
+       </div>
 
-     <?php ActiveForm::end(); ?>
- </div>
+       <?php ActiveForm::end(); ?>
+   </div>
 </div>

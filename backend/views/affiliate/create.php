@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Affiliate */
+/* @var $model common\models\Affiliations */
 
-$this->title = 'Create Affiliate';
-$this->params['breadcrumbs'][] = ['label' => 'Affiliates', 'url' => ['index']];
+$this->title = 'Create Affiliation';
+$this->params['breadcrumbs'][] = ['label' => 'Affiliations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="affiliate-create">
+<div class="affiliation-create">
 
     <?= $this->render('_form', [
         'model' => $model,
