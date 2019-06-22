@@ -18,7 +18,7 @@ class ExamSearch extends Exam
     {
         return [
             [['id', 'programID', 'courseID', 'exam_course_level', 'status','createdBy', 'updatedBy'], 'integer'],
-            [['exam_name', 'type', 'short_name', 'overview', 'registration_end_date', 'registration_extended_date_from', 'registration_extended_date_to', 'admit_card_download_start_date', 'admit_card_download_end_date', 'online_exam_date', 'paper_based_test_date', 'result_date', 'result_overview', 'cut_off', 'syllabus', 'exam_pattern', 'exam_duration', 'no_of_questions', 'total_marks', 'language_of_paper', 'marks_per_question', 'negative_marks_per_question', 'do_dont_during_the_exam', 'exam_registration_website', 'couducting_authority', 'exam_centres', 'exam_helpline_nos', 'number_of_exam_cities', 'exam_books_guide', 'question_papers', 'exam_FAQ', 'createdDate', 'updatedDate'], 'safe'],
+            [['exam_name', 'exam_mode', 'short_code', 'highlights', 'registration_end_date', 'registration_extended_date_from', 'registration_extended_date_to', 'admit_card_download_start_date', 'admit_card_download_end_date', 'online_exam_date', 'paper_based_exam_date', 'result_date', 'analysis', 'cut_off', 'syllabus', 'exam_pattern', 'exam_duration', 'no_of_questions', 'total_marks', 'language_of_paper', 'marks_per_question', 'negative_marks_per_question', 'do_dont_during_the_exam', 'exam_registration_website', 'conducting_authority', 'exam_centres', 'exam_helpline_nos', 'number_of_exam_cities', 'exam_books_guide', 'question_papers', 'exam_FAQ', 'createdDate', 'updatedDate'], 'safe'],
         ];
     }
 
@@ -69,18 +69,18 @@ class ExamSearch extends Exam
         ]);
 
         $query->andFilterWhere(['like', 'exam_name', $this->exam_name])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'short_name', $this->short_name])
-            ->andFilterWhere(['like', 'overview', $this->overview])
+            ->andFilterWhere(['like', 'exam_mode', $this->exam_mode])
+            ->andFilterWhere(['like', 'short_code', $this->short_code])
+            ->andFilterWhere(['like', 'highlights', $this->highlights])
             ->andFilterWhere(['like', 'registration_end_date', $this->registration_end_date])
             ->andFilterWhere(['like', 'registration_extended_date_from', $this->registration_extended_date_from])
             ->andFilterWhere(['like', 'registration_extended_date_to', $this->registration_extended_date_to])
             ->andFilterWhere(['like', 'admit_card_download_start_date', $this->admit_card_download_start_date])
             ->andFilterWhere(['like', 'admit_card_download_end_date', $this->admit_card_download_end_date])
             ->andFilterWhere(['like', 'online_exam_date', $this->online_exam_date])
-            ->andFilterWhere(['like', 'paper_based_test_date', $this->paper_based_test_date])
+            ->andFilterWhere(['like', 'paper_based_exam_date', $this->paper_based_exam_date])
             ->andFilterWhere(['like', 'result_date', $this->result_date])
-            ->andFilterWhere(['like', 'result_overview', $this->result_overview])
+            ->andFilterWhere(['like', 'analysis', $this->analysis])
             ->andFilterWhere(['like', 'cut_off', $this->cut_off])
             ->andFilterWhere(['like', 'syllabus', $this->syllabus])
             ->andFilterWhere(['like', 'exam_pattern', $this->exam_pattern])
@@ -92,7 +92,7 @@ class ExamSearch extends Exam
             ->andFilterWhere(['like', 'negative_marks_per_question', $this->negative_marks_per_question])
             ->andFilterWhere(['like', 'do_dont_during_the_exam', $this->do_dont_during_the_exam])
             ->andFilterWhere(['like', 'exam_registration_website', $this->exam_registration_website])
-            ->andFilterWhere(['like', 'couducting_authority', $this->couducting_authority])
+            ->andFilterWhere(['like', 'conducting_authority', $this->conducting_authority])
             ->andFilterWhere(['like', 'exam_centres', $this->exam_centres])
             ->andFilterWhere(['like', 'exam_helpline_nos', $this->exam_helpline_nos])
             ->andFilterWhere(['like', 'number_of_exam_cities', $this->number_of_exam_cities])

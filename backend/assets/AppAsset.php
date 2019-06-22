@@ -20,7 +20,8 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/admin-main.js',
-        'js/jquery-confirm.min.js'
+        'js/jquery-confirm.min.js',
+        'js/custom.js'
         //'js/bootstrap.js',
     ];
     public $depends = [

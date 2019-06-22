@@ -227,17 +227,17 @@ $this->params['breadcrumbs'][] = "Add Courses Details";
         ]
       ]) ?>
 
-      <?= $form->field($model, 'approved_intake')->textInput(['maxlength' => true]) ?>
 
-      <?= $form->field($model, 'start_year')->widget(DatePicker::classname(), [
-        'options' => ['placeholder' => 'Select Start Year...'],
-        'type' => DatePicker::TYPE_COMPONENT_APPEND,
-        'pluginOptions' => [
-          'autoclose'=>true,
-          'format' => 'yyyy',
-          'minViewMode'=>2,          
+      <?= $form->field($model, 'approved_intake')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
         ]
-      ]); ?>
+      ]) ?>
+
+      <?= $form->field($model, 'start_year')->textInput(['maxlength' => true]) ?>
 
       <?= $form->field($model, 'accreditation_status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
@@ -276,6 +276,8 @@ $this->params['breadcrumbs'][] = "Add Courses Details";
           /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
         ]
       ]) ?>
+
+      <?= $form->field($model, 'placement_data')->dropDownList(Yii::$app->myhelper->getPlacementData(),['class'=>'form-control'])?>
 
       <?= $form->field($model, 'register_url')->textInput(['maxlength' => true]) ?>
 

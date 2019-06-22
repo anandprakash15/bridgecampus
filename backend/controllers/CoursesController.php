@@ -102,7 +102,7 @@ class CoursesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$redirect="")
     {
         $model = $this->findModel($id);
         $program= []; $specialization = $program_categoryID = $exams =[];
@@ -127,7 +127,12 @@ class CoursesController extends Controller
                 //print_r($model);exit;
                 \Yii::$app->getSession()->setFlash('error', 'Error Occurred.');
             }
-            return $this->redirect(['index']);
+
+            if($redirect == "program_courses"){
+                return $this->redirect(['program/courses','id'=>$model->programID]);
+            }else{
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('update', [

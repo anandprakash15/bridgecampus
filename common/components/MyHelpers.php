@@ -54,6 +54,7 @@ use common\models\CampusFacilities;
     }
 
 
+
     public static function getCourseMode(){
         return [1 => 'Regular', 2=>'Distance Learning', 3 =>'Correspondence', 4=>'Online Mode', 5=>'Hybrid Mode', 6=>'MOOCs (massive open online courses)'];
     }
@@ -74,6 +75,11 @@ use common\models\CampusFacilities;
     {
         return [1 => 'Active', 0=>'Inactive'];
     }
+
+    public static function getPlacementData(){
+        return [1=>'Highest Package National', 2=>'Highest Package International', 3=>'Average Package', 4=>'Lowest Package'];   
+    }
+
     public static function getFacility()
     {
         return ArrayHelper::map(CampusFacilities::find()->where(['status'=>1])->all(),'id','name');
@@ -101,6 +107,13 @@ use common\models\CampusFacilities;
         return [1 => 'Under Graduate', 2=>'Post Graduate', 3 =>'Advanced Masters', 4=>'After 10th', 5=>'Doctorate', 6=>'Post Doctorate', 7=>'Post Masters'];
     }
 
+    public static function getExamLevel(){
+        return [1 => 'National Level Exam', 2=>'State Level Exam', 3 =>'Institute Level Exam'];
+    }
+
+    public static function getExamMode(){
+        return [1 => 'Online Mode', 2=>'Paper Based'];
+    }
     
 
     public static function getPriority()
@@ -108,37 +121,70 @@ use common\models\CampusFacilities;
         return [1 => 'Very High', 2=>'High', 3=>'Moderate', 4=>'low', 5=>'Very Low'];
     }
 
+    public static function getInstitutionalCGPA(){
+        return  [
+            "3.51–4.00" => "3.51 – 4.00",
+            "3.26–3.50" => "3.26 – 3.50",
+            "3.01–3.25" => "3.01 – 3.25",
+            "2.76–3.00" => "2.76 – 3.00",
+            "2.51–2.75" => "2.51 – 2.75",
+            "2.01–2.50" => "2.01 – 2.50",
+            "1.51–2.00" => "1.51 – 2.00",
+            "0-1.50" => "0 - 1.50"
+        ];
+    }
+
+    public static function getNaacGrade(){
+        return  [
+            "A++" => "A++",
+            "A+" => "A+",
+            "A" => "A",
+            "B++" => "B++",
+            "B+" => "B+",
+            "B" => "B",
+            "C" => "C",
+            "D" => "D"
+        ];
+    }
+
+    public static function getPerformanceDescriptor(){
+        return  [
+            1 => "Accredited",
+            2 => "Not Accredited"
+        ];
+    }
+
     public static function getAdvertisePossitionArray()
     {
 
         return $data = [
-        1 => "Main banner",
-        2 => "Featured Colleges",
-        6 => "Featured videos",
-        3 => "Sponsored colleges",
-        4 => "Bottom banner",
-        5 => "Top banner",
-        7 => "Left banner",
-        8 => "Right banner",
-        9 => "Middle banner",
-        10 => "Featured colleges",
-        11 => "Top Platinum",
-        12 => "Middle Gold",
-        13 => "Middle Silver",
-        14 => "Middle bronze",
-        15 => "Right floating",
-        16 => "Bottom featured",
-        17 => "Featured ads of colleges accepting the exam",
-        18 => "Right banners",
-        19 => "Bottom banner",
-        20 => "Top Banner",
-        21 => "Featured colleges offering the course",
-        22 => "Right banners",
-        23 => "Bottom banner",
-        24 => "Top Banner",
-        25 => "Right",
-        26 => "Top",
-];
+            1 => "Main banner",
+            2 => "Featured Colleges",
+            6 => "Featured videos",
+            3 => "Sponsored colleges",
+            4 => "Bottom banner",
+            5 => "Top banner",
+            7 => "Left banner",
+            8 => "Right banner",
+            9 => "Middle banner",
+            10 => "Featured colleges",
+            11 => "Top Platinum",
+            12 => "Middle Gold",
+            13 => "Middle Silver",
+            14 => "Middle bronze",
+            15 => "Right floating",
+            16 => "Bottom featured",
+            17 => "Featured ads of colleges accepting the exam",
+            18 => "Right banners",
+            19 => "Bottom banner",
+            20 => "Top Banner",
+            21 => "Featured colleges offering the course",
+            22 => "Right banners",
+            23 => "Bottom banner",
+            24 => "Top Banner",
+            25 => "Right",
+            26 => "Top",
+        ];
 
     }
 

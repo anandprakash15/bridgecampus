@@ -33,7 +33,7 @@ echo Yii::$app->message->display();
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'rowOptions' => function ($model, $key, $index, $grid) {
-                    $url = Url::to(['courses/update','id'=> $model['id']]);
+                    $url = Url::to(['courses/update','id'=> $model['id'],'redirect'=>'program_courses']);
                     return ['onclick' => 'location.href="'.$url.'"'];
                 },
                 'columns' => [

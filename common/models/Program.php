@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $name
- * @property int $sortno
+ * @property string $short_name
  * @property int $status
  * @property string $createdDate
  * @property string $updatedDate
@@ -42,7 +42,7 @@ class Program extends \yii\db\ActiveRecord
             [['program_code', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 200],
+            [['name','short_name'], 'string', 'max' => 200],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];
@@ -68,6 +68,7 @@ class Program extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'short_name' => 'Short Name',
             'name' => 'Name',
             'program_code' => 'Program Code',
             'status' => 'Status',

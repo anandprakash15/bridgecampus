@@ -63,7 +63,7 @@ class Facility extends \yii\db\ActiveRecord
             'id' => 'ID',
             'type' => 'Type',
             'coll_univID' => 'Coll Univ ID',
-            'ftype' => 'Ftype',
+            'ftype' => 'Facility Type',
             'description' => 'Description',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',

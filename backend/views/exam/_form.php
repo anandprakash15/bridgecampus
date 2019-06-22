@@ -44,6 +44,9 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
      ]);?>
      <br/>
 
+     <?= $form->field($model, 'exam_name')->textInput(['maxlength' => true]) ?>
+     <?= $form->field($model, 'short_code')->textInput(['maxlength' => true]) ?>
+
      <?= $form->field($model, 'programID')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'Search...'],
         'data' => $program,
@@ -86,12 +89,16 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
         ],
     ]);?>
 
-    <?= $form->field($model, 'exam_name')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'short_name')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'exam_course_level')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
+  <?= $form->field($model, 'exam_course_level')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
 
-  <?= $form->field($model, 'overview')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'exam_level')->dropDownList(Yii::$app->myhelper->getExamLevel(),['class'=>'form-control'])?>
+
+  <?php 
+    $model->exam_mode = ($model->isNewRecord)?'1':$model->exam_mode;
+  ?>
+  <?= $form->field($model, 'exam_mode')->inline(true)->radioList(Yii::$app->myhelper->getExamMode()); ?>
+
+  <?= $form->field($model, 'conducting_authority')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -100,7 +107,16 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'registration_end_date')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'language_of_paper')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?> 
+
+  <?= $form->field($model, 'highlights')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -109,7 +125,65 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'registration_extended_date_from')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'eligibility_criteria')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+  <?= $form->field($model, 'registration_fees')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+  <?= $form->field($model, 'late_fees')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+  <?= $form->field($model, 'registration_start_date')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+  <?= $form->field($model, 'registration_start_time')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+  <?= $form->field($model, 'registration_end_date')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'registration_closing_time')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'registration_extended_date_from')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -154,7 +228,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'paper_based_test_date')->widget(CKEditor::className(), [
+    <?= $form->field($model, 'paper_based_exam_date')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -163,7 +237,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'result_date')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'result_date')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -172,7 +246,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'result_overview')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'exam_registration_website')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -181,7 +255,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'cut_off')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'exam_helpline_nos')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -190,7 +264,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'syllabus')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'helpline_emails')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -199,7 +273,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'exam_pattern')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'registration_process')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -208,7 +282,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'exam_duration')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'registration_documents')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -217,7 +291,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'no_of_questions')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'exam_duration')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -226,7 +300,8 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'total_marks')->widget(CKEditor::className(), [
+
+  <?= $form->field($model, 'total_marks')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -235,16 +310,8 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'language_of_paper')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
 
-    <?= $form->field($model, 'marks_per_question')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'marks_per_question')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -262,79 +329,7 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
       ]
   ]) ?>
 
-    <?= $form->field($model, 'do_dont_during_the_exam')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
-    <?= $form->field($model, 'exam_registration_website')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
-    <?= $form->field($model, 'couducting_authority')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
-    <?= $form->field($model, 'exam_centres')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
-    <?= $form->field($model, 'exam_helpline_nos')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
-    <?= $form->field($model, 'number_of_exam_cities')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
-    <?= $form->field($model, 'exam_books_guide')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
-    <?= $form->field($model, 'question_papers')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-  ]) ?>
-
-    <?= $form->field($model, 'exam_FAQ')->widget(CKEditor::className(), [
+  <?= $form->field($model, 'no_of_questions')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
@@ -344,6 +339,123 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
   ]) ?>
 
 
+  <?= $form->field($model, 'exam_pattern')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'number_of_exam_cities')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+
+  <?= $form->field($model, 'exam_centres')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'cut_off')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'syllabus')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'exam_books_guide')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'question_papers')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'do_dont_during_the_exam')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'results')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'analysis')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'exam_FAQ')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'preparation_tips')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
+
+  <?= $form->field($model, 'coaching_classes')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+  ]) ?>
 
   <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 

@@ -28,11 +28,23 @@ use yii\widgets\Menu;
               <i class="fa fa-angle-left pull-right"></i>
               </span></a>',
               'items' => [
-                ['label' => 'Specialization', 'url' => ['/specialization/index']],
                 ['label' => 'Program', 'url' => ['/program/index']],
-                ['label' => 'Affiliate', 'url' => ['/affiliate/index']],
-                ['label' => 'Accredited', 'url' => ['/accredited/index']],
-                ['label' => 'Approved', 'url' => ['/approved/index']],
+                ['label' => 'Specialization', 'url' => ['/specialization/index']],
+                ['label' => 'Affiliations', 'url' => ['/affiliate/index']],
+                [
+                  'label' => 'Accreditations',
+                  'url' => ['#'],
+                  'options'=>['class'=>'treeview'],
+                  'template' => '<a href="#"><span>{label}</span>
+                  <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                  </span></a>',
+                  'items' => [
+                    ['label' => 'Regular Accreditations', 'url' => ['/accredited/index']],
+                    ['label' => 'NAAC Accreditations', 'url' => ['/naac-accreditation/index']],
+                  ],
+                ],
+                ['label' => 'Approved by', 'url' => ['/approved/index']],
                 ['label' => 'Campus Facilities', 'url' => ['/campus-facilities/index']],
                 ['label' => 'Front End', 'url' => ['/frontend/index']],
               ],
