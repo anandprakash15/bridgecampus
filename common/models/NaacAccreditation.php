@@ -36,7 +36,7 @@ class NaacAccreditation extends \yii\db\ActiveRecord
             [['status'], 'integer'],
             [['performance_descriptor', 'institutional_cgpa'], 'string'],
             [['status'], 'required'],
-            [['createdDate', 'updatedDate'], 'safe'],
+            [['createdDate', 'updatedDate', 'grade'], 'safe'],
         ];
     }
 

@@ -475,8 +475,12 @@ use common\models\CampusFacilities;
     public function videoThumb($source,$destination){
         $direcotry = Yii::getAlias('@ffmpegPath');
         chdir($direcotry);
-        $command = "ffmpeg -y -i ".$source." -vframes 1   ".$destination." 2>&1";
+        $command = "./ffmpeg -y -i ".$source." -vframes 1   ".$destination." 2>&1";
         exec( $command, $output, $return_var );
+       /* $command = "cd ".Yii::getAlias('@ffmpegPath')." && ./ffmpeg -y -i ".$source." -vframes 1   ".$destination." 2>&1";
+        exec( $command, $output, $return_var );*/
+        /*print_r($output);
+        print_r($return_var);exit;*/
     }
 
     public function getCourseCode($code){

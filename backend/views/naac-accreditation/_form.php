@@ -26,7 +26,7 @@ use yii\helpers\ArrayHelper;
 
        <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
 
-       <?= $form->field($model, 'performance_descriptor')->textInput(['maxlength' => true]) ?>
+       <?= $form->field($model, 'performance_descriptor')->dropDownList(Yii::$app->myhelper->getPerformanceDescriptor(),['class'=>'form-control'])?>
 
        <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 

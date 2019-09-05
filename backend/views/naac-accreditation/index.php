@@ -11,6 +11,7 @@ $this->title = 'Naac Accreditations';
 $this->params['subtitle'] = '<h1>Naac Accreditations '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
+$performanceDescriptor = Yii::$app->myhelper->getPerformanceDescriptor();
 
 echo Yii::$app->message->display();
 ?>
@@ -25,7 +26,14 @@ echo Yii::$app->message->display();
 
                     'institutional_cgpa',
                     'grade',
-                    'performance_descriptor:ntext',
+                    [
+                        'attribute' => 'performance_descriptor',
+                        'filter' => $performanceDescriptor,
+                        'value' => function($model)use($performanceDescriptor){
+                            return isset($performanceDescriptor[$model['performance_descriptor']])?$performanceDescriptor[$model['performance_descriptor']]:'';
+                        }
+
+                    ],
                     [
                         'attribute' => 'status',
                         'filter' => $status,
