@@ -7,6 +7,8 @@ use yii\helpers\ArrayHelper;
 use kartik\widgets\FileInput;
 use app\components\CustomUrlRule;
 use dosamigos\ckeditor\CKEditor;
+use backend\controllers\UserController;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\Specialization */
 /* @var $form yii\widgets\ActiveForm */
@@ -26,6 +28,25 @@ use dosamigos\ckeditor\CKEditor;
      <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
      <?= $form->field($model, 'shortname')->textInput(['maxlength' => true]) ?>
+
+     <?= $form->field($model, 'description')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
+       <?php
+
+   $contriesList = UserController::actionGetCountrieslist();
+   if($model->isNewRecord){
+    $model->countryID = 101;/*india*/
+  }
+  ?>
+
+  <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control','prompt'=>'-- Select Country --'])?>
 
      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 

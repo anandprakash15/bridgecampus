@@ -5,27 +5,26 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "accredited".
+ * This is the model class for table "approved_government".
  *
  * @property int $id
  * @property string $name
  * @property string $shortname
  * @property string $description
- * @property int $country
  * @property string $createdDate
  * @property int $createdBy
  * @property string $updatedDate
  * @property int $updatedBy
  * @property int $status
  */
-class Accredited extends \yii\db\ActiveRecord
+class ApprovedGovernment extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'accredited';
+        return 'approved_government';
     }
 
     /**
@@ -34,9 +33,9 @@ class Accredited extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'shortname','status', 'countryID'], 'required'],
-            [['createdDate', 'updatedDate', 'description'], 'safe'],
-            [['createdBy', 'updatedBy', 'status', 'countryID'], 'integer'],
+            [['name', 'shortname', 'status'], 'required'],
+            [['createdDate', 'updatedDate','description'], 'safe'],
+            [['createdBy', 'updatedBy', 'status'], 'integer'],
             [['name'], 'string', 'max' => 200],
             [['shortname'], 'string', 'max' => 30],
         ];
@@ -63,14 +62,13 @@ class Accredited extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'shortname' => 'Short Name',
-            'description' => 'Description',
-            'countryID' => 'Country',
+            'shortname' => 'Shortname',
             'createdDate' => 'Created Date',
             'createdBy' => 'Created By',
             'updatedDate' => 'Updated Date',
             'updatedBy' => 'Updated By',
             'status' => 'Status',
+            'description' => 'Description',
         ];
     }
 }

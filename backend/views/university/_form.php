@@ -327,7 +327,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           'initialPreviewAsData'=>true,
           'initialPreviewFileType'=> 'image',
           'initialPreviewConfig'=>[[
-             'downloadUrl'=> $bannerImgPreview,
+            'downloadUrl'=> $bannerImgPreview,
             'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
             'extra'=> ['id'=> 100],
             'key'=>1

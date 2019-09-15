@@ -72,7 +72,7 @@ class Specialization extends \yii\db\ActiveRecord
             'name' => 'Name',
             'specialisation_short_name' => 'Short Name',
             'specialisation_type' => 'Specialisation Type',
-            'course_overview' => 'Course Overview',
+            'course_overview' => 'Specialization Overview',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',

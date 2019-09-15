@@ -28,8 +28,8 @@ use yii\widgets\Menu;
               <i class="fa fa-angle-left pull-right"></i>
               </span></a>',
               'items' => [
-                ['label' => 'Program', 'url' => ['/program/index']],
-                ['label' => 'Specialization', 'url' => ['/specialization/index']],
+                ['label' => 'Programs', 'url' => ['/program/index']],
+                ['label' => 'Specializations', 'url' => ['/specialization/index']],
                 ['label' => 'Affiliations', 'url' => ['/affiliate/index']],
                 [
                   'label' => 'Accreditations',
@@ -40,13 +40,27 @@ use yii\widgets\Menu;
                   <i class="fa fa-angle-left pull-right"></i>
                   </span></a>',
                   'items' => [
-                    ['label' => 'Regular Accreditations', 'url' => ['/accredited/index']],
+                    ['label' => 'Accreditated By', 'url' => ['/accredited/index']],
                     ['label' => 'NAAC Accreditations', 'url' => ['/naac-accreditation/index']],
                   ],
                 ],
-                ['label' => 'Approved by', 'url' => ['/approved/index']],
+                [
+                  'label' => 'Approvals',
+                  'url' => ['#'],
+                  'options'=>['class'=>'treeview'],
+                  'template' => '<a href="#"><span>{label}</span>
+                  <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                  </span></a>',
+                  'items' => [
+                    ['label' => 'Approvals By', 'url' => ['/approved/index']],
+                    ['label' => 'Approved by Government', 'url' => ['/approved-government/index']],
+                  ],
+                ],
                 ['label' => 'Campus Facilities', 'url' => ['/campus-facilities/index']],
+                ['label' => 'Top Recreuitors', 'url' => ['/top-recreuitors/index']],
                 ['label' => 'Front End', 'url' => ['/frontend/index']],
+                ['label' => 'Rating', 'url' => ['/frontend/index']],
               ],
             ],
           ],

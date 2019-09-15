@@ -275,7 +275,7 @@ class UniversityController extends Controller
                     }
                 }
             }
-            \Yii::$app->getSession()->setFlash('success', 'Successful.');
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
             return $this->redirect(['advertise-materials','id'=>$university->id]);
         }
 

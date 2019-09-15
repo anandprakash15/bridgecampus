@@ -275,9 +275,6 @@ echo $form->field($model, 'college_university_advpurposeID')->widget(Select2::cl
     <?= $form->field($model, 'priority')->dropDownList(Yii::$app->myhelper->getPriority(),['class'=>'form-control'])?>
 
 
-
-
-
      <?= $form->field($model, 'description')->widget(CKEditor::className(), [
     'options' => ['rows' => 6],
     'preset' => 'standard',

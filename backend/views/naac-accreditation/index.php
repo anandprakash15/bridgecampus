@@ -7,8 +7,8 @@ use kartik\grid\GridView;
 /* @var $searchModel common\models\search\NaacAccreditationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Naac Accreditations';
-$this->params['subtitle'] = '<h1>Naac Accreditations '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
+$this->title = 'NAAC Accreditations';
+$this->params['subtitle'] = '<h1>NAAC Accreditations '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
 $performanceDescriptor = Yii::$app->myhelper->getPerformanceDescriptor();
