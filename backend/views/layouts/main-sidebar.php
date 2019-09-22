@@ -58,7 +58,7 @@ use yii\widgets\Menu;
                   ],
                 ],
                 ['label' => 'Campus Facilities', 'url' => ['/campus-facilities/index']],
-                ['label' => 'Top Recreuitors', 'url' => ['/top-recreuitors/index']],
+                ['label' => 'Top Recruiters', 'url' => ['/top-recruiters/index']],
                 ['label' => 'Front End', 'url' => ['/frontend/index']],
                 ['label' => 'Rating', 'url' => ['/frontend/index']],
               ],

@@ -16,6 +16,8 @@ use yii\web\Response;
 use yii\bootstrap\ActiveForm;
 use common\models\ProgramCategory;
 use common\models\CourseSpecialization;
+use common\models\CourseRecruiters;
+use common\models\TopRecruiters;
 use common\models\Exam;
 
 /**
@@ -174,8 +176,10 @@ class CoursesController extends Controller
 
         if ($csmodel->load(Yii::$app->request->post())) {
 
-            $newSpecializations = array_diff((array)$csmodel['specializationID'], (array)$oldSpecializations);
-
+            $newSpecializations = [];
+            if(!empty($csmodel->specializationID)){
+                $newSpecializations = array_diff((array)$csmodel['specializationID'], (array)$oldSpecializations);
+            }
             $deletedSpecializations = array_diff((array)$oldSpecializations,(array)$csmodel['specializationID']);
 
             foreach ($newSpecializations as $key => $specialization) {
@@ -201,6 +205,55 @@ class CoursesController extends Controller
         return $this->render('add_specializations', [
             'course' => $course,
             'specializations'=>$specializations,
+            'csmodel' => $csmodel,
+        ]);
+    }
+
+    public function actionAddRecruiters($id){
+        $course = $this->findModel($id);
+        $recruiters = ArrayHelper::map(TopRecruiters::find()->where(['status'=>1])->all(),'id','short_name');
+        $csmodel = new CourseRecruiters();
+
+
+        $oldRecruiters = ArrayHelper::getColumn(CourseRecruiters::find()->where(['courseID'=>$course->id])->asArray()->all(),'topRecruitersID');
+
+
+        
+        $csmodel->topRecruitersID = $oldRecruiters;
+
+        $csmodel->courseID = $course->id;
+
+        if ($csmodel->load(Yii::$app->request->post())) {
+            $newRecruiters = [];
+            if(!empty($csmodel->topRecruitersID)){
+               $newRecruiters = array_diff((array)$csmodel['topRecruitersID'], (array)$oldRecruiters); 
+            }
+            
+            $deletedSpecializations = array_diff((array)$oldRecruiters,(array)$csmodel['topRecruitersID']);
+
+            foreach ($newRecruiters as $key => $recruiter) {
+                $ncsmodel = new CourseRecruiters();
+                $ncsmodel->courseID = $course->id;
+                $ncsmodel->topRecruitersID = $recruiter;
+                if(!$ncsmodel->save()){
+                    //print_r($nucmodel);exit;
+                }    
+            }
+
+            if(!empty($deletedSpecializations))
+            {
+                CourseRecruiters::deleteAll(['courseID' => $course->id, 'topRecruitersID' =>  array_values($deletedSpecializations)]);
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Recruiters successfully added in course '.$course->name.".");
+            
+            return $this->redirect(['add-recruiters','id'=>$course->id]);
+        }
+
+        
+        return $this->render('add_recruiters', [
+            'course' => $course,
+            'recruiters'=>$recruiters,
             'csmodel' => $csmodel,
         ]);
     }

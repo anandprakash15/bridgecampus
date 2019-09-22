@@ -85,7 +85,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
 
     <?= $form->field($model, 'certification_type')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
 
-    <?= $form->field($model, 'type')->dropDownList(Yii::$app->myhelper->getCDType(),['class'=>'form-control'])?>
 
     <?= $form->field($model, 'full_part_time')->dropDownList(Yii::$app->myhelper->getFullPartTime(),['class'=>'form-control'])?>
 
@@ -134,14 +133,13 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       ]
     ]) ?>
 
-    <?= $form->field($model, 'placement_details')->widget(CKEditor::className(), [
+    <?php /*$form->field($model, 'placement_details')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',
       'clientOptions'=>[
         'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
       ]
-    ]) ?>
+    ])*/ ?>
 
     
 

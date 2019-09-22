@@ -10,15 +10,15 @@ use softark\duallistbox\DualListbox;
 /* @var $searchModel common\models\search\UniversitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $course->name.' Add Specializations';
-$this->params['subtitle'] = '<h1>Add Specializations</h1>';
+$this->title = $course->name.' Add Recruiters';
+$this->params['subtitle'] = '<h1>Add Recruiters</h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $course->name;
-$this->params['breadcrumbs'][] = 'Add Specializations';
+$this->params['breadcrumbs'][] = 'Add Recruiters';
 
 echo Yii::$app->message->display();
 ?>
-<div class="university-index">
+<div class="recruiters-index">
 	<div class="custumbox box box-info">
 		<div class="box-body">
 			<?php $form = ActiveForm::begin(); ?>
@@ -27,13 +27,13 @@ echo Yii::$app->message->display();
 				'multiple' => true,
 				'size' => 20,
 			];
-			echo $form->field($csmodel, 'specializationID')->widget(DualListbox::className(),[
-				'items' => $specializations,
+			echo $form->field($csmodel, 'topRecruitersID')->widget(DualListbox::className(),[
+				'items' => $recruiters,
 				'options' => [],
 				'clientOptions' => [
 					'moveOnSelect' => false,
-					'selectedListLabel' => 'Selected Specializations',
-					'nonSelectedListLabel' => 'Specializations List',
+					'selectedListLabel' => 'Selected Recruiters',
+					'nonSelectedListLabel' => 'Recruiters List',
 				],
 			])->label(false);
 			?>

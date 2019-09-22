@@ -4,12 +4,12 @@ namespace common\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\TopRecreuitors;
+use common\models\TopRecruiters;
 
 /**
- * TopRecreuitorsSearch represents the model behind the search form of `common\models\TopRecreuitors`.
+ * TopRecruitersSearch represents the model behind the search form of `common\models\TopRecruiters`.
  */
-class TopRecreuitorsSearch extends TopRecreuitors
+class TopRecruitersSearch extends TopRecruiters
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class TopRecreuitorsSearch extends TopRecreuitors
      */
     public function search($params)
     {
-        $query = TopRecreuitors::find();
+        $query = TopRecruiters::find();
 
         // add conditions that should always apply here
 

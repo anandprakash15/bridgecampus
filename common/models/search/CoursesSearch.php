@@ -19,8 +19,8 @@ class CoursesSearch extends Courses
     public function rules()
     {
         return [
-            [['id', 'programID', 'sortno', 'certification_type', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
-            [['name', 'code', 'createdDate', 'updatedDate','program'], 'safe'],
+            [['id', 'programID', 'sortno', 'certification_type', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'courseType'], 'integer'],
+            [['name', 'code', 'createdDate', 'updatedDate','program','short_name'], 'safe'],
         ];
     }
 
@@ -70,12 +70,12 @@ class CoursesSearch extends Courses
             'createdBy' => $this->createdBy,
             'updatedBy' => $this->updatedBy,
             'full_part_time' => $this->full_part_time,
-            'type' => $this->type,
             'courseType' => $this->courseType,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'courses.short_name', $this->short_name])
             ->andFilterWhere(['like', 'program.name', $this->program]);
         return $dataProvider;
     }

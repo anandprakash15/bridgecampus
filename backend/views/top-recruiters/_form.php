@@ -8,7 +8,7 @@ use dosamigos\ckeditor\CKEditor;
 use kartik\widgets\FileInput;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\TopRecreuitors */
+/* @var $model common\models\TopRecruiters */
 /* @var $form yii\widgets\ActiveForm */
 
 
@@ -18,7 +18,7 @@ if(!empty($model->logo)){
 }
 ?>
 
-<div class="top-recreuitors-form">
+<div class="top-recruiters-form">
   <div class="custumbox box box-info">
    <div class="box-body">
     <?php $form = ActiveForm::begin(); ?>

@@ -112,7 +112,7 @@ class MyHelpers extends Component{
 
             public static function getCourseLevel()
             {
-                return [1 => 'Under Graduate', 2=>'Post Graduate', 3 =>'Advanced Masters', 4=>'After 10th', 5=>'Doctorate', 6=>'Post Doctorate', 7=>'Post Masters'];
+                return [1 => 'Under Graduate',2=>'Post Graduate', 3=>'Post Masters', 4 =>'Advanced Masters', 5=>'Doctorate', 6=>'Post Doctorate', 7=>'After 10th'];
             }
 
             public static function getExamLevel(){
@@ -251,7 +251,29 @@ class MyHelpers extends Component{
 
             public static function getCourseDuration()
             {
-                return [1 => '1 Day Workshop', 2=>'1 Week Workshop', 3=>'3 months', 4=>'6 month', 5=>'9 months',6=>'1 Year',7=>'1.5 Years', 8=>'2 Years',9=>'3 Years', 10=>'4 Years', 11=>'5 Years'];
+                return [
+                    1=>'1 Day Workshop',
+                    2=>'2 Days Workshop',
+                    3=>'3 Days Workshop',
+                    4=>'4 Days Workshop',
+                    5=>'5 Days Workshop',
+                    6=>'6 Days Workshop',
+                    7=>'1 Week',
+                    8=>'2 Weeks',
+                    9=>'3 Weeks',
+                    10=>'1 Month',
+                    11=>'2 Months',
+                    12=>'3 Months',
+                    13=>'4 Months',
+                    14=>'6 Months',
+                    15=>'9 Months',
+                    16=>'18 Months',
+                    17=>'1 Year',
+                    18=>'2 Years',
+                    19=>'3 Years',
+                    20=>'4 Years',
+                    21=>'5 Years'
+                ];
             }
 
             public static function getMedium()
@@ -354,7 +376,14 @@ class MyHelpers extends Component{
 
             public static function getCDType()
             {
-                return [1 => 'Degree', 2=>'Diploma', 3=>'Hybrid',4=>'Online', 5=>'Aprentis', 6=>'Certification', 7=>'Vocational',8=>'Correspondence', 9=>'Distance Diploma', 10=>'Doctorate', 11=>'Dual Degree'];
+                return [
+                    1=>'Degree',
+                    2=>'Diploma',
+                    3=>'Doctorate',
+                    4=>'Apprenticeship',
+                    5=>'Certification',
+                    6=>'Vocational Degree'
+                ];
             }
 
             public static function getNationalInternational()

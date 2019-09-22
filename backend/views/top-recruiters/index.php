@@ -7,15 +7,15 @@ use kartik\grid\GridView;
 /* @var $searchModel common\models\search\SpecializationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Top Recreuitors';
-$this->params['subtitle'] = '<h1>Top Recreuitors '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
+$this->title = 'Top Recruiters';
+$this->params['subtitle'] = '<h1>Top Recruiters '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
 $sectors = Yii::$app->myhelper->getIndustrySector();
 
 echo Yii::$app->message->display();
 ?>
-<div class="top-recreuitors-index">
+<div class="top-recruiters-index">
     <div class="custumbox box box-info">
         <div class="box-body">
             <?= GridView::widget([

@@ -18,7 +18,6 @@ use Yii;
  * @property string $top_recruiters
  * @property int $medium_of_teaching
  * @property string $course_high_lights
- * @property string $placement_details
  * @property int $sortno
  * @property int $certification_type
  * @property string $createdDate
@@ -27,7 +26,6 @@ use Yii;
  * @property int $createdBy
  * @property int $updatedBy
  * @property int $full_part_time 1-fulltime, 2-parttime
- * @property int $type (certi, deg etc)
  * @property int $courseType (autonomas, university)
  * 
  * @property CourseSpecialization[] $courseSpecializations
@@ -55,9 +53,9 @@ class Courses extends \yii\db\ActiveRecord
     public function rules() 
     { 
         return [
-            [['programID', 'name', 'short_name', 'status', 'type', 'courseType'], 'required'],
-            [['programID', 'duration', 'medium_of_teaching', 'sortno', 'certification_type', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'type', 'courseType'], 'integer'],
-            [['required_skillset', 'job_profiles', 'top_recruiters', 'course_high_lights', 'placement_details'], 'string'],
+            [['programID', 'name', 'short_name', 'status', 'courseType'], 'required'],
+            [['programID', 'duration', 'medium_of_teaching', 'sortno', 'certification_type', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'courseType'], 'integer'],
+            [['required_skillset', 'job_profiles', 'top_recruiters', 'course_high_lights'], 'string'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['short_name'], 'string', 'max' => 100],
@@ -112,9 +110,8 @@ class Courses extends \yii\db\ActiveRecord
             'required_skillset' => 'Required Skillset',
             'job_profiles' => 'Job Profiles',
             'top_recruiters' => 'Top Recruiters',
-            'medium_of_teaching' => 'Medium Of Teaching',
+            'medium_of_teaching' => 'Medium of Teaching',
             'course_high_lights' => 'Course High Lights',
-            'placement_details' => 'Placement Details',
             'sortno' => 'Sortno',
             'certification_type' => 'Certification Type',
             'createdDate' => 'Created Date',
@@ -123,7 +120,6 @@ class Courses extends \yii\db\ActiveRecord
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
             'full_part_time' => 'Course Type',
-            'type' => 'Qualification Type',
             'courseType' => 'Affiliation Type',
         ]; 
     } 

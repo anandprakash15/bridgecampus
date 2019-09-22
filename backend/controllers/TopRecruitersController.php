@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\TopRecreuitors;
-use common\models\search\TopRecreuitorsSearch;
+use common\models\TopRecruiters;
+use common\models\search\TopRecruitersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -13,9 +13,9 @@ use yii\helpers\FileHelper;
 use yii\web\Response;
 
 /**
- * TopRecreuitorsController implements the CRUD actions for TopRecreuitors model.
+ * TopRecruitersController implements the CRUD actions for TopRecruiters model.
  */
-class TopRecreuitorsController extends Controller
+class TopRecruitersController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -33,12 +33,12 @@ class TopRecreuitorsController extends Controller
     }
 
     /**
-     * Lists all TopRecreuitors models.
+     * Lists all TopRecruiters models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TopRecreuitorsSearch();
+        $searchModel = new TopRecruitersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +48,7 @@ class TopRecreuitorsController extends Controller
     }
 
     /**
-     * Displays a single TopRecreuitors model.
+     * Displays a single TopRecruiters model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,13 +61,13 @@ class TopRecreuitorsController extends Controller
     }
 
     /**
-     * Creates a new TopRecreuitors model.
+     * Creates a new TopRecruiters model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new TopRecreuitors();
+        $model = new TopRecruiters();
         if ($model->load(Yii::$app->request->post())) {
             $logoImg = UploadedFile::getInstance($model, 'logoImg');
             if(!empty($logoImg))
@@ -95,7 +95,7 @@ class TopRecreuitorsController extends Controller
     }
 
     /**
-     * Updates an existing TopRecreuitors model.
+     * Updates an existing TopRecruiters model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -151,7 +151,7 @@ class TopRecreuitorsController extends Controller
     }
 
     /**
-     * Deletes an existing TopRecreuitors model.
+     * Deletes an existing TopRecruiters model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -165,15 +165,15 @@ class TopRecreuitorsController extends Controller
     }
 
     /**
-     * Finds the TopRecreuitors model based on its primary key value.
+     * Finds the TopRecruiters model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return TopRecreuitors the loaded model
+     * @return TopRecruiters the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TopRecreuitors::findOne($id)) !== null) {
+        if (($model = TopRecruiters::findOne($id)) !== null) {
             return $model;
         }
 

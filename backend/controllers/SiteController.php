@@ -11,6 +11,7 @@ use common\models\College;
 use common\models\Advertise;
 use common\models\Exam;
 use common\models\Courses;
+use common\models\User;
 
 /**
  * Site controller
@@ -96,7 +97,7 @@ class SiteController extends Controller
         $data['advertise'] = Advertise::find()->count();
         $data['exam'] = Exam::find()->count();
         $data['courses'] = Courses::find()->count();
-        $data['users'] = 100;
+        $data['users'] = User::find()->count();
         return $this->render('dashboard', [
                 'data' => $data,
             ]);

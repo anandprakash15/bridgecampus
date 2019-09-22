@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "top_recreuitors".
+ * This is the model class for table "top_recruiters".
  *
  * @property int $id
  * @property int $industry_sectorID
@@ -19,7 +19,7 @@ use Yii;
  * @property string $createdDate
  * @property string $updatedDate
  */
-class TopRecreuitors extends \yii\db\ActiveRecord
+class TopRecruiters extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class TopRecreuitors extends \yii\db\ActiveRecord
     public $logoImg;
     public static function tableName()
     {
-        return 'top_recreuitors';
+        return 'top_recruiters';
     }
 
     /**
