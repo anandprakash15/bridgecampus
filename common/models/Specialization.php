@@ -12,6 +12,7 @@ use Yii;
  * @property string $specialisation_short_name
  * @property int $specialisation_type
  * @property string $course_overview
+ * @property string $job_profile
  * @property string $createdDate
  * @property string $updatedDate
  * @property int $status
@@ -40,7 +41,7 @@ class Specialization extends \yii\db\ActiveRecord
     { 
         return [
             [['name', 'status'], 'required'],
-            [['specialisation_short_name', 'course_overview'], 'string'],
+            [['specialisation_short_name', 'course_overview','job_profile'], 'string'],
             [['specialisation_type', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['name'], 'string', 'max' => 200],
@@ -73,6 +74,7 @@ class Specialization extends \yii\db\ActiveRecord
             'specialisation_short_name' => 'Short Name',
             'specialisation_type' => 'Specialisation Type',
             'course_overview' => 'Specialization Overview',
+            'job_profile' => 'Job Profile',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',

@@ -40,6 +40,15 @@ use iutbay\yii2kcfinder\KCFinder;
       ]
     ]) ?>
 
+     <?= $form->field($model, 'job_profile')->widget(CKEditor::className(), [
+      'options' => ['rows' => 6],
+      'preset' => 'standard',
+      'clientOptions'=>[
+        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+      ]
+    ]) ?>
+
     <?= $form->field($model, 'specialisation_type')->dropDownList(Yii::$app->myhelper->getSpecialisationType(),['class'=>'form-control']); ?>
 
      <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>

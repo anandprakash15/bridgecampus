@@ -85,6 +85,8 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
 
     <?= $form->field($model, 'certification_type')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
 
+    <?= $form->field($model, 'qualification_type')->dropDownList(Yii::$app->myhelper->getCDType(),['class'=>'form-control'])?>
+
 
     <?= $form->field($model, 'full_part_time')->dropDownList(Yii::$app->myhelper->getFullPartTime(),['class'=>'form-control'])?>
 
@@ -93,7 +95,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
     <?= $form->field($model, 'courseType')->dropDownList(Yii::$app->myhelper->getCourseType(),['class'=>'form-control'])?>
 
     <?= $form->field($model, 'duration')->dropDownList(Yii::$app->myhelper->getCourseDuration(),['class'=>'form-control'])?>
-
+    
     <?= $form->field($model, 'medium_of_teaching')->dropDownList(Yii::$app->myhelper->getMedium(),['class'=>'form-control'])?>
 
     <?= $form->field($model, 'required_skillset')->widget(CKEditor::className(), [
@@ -113,33 +115,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
         /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
       ]
     ]) ?>
-
-
-    <?= $form->field($model, 'job_profiles')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
-
-    <?= $form->field($model, 'top_recruiters')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-        /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-      ]
-    ]) ?>
-
-    <?php /*$form->field($model, 'placement_details')->widget(CKEditor::className(), [
-      'options' => ['rows' => 6],
-      'preset' => 'standard',
-      'clientOptions'=>[
-        'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-      ]
-    ])*/ ?>
 
     
 

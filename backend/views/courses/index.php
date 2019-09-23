@@ -68,7 +68,7 @@ echo Yii::$app->message->display();
                 ],
                 [
                   'class' => 'yii\grid\ActionColumn',
-                  'template' => '{specialization} {top_recruiters}',
+                  'template' => '{specialization}',/*{top_recruiters}*/
                   'buttons' => [
                     'specialization' => function ($url, $model) {
                         return Html::a(Yii::t('app', 'Add Specializations'), Url::to(['add-specializations','id'=>$model->id]), [
@@ -76,12 +76,12 @@ echo Yii::$app->message->display();
                             'class'=>'btn btn-primary btn btn-xs'
                         ]);
                     },
-                    'top_recruiters' => function ($url, $model) {
+                    /*'top_recruiters' => function ($url, $model) {
                         return Html::a(Yii::t('app', 'Add Recruiters'), Url::to(['add-recruiters','id'=>$model->id]), [
                             'title' => Yii::t('app', 'Add Recruiters'),
                             'class'=>'btn btn-success btn btn-xs'
                         ]);
-                    }
+                    }*/
                 ],
             ],
 

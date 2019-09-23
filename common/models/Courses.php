@@ -14,8 +14,6 @@ use Yii;
  * @property string $code
  * @property int $duration
  * @property string $required_skillset
- * @property string $job_profiles
- * @property string $top_recruiters
  * @property int $medium_of_teaching
  * @property string $course_high_lights
  * @property int $sortno
@@ -27,7 +25,7 @@ use Yii;
  * @property int $updatedBy
  * @property int $full_part_time 1-fulltime, 2-parttime
  * @property int $courseType (autonomas, university)
- * 
+ * @property int $qualification_type
  * @property CourseSpecialization[] $courseSpecializations
  * @property Program $program
  * @property User $createdBy0
@@ -53,9 +51,9 @@ class Courses extends \yii\db\ActiveRecord
     public function rules() 
     { 
         return [
-            [['programID', 'name', 'short_name', 'status', 'courseType'], 'required'],
+            [['programID', 'name', 'short_name', 'status', 'qualification_type', 'courseType'], 'required'],
             [['programID', 'duration', 'medium_of_teaching', 'sortno', 'certification_type', 'status', 'createdBy', 'updatedBy', 'full_part_time', 'courseType'], 'integer'],
-            [['required_skillset', 'job_profiles', 'top_recruiters', 'course_high_lights'], 'string'],
+            [['required_skillset', 'course_high_lights'], 'string'],
             [['createdDate', 'updatedDate'], 'safe'],
             [['name'], 'string', 'max' => 300],
             [['short_name'], 'string', 'max' => 100],
@@ -108,8 +106,6 @@ class Courses extends \yii\db\ActiveRecord
             'code' => 'Code',
             'duration' => 'Course Duration',
             'required_skillset' => 'Required Skillset',
-            'job_profiles' => 'Job Profiles',
-            'top_recruiters' => 'Top Recruiters',
             'medium_of_teaching' => 'Medium of Teaching',
             'course_high_lights' => 'Course High Lights',
             'sortno' => 'Sortno',
@@ -120,6 +116,7 @@ class Courses extends \yii\db\ActiveRecord
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
             'full_part_time' => 'Course Type',
+            'qualification_type' => 'Qualification Type',
             'courseType' => 'Affiliation Type',
         ]; 
     } 

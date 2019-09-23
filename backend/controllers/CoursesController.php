@@ -76,7 +76,7 @@ class CoursesController extends Controller
     public function actionCreate()
     {
         $model = new Courses();
-
+        $model->medium_of_teaching = 37;
         if ($model->load(Yii::$app->request->post())) {
             if($model->save()){
 

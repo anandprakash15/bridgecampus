@@ -9,7 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
-
+use yii\helpers\ArrayHelper;
+use common\models\TopRecruiters;
+use common\models\SpecializationRecruiters;
 
 /**
  * SpecializationController implements the CRUD actions for Specialization model.
@@ -129,6 +131,55 @@ class SpecializationController extends Controller
             $out['results'] = array_values($data);
         }
         return $out;
+    }
+
+    public function actionAddRecruiters($id){
+        $specialization = $this->findModel($id);
+        $recruiters = ArrayHelper::map(TopRecruiters::find()->where(['status'=>1])->all(),'id','short_name');
+        $csmodel = new SpecializationRecruiters();
+
+
+        $oldRecruiters = ArrayHelper::getColumn(SpecializationRecruiters::find()->where(['specializationID'=>$specialization->id])->asArray()->all(),'topRecruitersID');
+
+
+        
+        $csmodel->topRecruitersID = $oldRecruiters;
+
+        $csmodel->specializationID = $specialization->id;
+
+        if ($csmodel->load(Yii::$app->request->post())) {
+            $newRecruiters = [];
+            if(!empty($csmodel->topRecruitersID)){
+               $newRecruiters = array_diff((array)$csmodel['topRecruitersID'], (array)$oldRecruiters); 
+            }
+            
+            $deletedSpecializations = array_diff((array)$oldRecruiters,(array)$csmodel['topRecruitersID']);
+
+            foreach ($newRecruiters as $key => $recruiter) {
+                $ncsmodel = new SpecializationRecruiters();
+                $ncsmodel->specializationID = $specialization->id;
+                $ncsmodel->topRecruitersID = $recruiter;
+                if(!$ncsmodel->save()){
+                    //print_r($nucmodel);exit;
+                }    
+            }
+
+            if(!empty($deletedSpecializations))
+            {
+                SpecializationRecruiters::deleteAll(['specializationID' => $specialization->id, 'topRecruitersID' =>  array_values($deletedSpecializations)]);
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Recruiters successfully added in specialization '.$specialization->name.".");
+            
+            return $this->redirect(['add-recruiters','id'=>$specialization->id]);
+        }
+
+        
+        return $this->render('add_recruiters', [
+            'specialization' => $specialization,
+            'recruiters'=>$recruiters,
+            'csmodel' => $csmodel,
+        ]);
     }
 
     /**
