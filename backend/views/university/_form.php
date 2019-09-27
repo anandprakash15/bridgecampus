@@ -104,7 +104,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
   <?= $form->field($model, 'taluka')->textInput(['maxlength' => true]) ?>
   <?= $form->field($model, 'district')->textInput(['maxlength' => true]) ?>
   
-  <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
+  <?= $form->field($model, 'countryID')->dropDownList(json_decode($contriesList,true),['class'=>'form-control',
     'onchange'=>'$.get("../user/get-stateslist?countryID="+$(this).val(), function( data ) {
       data = $.parseJSON(data);
       $(\'#university-stateid\').empty().append("<option value=\'\'>-- Select State --</option>");
@@ -115,7 +115,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
        });
        ','prompt'=>'-- Select Country --'])?>
 
-  <?= $form->field($model, 'stateID')->dropDownList(json_decode($stateLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select State --',
+  <?= $form->field($model, 'stateID')->dropDownList(json_decode($stateLists,true),['class'=>'form-control','prompt'=>'-- Select State --',
     'onchange'=>'$.get("../user/get-citieslist?stateID="+$(this).val(), function( data ) {
      data = $.parseJSON(data);
      $(\'#university-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
@@ -124,14 +124,14 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
        });
        });
        '])?>
-    <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
+    <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control','prompt'=>'-- Select City --'])?>
 
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 
        <?= $form->field($model, 'isd_codesID')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'ISD Code...'],
-        'size' => Select2::SMALL,
+        'size' => Select2::MEDIUM,
         'initValueText'=>isset($model->isdCodes->code)?$model->isdCodes->code:'',
         'pluginOptions' => [
           'allowClear' => true,
@@ -465,6 +465,31 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
         //'initialPreview'=> ArrayHelper::getColumn($initialPreviewConfig,'fileurl'),
         //'initialPreviewConfig'=>$initialPreviewConfig
       ],
+      'pluginEvents'=>[
+          'filebeforedelete'=>'function(){
+            return new Promise(function(resolve, reject) {
+              $.confirm({
+                title: "Confirmation!",
+                content: "Are you sure you want to delete this file?",
+                type: "red",
+                buttons: {   
+                  ok: {
+                    btnClass: "btn-primary text-white",
+                    keys: ["enter"],
+                    action: function(){
+                     console.log();
+                     resolve();
+
+                   }
+                   },
+                   cancel: function(){
+                    $.alert("File deletion was aborted! ");
+                  }
+                }
+                });
+                }); 
+              }',
+            ]
     ]); ?>
 
         <?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
