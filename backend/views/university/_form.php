@@ -132,7 +132,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
        <?= $form->field($model, 'isd_codesID')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'ISD Code...'],
         'size' => Select2::SMALL,
-
+        'initValueText'=>isset($model->isdCodes->code)?$model->isdCodes->code:'',
         'pluginOptions' => [
           'allowClear' => true,
           'multiple' => false,
