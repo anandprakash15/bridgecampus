@@ -19,7 +19,7 @@ class UniversitySearch extends University
     {
         return [
             [['id', 'cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['name', 'code', 'address', 'taluka', 'district', 'pincode', 'contact', 'fax', 'email', 'websiteurl', 'establish_year', 'approved_by', 'accredited_by', 'grade', 'about', 'brochureurl', 'logourl', 'createdDate', 'updatedDate'], 'safe'],
+            [['name', 'code', 'address', 'taluka', 'district', 'pincode', 'contact', 'fax', 'email', 'websiteurl', 'establish_year', 'approved_by', 'accredited_by', 'grade', 'about', 'logourl', 'createdDate', 'updatedDate','short_name'], 'safe'],
         ];
     }
 
@@ -72,6 +72,7 @@ class UniversitySearch extends University
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'short_name', $this->short_name])
             ->andFilterWhere(['like', 'address', $this->address])
             ->andFilterWhere(['like', 'taluka', $this->taluka])
             ->andFilterWhere(['like', 'district', $this->district])
@@ -85,7 +86,6 @@ class UniversitySearch extends University
             ->andFilterWhere(['like', 'accredited_by', $this->accredited_by])
             ->andFilterWhere(['like', 'grade', $this->grade])
             ->andFilterWhere(['like', 'about', $this->about])
-            ->andFilterWhere(['like', 'brochureurl', $this->brochureurl])
             ->andFilterWhere(['like', 'logourl', $this->logourl]);
 
         return $dataProvider;

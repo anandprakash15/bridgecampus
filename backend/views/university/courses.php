@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use softark\duallistbox\DualListbox;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\UniversitySearch */
@@ -32,8 +31,8 @@ echo Yii::$app->message->display();
                     '{toggleData}',
                 ],
                 'rowOptions' => function ($model, $key, $index, $grid) {
-                   /* $url = Url::to(['update','id'=> $model['id']]);
-                    return ['onclick' => 'location.href="'.$url.'"'];*/
+                    $url = Url::to(["university/course-details", 'id' => $model->id]);
+                    return ['onclick' => 'location.href="'.$url.'"'];
                 },
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
@@ -41,36 +40,35 @@ echo Yii::$app->message->display();
                     ['class' => 'yii\grid\SerialColumn'],
 
                     [
-                       'label'=>'Name',
-                       'contentOptions' => ['style' => 'width:50%;'],
-                       'attribute' => 'cname',
-                       'value' => function($model){
+                     'label'=>'Course Name',
+                     'contentOptions' => ['style' => 'width:50%;'],
+                     'attribute' => 'course_name',
+                     'value' => function($model){
                         return $model['course']['name'];
                     }
                 ],
                 [
                 	'label'=>'Program',
                 	'contentOptions' => ['style' => 'width:25%;'],
-                    'attribute' => 'program',
+                    'attribute' => 'program_name',
                     'value' => function($model){
                         return $model['course']['program']['name'];
                     }
                 ],
 
                 [
-                    'class' => 'kartik\grid\ActionColumn',
-                    'width'=>'30%',
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{specializations} {exams}',
                     'buttons' => [
-                        'info' => function ($url, $model, $key)use($university) {
-                            $btn = Html::button("Details",['class'=>'btn btn-success btn btn-xs connect_icon']);
-                            return Html::a($btn,["university/course-details", 'id' => $model->id],['title'=>'Info']);
-                        },
                         'specializations' => function ($url, $model, $key) {
                             $btn = Html::button("Add Specializations",['class'=>'btn btn-primary btn btn-xs connect_icon']);
-                            return Html::a($btn,["university/add-specializations", 'id' => $model->id],['title'=>'Info']);
+                            return Html::a($btn,["university/add-specializations", 'id' => $model->id],['title'=>'Add Specializations']);
                         },
-                    ],
-                    'template' => '{info} {specializations}'
+                        'exams' => function ($url, $model, $key) {
+                            $btn = Html::button("Add Exams",['class'=>'btn btn-primary btn btn-xs']);
+                            return Html::a($btn,["university/add-exams", 'id' => $model->id],['title'=>'Add Exams']);
+                        },
+                    ]
                 ],
             ],
         ]); ?>

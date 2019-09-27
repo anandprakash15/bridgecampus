@@ -10,13 +10,12 @@ use softark\duallistbox\DualListbox;
 /* @var $searchModel common\models\search\UniversitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $courseDetails->course->name.' Add Specializations';
-$this->params['subtitle'] = '<h1>Add Specializations</h1>';
+$this->title = $courseDetails->course->name.' Add Exams';
+$this->params['subtitle'] = '<h1>Add Exams</h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $courseDetails->university->name;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$courseDetails->university->id]];
 $this->params['breadcrumbs'][] = ['label' => $courseDetails->course->name, 'url' => ['course-details','id'=>$courseDetails->id]];
-$this->params['breadcrumbs'][] = 'Add Specializations';
+$this->params['breadcrumbs'][] = 'Add Exams';
 
 echo Yii::$app->message->display();
 ?>
@@ -29,13 +28,13 @@ echo Yii::$app->message->display();
 				'multiple' => true,
 				'size' => 20,
 			];
-			echo $form->field($ucsmodel, 'course_specializationID')->widget(DualListbox::className(),[
-				'items' => $specializations,
+			echo $form->field($uexamModel, 'examID')->widget(DualListbox::className(),[
+				'items' => $exams,
 				'options' => [],
 				'clientOptions' => [
 					'moveOnSelect' => false,
-					'selectedListLabel' => 'Selected Specializations',
-					'nonSelectedListLabel' => 'Specializations List',
+					'selectedListLabel' => 'Selected Exams',
+					'nonSelectedListLabel' => 'Exams List',
 				],
 			])->label(false);
 			?>

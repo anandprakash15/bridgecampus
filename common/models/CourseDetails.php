@@ -72,7 +72,7 @@ class CourseDetails extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_UNIVERSITY_COURSE] = ['course_mode','eligibility_criteria','course_curriculum','entrance_exams_accepted','admission_process','important_dates','course_credits','status'];
+        $scenarios[self::SCENARIO_UNIVERSITY_COURSE] = ['eligibility_criteria','course_curriculum','admission_process','important_dates','course_credits', 'register_url', 'status'];
         $scenarios[self::SCENARIO_COLLEGE_COURSE] = ['affiliation_type','course_mode','eligibility_criteria','course_curriculum','entrance_exams_accepted', 'fees','fee_breakup', 'seat_breakup', 'nri_quota', 'jk_quota','admission_process','important_dates','course_credits','approved_intake','start_year','accreditation_status','foreign_collaboration','foreign_university','register_url','shift','status','approved_by'];
         return $scenarios;
     }
@@ -120,7 +120,7 @@ class CourseDetails extends \yii\db\ActiveRecord
             'duration' => 'Duration',
             'fees' => 'Course Fees',
             'approved_by' => 'Approved By',
-            'register_url' => 'Register URL',
+            'register_url' => 'Registration URL',
             'uccID' => 'Ucc ID',
             'description' => 'Course Description',
             'updatedDate' => 'Updated Date',

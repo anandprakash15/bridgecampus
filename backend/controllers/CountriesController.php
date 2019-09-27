@@ -8,6 +8,7 @@ use common\models\search\CountriesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 /**
  * CountriesController implements the CRUD actions for Countries model.
@@ -107,6 +108,22 @@ class CountriesController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGetIsdCodes($q = null){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(["id", new \yii\db\Expression("code AS text")])
+            ->from('isd_codes')
+            ->where(['like', 'code', $q])
+            ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 
     /**

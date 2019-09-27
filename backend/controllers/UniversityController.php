@@ -34,6 +34,9 @@ use common\models\UniversityCollegeCourseSpecialization;
 use common\models\Exam;
 use common\models\Affiliate;
 use common\models\FacilityGallery;
+use common\models\UniversityBrochure;
+use common\models\ApprovedGovernment;
+use common\models\UniversityExam;
 use yii\base\Model;
 
 
@@ -83,7 +86,7 @@ class UniversityController extends Controller
         return $this->render('review', [
             'university' => $university,
             'dataProvider'=> $dataProvider,
-            'searchModel'=> $searchModel,
+            'searchModel'=> $searchModel
         ]);
     }
 
@@ -120,15 +123,8 @@ class UniversityController extends Controller
         }
         $model->scenario = CourseDetails::SCENARIO_UNIVERSITY_COURSE;
         $model->uccID = $id;
-        $exams=[];
-        if(!empty($model->entrance_exams_accepted)){
-            $model->entrance_exams_accepted = explode(",", $model->entrance_exams_accepted);
-            $exams = ArrayHelper::map(Exam::find()->where(['id'=>$model->entrance_exams_accepted])->asArray()->all(),'id','exam_name');
-
-        }
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->entrance_exams_accepted = @implode(",", $model->entrance_exams_accepted);
             if($model->save()){
                 \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
             }else{
@@ -141,8 +137,7 @@ class UniversityController extends Controller
 
        return $this->render('course-details', [
             'model' => $model,
-            'universityandcourse' => $universityandcourse,
-            'exams' => $exams
+            'universityandcourse' => $universityandcourse
         ]);
     }
 
@@ -200,6 +195,55 @@ class UniversityController extends Controller
             'specializations'=>$specializations,
             'ucsmodel' => $ucsmodel,
             'specializationModels' => $specializationModels
+        ]);
+    }
+
+
+    public function actionAddExams($id)
+    {
+        $this->layout= "university";
+        $courseDetails = UniversityCollegeCourse::findOne($id);
+        Yii::$app->params['uTitle'] = $courseDetails->university->name;
+        Yii::$app->params['uID'] = $courseDetails->university->id;
+        $exams = ArrayHelper::map(Exam::find()->all(),'id','exam_name');
+        
+        $uexamModel = new UniversityExam();
+
+        $oldExams = ArrayHelper::getColumn(UniversityExam::find()->where(['uccID'=>$courseDetails->id])->asArray()->all(),'examID');
+        $uexamModel->examID = $oldExams;
+        $uexamModel->uccID = $courseDetails->id;
+
+        if ($uexamModel->load(Yii::$app->request->post())) {
+            $newExams = [];
+            if(!empty($uexamModel->examID)){
+                $newExams = array_diff((array)$uexamModel['examID'], (array)$oldExams);
+            }
+            $deletedExams = array_diff((array)$oldExams,(array)$uexamModel['examID']);
+
+
+            foreach ($newExams as $key => $exam) {
+                $nuexamModel = new UniversityExam();
+                $nuexamModel->examID = $exam;
+                $nuexamModel->uccID = $courseDetails->id;
+                if(!$nuexamModel->save()){
+                    //print_r($nuexamModel);exit;
+                }    
+            }
+
+            if(!empty($deletedExams))
+            {
+                UniversityExam::deleteAll(['uccID' => $courseDetails->id, 'examID' =>  array_values($deletedExams)]);
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Exams successfully added in course '.$courseDetails->course->name.".");
+            
+            return $this->redirect(['add-exams','id'=>$courseDetails->id]);
+        }
+
+        return $this->render('add-exams', [
+            'courseDetails' => $courseDetails,
+            'exams'=>$exams,
+            'uexamModel' => $uexamModel,
         ]);
     }
 
@@ -299,12 +343,13 @@ class UniversityController extends Controller
     public function actionCreate()
     {
         $model = new University();
-
+        $universityBrochures = new UniversityBrochure();
         if ($model->load(Yii::$app->request->post())) {
 
             $model->approved_by = implode(",",(array) $model->approved_by);
             $model->accredited_by = implode(",",(array) $model->accredited_by);
             $model->affiliate_to = implode(",",(array) $model->affiliate_to);
+            $model->approving_government_authority = implode(",",(array) $model->approving_government_authority);
             
             $bannerImg = UploadedFile::getInstance($model, 'bannerImg');
             if(!empty($bannerImg))
@@ -312,11 +357,7 @@ class UniversityController extends Controller
                 $model->bannerURL = "banner.".pathinfo($bannerImg->name, PATHINFO_EXTENSION);
             }
 
-            $brochureFile = UploadedFile::getInstance($model, 'brochureFile');
-            if(!empty($brochureFile))
-            {
-                $model->brochureurl = "brochure.".pathinfo($brochureFile->name, PATHINFO_EXTENSION);
-            }
+            
             
             $logoImg = UploadedFile::getInstance($model, 'logoImg');
             if(!empty($logoImg))
@@ -332,14 +373,25 @@ class UniversityController extends Controller
                 {
                     $bannerImg->saveAs($uploadPath.$model->bannerURL);
                 }
-                if(!empty($brochureFile))
-                {
-                    $brochureFile->saveAs($uploadPath.$model->brochureurl);
-                }
 
                 if(!empty($logoImg))
                 {
                     $logoImg->saveAs($uploadPath.$model->logourl);
+                }
+
+                $brochureFiles = UploadedFile::getInstances($universityBrochures, 'brochureFiles');
+                $uploadPath =  Yii::$app->myhelper->getUBrochureUploadPath($model->id);
+                FileHelper::createDirectory($uploadPath,0775,true);
+                if(!empty($brochureFiles))
+                {
+                    foreach ($brochureFiles as $key => $brochureFile) {
+                        $bFile = new UniversityBrochure();
+                        $bFile->url = $brochureFile->name;
+                        $bFile->universityID = $model->id;
+                        if($bFile->save()){
+                            $brochureFile->saveAs($uploadPath.$bFile->url);
+                        }
+                    }
                 }
 
                 \Yii::$app->getSession()->setFlash('success', 'Created Successfully.');
@@ -355,6 +407,9 @@ class UniversityController extends Controller
             'approved_by' => [],
             'accredited_by' => [],
             'affiliate_to' => [],
+            'approvedGovernment' => [],
+            'universityBrochures'=>$universityBrochures,
+            'brochureFilePreview' => [],
         ]);
     }
 
@@ -370,10 +425,11 @@ class UniversityController extends Controller
         $this->layout= "university";
         $model = $this->findModel($id);
         $oldbannerURL = $model->bannerURL;
-        $oldbrochureURL = $model->brochureurl;
         $oldlogoURL = $model->logourl;
-        $approved_by = $accredited_by = $affiliate_to = [];
-
+        $approved_by = $accredited_by = $affiliate_to =  $approvedGovernment = [];
+        $universityBrochures = new UniversityBrochure();
+        $brochureFilePreview = UniversityBrochure::find()->where(['universityID'=>$model->id])->asArray()->all();
+        
         if(!empty($model->approved_by)){
 
             $approved_by = ArrayHelper::map(Approved::find()->where(new \yii\db\Expression("id IN(".$model->approved_by.")"))->asArray()->all(),'id','name');
@@ -392,11 +448,18 @@ class UniversityController extends Controller
             $model->affiliate_to = explode(",",$model->affiliate_to);
         }
 
+        if(!empty($model->approving_government_authority)){
+           
+            $approvedGovernment = ArrayHelper::map(ApprovedGovernment::find()->where(new \yii\db\Expression("id IN(".$model->approving_government_authority.")"))->asArray()->all(),'id','name');
+            $model->approving_government_authority = explode(",",$model->approving_government_authority);
+        }
+
         if ($model->load(Yii::$app->request->post())) {
 
             $model->approved_by = implode(",",(array) $model->approved_by);
             $model->accredited_by = implode(",",(array) $model->accredited_by);
             $model->affiliate_to = implode(",",(array) $model->affiliate_to);
+            $model->approving_government_authority = implode(",",(array) $model->approving_government_authority);
 
             $uploadPath = Yii::$app->myhelper->getUploadPath(1,$model->id);
             FileHelper::createDirectory($uploadPath,0775,true);
@@ -427,16 +490,26 @@ class UniversityController extends Controller
                     @unlink($uploadPath.$oldbannerURL);
                     $bannerImg->saveAs($uploadPath.$model->bannerURL);
                 }
-                if(!empty($brochureFile))
-                {
-                    @unlink($uploadPath.$oldbrochureURL);
-                    $brochureFile->saveAs($uploadPath.$model->brochureurl);
-                }
-
+                
                 if(!empty($logoImg))
                 {
                     @unlink($uploadPath.$oldlogoURL);
                     $logoImg->saveAs($uploadPath.$model->logourl);
+                }
+
+                $brochureFiles = UploadedFile::getInstances($universityBrochures, 'brochureFiles');
+                $uploadPath = Yii::$app->myhelper->getUBrochureUploadPath($model->id);;
+                FileHelper::createDirectory($uploadPath,0775,true);
+                if(!empty($brochureFiles))
+                {
+                    foreach ($brochureFiles as $key => $brochureFile) {
+                        $bFile = new UniversityBrochure();
+                        $bFile->url = $brochureFile->name;
+                        $bFile->universityID = $model->id;
+                        if($bFile->save()){
+                            $brochureFile->saveAs($uploadPath.$bFile->url);
+                        }
+                    }
                 }
 
                 \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
@@ -452,7 +525,10 @@ class UniversityController extends Controller
             'model' => $model,
             'approved_by' => $approved_by,
             'accredited_by'=>$accredited_by,
-            'affiliate_to' => $affiliate_to
+            'affiliate_to' => $affiliate_to,
+            'approvedGovernment' => $approvedGovernment,
+            'universityBrochures'=>$universityBrochures,
+            'brochureFilePreview'=>$brochureFilePreview
         ]);
     }
 
@@ -485,10 +561,16 @@ class UniversityController extends Controller
         }else{
             $model->affiliate_to = [];
         }
-
+        $brochures = UniversityBrochure::find()->where(['universityID'=>$model->id])->all();
+        $status = Yii::$app->myhelper->getActiveInactive();
+        $universityType = Yii::$app->myhelper->getUniversitytype();
+        $model->utype = isset($universityType[$model->utype])?$universityType[$model->utype]:'';
+        $model->status = isset($status[$model->status])?$status[$model->status]:'';
+         
         return $this->render('view', [
             'model' => $model,
-            'fBasePath'=>$fBasePath
+            'fBasePath'=>$fBasePath,
+            'brochures' => $brochures
         ]);
     }
 
@@ -669,8 +751,24 @@ class UniversityController extends Controller
             @unlink($uploadPath.$filename);
             return ['success'=>false];
         }
-
     }
+
+    public function actionDeleteBrochure(){
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $id = Yii::$app->request->post('id');
+        if(!empty($id))
+        {
+            $model = UniversityBrochure::findOne($id);
+            if($model->delete())
+            {
+                $uploadPath = Yii::$app->myhelper->getUBrochureUploadPath($model->universityID);
+                @unlink($uploadPath.$model->url);
+                return ['success'=>true];
+            }  
+        }
+        return ['error'=>true];
+    }
+
     public function actionDeleteGalleryFile($id){
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $file = UniversityGallery::findOne($id);

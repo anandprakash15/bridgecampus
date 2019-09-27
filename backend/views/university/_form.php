@@ -52,7 +52,9 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-   <?= $form->field($model, 'sortname')->textInput(['maxlength' => true]) ?>
+   <?= $form->field($model, 'short_name')->textInput(['maxlength' => true]) ?>
+
+   <?= $form->field($model, 'also_known_as')->textInput(['maxlength' => true]) ?>
 
    <?php if (!$model->isNewRecord) {
         $model->code = Yii::$app->myhelper->getUniversityCode($model->code);
@@ -63,16 +65,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
    <?= $form->field($model, 'utype')->dropDownList(Yii::$app->myhelper->getUniversitytype(),['class'=>'form-control'])?>
 
-   
-
-   <?= $form->field($model, 'approving_government_authority')->widget(CKEditor::className(), [
-    'options' => ['rows' => 6],
-    'preset' => 'standard',
-    'clientOptions'=>[
-      'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
-      /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
-    ]
-  ]) ?>
 
    <?= $form->field($model, 'address')->widget(CKEditor::className(), [
     'options' => ['rows' => 6],
@@ -137,6 +129,29 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
 
+       <?= $form->field($model, 'isd_codesID')->widget(Select2::classname(), [
+        'options' => ['placeholder' => 'ISD Code...'],
+        'size' => Select2::SMALL,
+
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => false,
+          'minimumInputLength' => 1,
+          'language' => [
+            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+          ],
+          'ajax' => [
+            'url' => \yii\helpers\Url::to(['countries/get-isd-codes']),
+            'dataType' => 'json',
+            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          ],
+          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+          'templateResult' => new JsExpression('function(type) { return type.text; }'),
+          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        ],
+      ]);?>
+
+      <?= $form->field($model, 'std_code')->textInput(['maxlength' => true]) ?>
 
        <?= $form->field($model, 'contact')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],
@@ -146,8 +161,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
         ]
       ]) ?>
-
-
 
       <?= $form->field($model, 'fax')->textInput(['maxlength' => true]) ?>
 
@@ -222,7 +235,14 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
         ]
       ]) ?>
 
-      <?= $form->field($model, 'campus_size')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'campus_size')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
 
       <?= $form->field($model, 'affiliate_to')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'Affiliate To...'],
@@ -246,6 +266,31 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           'templateSelection' => new JsExpression('function (type) { return type.text; }'),
         ],
       ]);?>
+
+
+      <?= $form->field($model, 'approving_government_authority')->widget(Select2::classname(), [
+        'options' => ['placeholder' => 'Approving Government Authority...'],
+        'data' => $approvedGovernment,
+        'size' => Select2::SMALL,
+
+        'pluginOptions' => [
+          'allowClear' => true,
+          'multiple' => true,
+          'minimumInputLength' => 1,
+          'language' => [
+            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+          ],
+          'ajax' => [
+            'url' => \yii\helpers\Url::to(['approved-government/approved-by-government-list']),
+            'dataType' => 'json',
+            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+          ],
+          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+          'templateResult' => new JsExpression('function(type) { return type.text; }'),
+          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        ],
+      ]);?>
+
 
       <?= $form->field($model, 'approved_by')->widget(Select2::classname(), [
         'options' => ['placeholder' => 'Approved By...'],
@@ -294,26 +339,35 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
       ]);?>
 
       <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
-
-
-      
+      <?= $form->field($model, 'naac_cgpa')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'naac_validity_date')->textInput(['maxlength' => true]) ?>
 
       <?php
-      $bannerImgPreview = $brochureFilePreview = $logoImgPreview = "";
+      $bannerImgPreview  = $logoImgPreview = "";
+      $brochureFilePreviewList = $brochurePreviewConfig = [];
       if(!$model->isNewRecord){
-
-
         $fViewPath= Yii::$app->myhelper->getFileBasePath(1,$model->id);
         if(!empty($model->bannerURL)){
           $bannerImgPreview = [$fViewPath.$model->bannerURL];
         }
-        if(!empty($model->brochureurl)){
-          $brochureFilePreview = $fViewPath.$model->brochureurl;
+
+        
+        if(!empty($brochureFilePreview)){
+          $bfViewPath= Yii::$app->myhelper->getUBrochureBasePath($model->id);
+          foreach ($brochureFilePreview as $key => $brochure) {
+            $downloadUrl = $bfViewPath.$brochure['url'];
+            $brochureFilePreviewList[] = $downloadUrl;
+            $brochurePreviewConfig[] = [
+              'downloadUrl'=> $downloadUrl,
+              'url'=> Url::to(['delete-brochure']),
+              'extra'=> ['id'=> $brochure['id']],
+              'key'=>1
+            ];
+          }
         }
         if(!empty($model->logourl)){
           $logoImgPreview = [$fViewPath.$model->logourl];
         }
-
       }
 
       ?>
@@ -329,8 +383,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           'initialPreviewConfig'=>[[
             'downloadUrl'=> $bannerImgPreview,
             'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
-            'extra'=> ['id'=> 100],
-            'key'=>1
+            'extra'=> ['id'=> 100]
           ]
         ],
         'overwriteInitial'=>true,
@@ -367,38 +420,52 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
         ]);?>
 
 
-        <?php echo $form->field($model, 'brochureFile')->widget(FileInput::classname(), [
+        <?php /*echo $form->field($universityBrochures, 'brochureFiles[]')->widget(FileInput::classname(), [
           'pluginOptions' => [
             'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-            'options' => ['multiple' => false],
-            'initialPreview'=> $brochureFilePreview,
-            'initialPreviewAsData'=>true,
+            'options' => ['multiple' => true],
+            //'initialPreview'=> $brochureFilePreview,
+            //'initialPreviewAsData'=>true,
             'initialPreviewConfig'=>[[
-              'downloadUrl'=> $brochureFilePreview,
+              //'downloadUrl'=> $brochureFilePreview,
               'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'brochureurl']):'',
-              'extra'=> ['id'=> 100],
-              'key'=>1
             ]
           ],
           'preferIconicPreview'=> true,
-          'initialPreviewFileType'=> 'image',
           'previewFileIconSettings'=>[
             'doc'=> '<i class="fa fa-file text-primary"></i>',
             'xls'=> '<i class="fa fa-file-excel text-success"></i>',
             'ppt'=> '<i class="fa fa-file-powerpoint text-danger"></i>',
           ],
-          'previewFileExtSettings'=>[
-            /*'doc'=> 'function(ext) {
-              return ext.match(/(doc|docx)$/i);
-            }',*/
-          ],
-          'overwriteInitial'=>true,
-          'dropZoneEnabled'=> false,
-          'showCaption' => true,
-          'showRemove' => false,
           'showUpload' => false,
+          'overwriteInitial'=>false,
+          'dropZoneEnabled'=>false,
         ]
-      ]);?>
+      ]);*/
+
+
+       ?>
+
+      <?= $form->field($universityBrochures, 'brochureFiles[]')->widget(FileInput::classname(), [
+      'options' => ['multiple' => true],
+      'pluginOptions' => [
+        'showUpload' => false,
+        'overwriteInitial'=>false,
+        'dropZoneEnabled'=>false,
+        'initialPreview'=> $brochureFilePreviewList,
+        'initialPreviewAsData'=>true,
+        'initialPreviewConfig'=> $brochurePreviewConfig,
+        'allowedFileExtensions' => ['pdf','doc','docx'],
+        'preferIconicPreview'=> true,
+        'previewFileIconSettings'=>[
+          'doc'=> '<i class="fa fa-file text-primary"></i>',
+          'xls'=> '<i class="fa fa-file-excel text-success"></i>',
+          'ppt'=> '<i class="fa fa-file-powerpoint text-danger"></i>',
+        ],
+        //'initialPreview'=> ArrayHelper::getColumn($initialPreviewConfig,'fileurl'),
+        //'initialPreviewConfig'=>$initialPreviewConfig
+      ],
+    ]); ?>
 
         <?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
           'pluginOptions' => [
@@ -447,6 +514,11 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
               }',
             ]
           ]);?>
+
+          <?= $form->field($model, 'longitude')->textInput(['maxlength' => true]) ?>
+
+          <?= $form->field($model, 'latitude')->textInput(['maxlength' => true]) ?>
+
           <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
           <div class="col-sm-offset-2 col-sm-4">

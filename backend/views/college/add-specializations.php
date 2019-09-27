@@ -18,6 +18,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'
 $this->params['breadcrumbs'][] = 'Add Specializations';
 
 echo Yii::$app->message->display();
+
+
 ?>
 <div class="university-index">
 	<div class="custumbox box box-info">
@@ -53,12 +55,14 @@ echo Yii::$app->message->display();
 				<?php $form = ActiveForm::begin(); ?>
 				<table class="table table-responsive table-bordered">
 					<?php  foreach ($specializationModels as $key => $specializationModel) {?>
+						<?php if(!empty( $specializationModel->courseSpecialization )){ ?>
 						<tr>
 							<td><?= $specializationModel->courseSpecialization->specialization->name ?></td>
 							<td>
 								<?= $form->field($specializationModel, '['.$key.']id')->hiddenInput()->label(false); ?>
 								<?= $form->field($specializationModel, '['.$key.']intake')->textInput(['maxlength' => true])->label(false) ?></td>
 							</tr>
+						<?php } ?>	
 						<?php } ?>
 					</table>
 					<div class="form-group text-center">

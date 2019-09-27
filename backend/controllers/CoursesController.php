@@ -209,7 +209,7 @@ class CoursesController extends Controller
         ]);
     }
 
-    public function actionAddRecruiters($id){
+    /*public function actionAddRecruiters($id){
         $course = $this->findModel($id);
         $recruiters = ArrayHelper::map(TopRecruiters::find()->where(['status'=>1])->all(),'id','short_name');
         $csmodel = new CourseRecruiters();
@@ -256,7 +256,7 @@ class CoursesController extends Controller
             'recruiters'=>$recruiters,
             'csmodel' => $csmodel,
         ]);
-    }
+    }*/
 
     /**
      * Finds the Courses model based on its primary key value.

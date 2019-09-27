@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = 'Details';
                'options' => ['enctype' => 'multipart/form-data'],
            ]);?>
 
-            <?= $form->field($model, 'course_mode')->dropDownList(Yii::$app->myhelper->getCourseMode(),['class'=>'form-control','prompt'=>'Select Course Mode'])?>
+            <?php /*echo $form->field($model, 'course_mode')->dropDownList(Yii::$app->myhelper->getCourseMode(),['class'=>'form-control','prompt'=>'Select Course Mode'])*/ ?>
 
             <?= $form->field($model, 'eligibility_criteria')->widget(CKEditor::className(), [
               'options' => ['rows' => 6],
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = 'Details';
             ]) ?>
 
             <?= Html::hiddenInput('name', $universityandcourse->course->programID,['id'=>'courses-programid']); ?>
-            <?= $form->field($model, 'entrance_exams_accepted')->widget(Select2::classname(), [
+            <?php /*echo $form->field($model, 'entrance_exams_accepted')->widget(Select2::classname(), [
               'options' => ['placeholder' => 'Search Program...','multiple' => true],
               'data' => $exams,
               'size' => Select2::SMALL,
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = 'Details';
                 'templateResult' => new JsExpression('function(type) { return type.text; }'),
                 'templateSelection' => new JsExpression('function (type) { return type.text; }'),
               ],
-            ]);?>
+            ]);*/ ?>
 
             
 
@@ -108,9 +108,12 @@ $this->params['breadcrumbs'][] = 'Details';
               ]
             ]) ?>
 
+            <?= $form->field($model, 'register_url')->textInput(['maxlength' => true]) ?>
+
             <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 
             <div class="form-group" style="margin-left: 18% !important;">
+                <button id="back_btn" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
                 <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Submit') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'load' ,'data-loading-text'=>"<i class='fa fa-spinner fa-spin '></i> Processing"]) ?>
             </div>
 

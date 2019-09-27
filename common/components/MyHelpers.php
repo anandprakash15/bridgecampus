@@ -509,6 +509,15 @@ class MyHelpers extends Component{
         return Url::home(true).'uploads'.$ucType.$ucID.$fileType."/";
     }
 
+
+    public function getUBrochureUploadPath($universityID){
+        return $this->getUploadPath(1,$universityID)."brochure/";
+    }
+
+    public function getUBrochureBasePath($universityID){
+        return $this->getFileBasePath(1,$universityID)."brochure/";
+    }
+
     public function videoThumb($source,$destination){
         $direcotry = Yii::getAlias('@ffmpegPath');
         chdir($direcotry);

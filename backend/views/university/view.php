@@ -33,23 +33,18 @@ echo Yii::$app->message->display();
                 <tr>
                     <th class="col-md-4">Code:</th>
                     <td class="col-md-8"><?= Yii::$app->myhelper->getUniversityCode($model->code) ?></td>
-
+                </tr>
+                <tr>
+                    <th class="col-md-4">Short Name:</th>
+                    <td class="col-md-8"><?= $model->short_name ?></td>
                 </tr>
                 <tr>
                     <th class="col-md-4">Establish Year:</th>
                     <td class="col-md-8"><?= $model->establish_year ?></td>
                 </tr>
                 <tr>
-                    <th class="col-md-4">Grade:</th>
+                    <th class="col-md-4">NAAC Grade:</th>
                     <td class="col-md-8"><?= $model->grade ?></td>
-                </tr>
-                <tr>
-                    <th class="col-md-4">Website URL:</th>
-                    <td class="col-md-8"><a target="_blank" href="<?= $model->websiteurl ?>"><?= $model->websiteurl ?></a></td>
-                </tr>
-                <tr>
-                    <th class="col-md-4">Brochure:</th>
-                    <td class="col-md-8"><a target="_blank" href="<?= Url::to($fBasePath.$model->brochureurl) ?>"><?= $model->brochureurl ?></a></td>
                 </tr>
                 <tr>
                     <th class="col-md-4">Approved By:</th>
@@ -74,7 +69,25 @@ echo Yii::$app->message->display();
                    <a href="<?= Url::to(['affiliate/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $affiliate_to ?></a> 
                <?php } ?>
            </td>
+        </tr>
+        <tr>
+            <th class="col-md-4">NAAC CGPA:</th>
+            <td class="col-md-8">
+               <?= $model->naac_cgpa ?>
+           </td>
        </tr>
+       <tr>
+            <th class="col-md-4">NAAC Validity Date:</th>
+            <td class="col-md-8">
+               <?= $model->naac_validity_date ?>
+           </td>
+       </tr>
+       <tr>
+            <th class="col-md-4">Status:</th>
+            <td class="col-md-8">
+                <span class="badge <?= ($model->status=='Active'?'bg-green':'bg-red') ?>"><?= $model->status ?></span>        
+            </td>
+        </tr> 
    </tbody>
 </table>
 </div>
@@ -121,8 +134,7 @@ echo Yii::$app->message->display();
                 <tr>
                     <th class="col-md-4">Campus Size:</th>
                     <td class="col-md-8"><?= $model->campus_size ?></td>
-                </tr>
-                      
+                </tr>    
             </tbody>
         </table>
     </div>
@@ -187,7 +199,15 @@ echo Yii::$app->message->display();
     </div>
     <div class="box-body">
         <table class="table table-bordered">
-            <tbody>                  
+            <tbody> 
+                <tr>
+                    <th class="col-md-4">ISD Code:</th>
+                    <td class="col-md-8"><?= isset($model->isdCodes->code)?$model->isdCodes->code:'' ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">STD Code:</th>
+                    <td class="col-md-8"><?= $model->std_code ?></td>
+                </tr>                 
                 <tr>
                     <th class="col-md-4">Contact:</th>
                     <td class="col-md-8"><?= $model->contact ?></td>
@@ -204,18 +224,66 @@ echo Yii::$app->message->display();
                     <th class="col-md-4">Website URL:</th>
                     <td class="col-md-8"><a href="<?= $model->websiteurl ?>"><?= $model->websiteurl ?></a></td>
                 </tr>
+                <tr>
+                    <th class="col-md-4">University Type:</th>
+                    <td class="col-md-8"><?= $model->utype ?></td>
+                </tr>
             </tbody>
         </table>
     </div>
 </div>
 
 <div class="custumbox box box-danger">
+    <div class="box-header with-border">
+        <h3 class="box-title">Banner & Brochures</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
     <div class="box-body">
         <table class="table table-bordered">
-            <tbody>                  
+            <tbody>
+                <tr>
+                    <th class="col-md-4">Brochure:</th>
+                    <td class="col-md-8">
+                    <?php foreach ($brochures as $key => $brochure) { ?>
+                        <a href="<?= Yii::$app->myhelper->getUBrochureBasePath($model->id).$brochure->url ?>" class="btn btn-default btn-xs"><?= $brochure->url ?></a>&nbsp;&nbsp;     
+                    <?php } ?>
+                    </td>
+                   
+                </tr>                  
                 <tr>
                     <th class="col-md-4">Banner Image:</th>
                     <td class="col-md-8"><?= Html::img(Url::to($fBasePath.$model->bannerURL),['class' => 'img-responsive','style'=>'width:100px;height:100px']) ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="custumbox box box-teal">
+    <div class="box-header with-border">
+        <h3 class="box-title">Google Coordinates</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th class="col-md-4">Longitude:</th>
+                    <td class="col-md-8">
+                        <?= $model->longitude ?>
+                    </td>
+                </tr>                  
+                <tr>
+                    <th class="col-md-4">Latitude:</th>
+                    <td class="col-md-8">
+                        <?= $model->latitude ?>
+                    </td>
                 </tr>
             </tbody>
         </table>

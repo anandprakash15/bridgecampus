@@ -9,7 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $name
-  * @property string $sortname
+ * @property string $short_name
+ * @property string $also_known_as
  * @property string $bannerURL
  * @property string $area
  * @property string $code
@@ -22,6 +23,8 @@ use Yii;
  * @property string $taluka
  * @property string $district
  * @property string $pincode
+ * @property int $isd_codesID
+ * @property string $std_code
  * @property string $contact
  * @property string $fax
  * @property string $email
@@ -30,6 +33,8 @@ use Yii;
  * @property string $approved_by
  * @property string $accredited_by
  * @property string $grade
+ * @property string $naac_cgpa
+ * @property string $naac_validity_date
  * @property string $about
  * @property int $campus_size
  * @property string $vision
@@ -40,8 +45,9 @@ use Yii;
  * @property string $chancellor
  * @property string $vice_chancellor
  * @property string $affiliate_to
- * @property string $brochureurl
  * @property string $logourl
+ * @property string $longitude
+ * @property string $latitude
  * @property string $createdDate
  * @property string $updatedDate
  * @property int $status
@@ -59,7 +65,6 @@ class University extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $bannerImg;
-    public $brochureFile;
     public $logoImg;
     public static function tableName()
     {
@@ -74,16 +79,16 @@ class University extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['bannerImg','logoImg'], 'file', 'extensions'=>'jpg, jpeg, png'],
-            [['brochureFile'], 'file', 'extensions'=>'pdf, doc, docx'],
-            [['cityID', 'stateID', 'countryID', 'status', 'campus_size', 'createdBy', 'updatedBy'], 'integer'],
-            [['about','approving_government_authority','utype', 'vision', 'mission', 'motto', 'colours'], 'string'],
-            [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by', 'affiliate_to'], 'safe'],
+            
+            [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy','isd_codesID'], 'integer'],
+            [['about','utype', 'vision', 'mission', 'motto', 'colours','also_known_as'], 'string'],
+            [['createdDate', 'updatedDate','short_name','bannerURL','area','approved_by', 'accredited_by', 'std_code', 'affiliate_to', 'approving_government_authority', 'naac_cgpa', 'naac_validity_date','campus_size'], 'safe'],
 
             [['name'], 'string', 'max' => 300],
             [['pincode', 'establish_year'], 'string', 'max' => 20],
             [['address', 'founder', 'chancellor', 'vice_chancellor'], 'string', 'max' => 500],
-            [['taluka', 'district', 'contact', 'fax', 'email', 'brochureurl', 'logourl'], 'string', 'max' => 50],
-            [['websiteurl'], 'string', 'max' => 100],
+            [['taluka', 'district', 'contact', 'fax', 'email', 'logourl'], 'string', 'max' => 50],
+            [['websiteurl', 'longitude', 'latitude'], 'string', 'max' => 100],
             [['grade'], 'string', 'max' => 10],
             ['code', 'codeunique'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
@@ -113,7 +118,8 @@ class University extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'University Name',
-            'sortname' => 'Short Name',
+            'short_name' => 'Short Name',
+            'also_known_as' => 'Also Known As',
             'bannerURL' => 'Banner Url',
             'area' => 'Area',
             'code' => 'Code',
@@ -124,6 +130,8 @@ class University extends \yii\db\ActiveRecord
             'taluka' => 'Taluka',
             'district' => 'District',
             'pincode' => 'Pincode',
+            'isd_codesID' => 'ISD Code',
+            'std_code' => 'STD Code',
             'contact' => 'Contact',
             'fax' => 'Fax',
             'email' => 'Email',
@@ -131,7 +139,9 @@ class University extends \yii\db\ActiveRecord
             'establish_year' => 'Establish Year',
             'approved_by' => 'Approved By',
             'accredited_by' => 'Accredited By',
-            'grade' => 'Grade',
+            'grade' => 'NAAC Grade',
+            'naac_cgpa' => 'NAAC CGPA',
+            'naac_validity_date' => 'NAAC Validity Date',
             'about' => 'About',
             'campus_size' => 'Campus Size',
             'vision' => 'Vision',
@@ -142,8 +152,9 @@ class University extends \yii\db\ActiveRecord
             'chancellor' => 'Chancellor',
             'vice_chancellor' => 'Vice Chancellor',
             'affiliated_to' => 'Affiliated To',
-            'brochureurl' => 'Brochureurl',
             'logourl' => 'Logourl',
+            'longitude' => 'Longitude',
+            'latitude' => 'Latitude',
             'createdDate' => 'Created Date',
             'updatedDate' => 'Updated Date',
             'status' => 'Status',
@@ -229,5 +240,13 @@ class University extends \yii\db\ActiveRecord
     public function getState()
     {
         return $this->hasOne(States::className(), ['id' => 'stateID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIsdCodes()
+    {
+        return $this->hasOne(IsdCodes::className(), ['id' => 'isd_codesID']);
     }
 }

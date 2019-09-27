@@ -34,18 +34,37 @@ echo Yii::$app->message->display();
             'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-
-                'name',
+                [
+                    'contentOptions' => ['style' => 'width:45%;'],
+                    'attribute' => 'name'
+                ],
+                [
+                    'label'=>'Short Name',
+                    'contentOptions' => ['style' => 'width:10%;'],
+                    'attribute' => 'short_name',
+                ],
                 [
                     'label'=>'Code',
-                    'contentOptions' => ['style' => 'width:25%;'],
+                    'contentOptions' => ['style' => 'width:15%;'],
                     'attribute' => 'code',
                     'value' => function($model){
                         return  Yii::$app->myhelper->getUniversityCode($model->code);
                     }
                 ],
-                'address',
-                'cityID',
+                [
+                    'format'=>'html',
+                    //'contentOptions' => ['style' => 'width:45%;'],
+                    'attribute' => 'address'
+                ],
+                /*[
+                    'label'=>'City',
+                    'contentOptions' => ['style' => 'width:45%;'],
+                    'attribute' => 'cityname',
+                    'value' => function($model){
+                        return  $model->city->name;
+                    }
+                ],*/
+               
             //'stateID',
             //'countryID',
             //'taluka',
