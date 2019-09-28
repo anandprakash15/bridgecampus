@@ -4974,3 +4974,8 @@ table.text-center th {
     white-space: normal !important;
   }
 }
+
+.masonry-item { 
+  padding: 0 10px;
+  margin-bottom: 15px;
+}

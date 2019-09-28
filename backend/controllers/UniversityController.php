@@ -713,30 +713,30 @@ class UniversityController extends Controller
                 $model = new UniversityGallery();
                 $model->type = $type;
                 $model->universityID = $id;
-                $filename = time().$key;
-                $model->url = $filename.'.'.pathinfo($file->name, PATHINFO_EXTENSION);
+                $model->url = $file->name;
                 $model->status = 1;
-
-                if($model->save()){
-                    array_push($successfiles, $file->name);
-                    $filePath = $uploadPath.$model->url;
-                    if($file->saveAs($filePath)){
-                        array_push($successfiles, $file->name);
-
+                $filePath = $uploadPath.$model->url;
+                if($file->saveAs($filePath)){
+                    if($model->save()){
+                        array_push($successfiles, $model->url);
                         if($type == 2){
-                            $thumbPath = $uploadPath.$filename."-thumb.png";
+                            $thumbPath = $uploadPath.pathinfo($file->name, PATHINFO_FILENAME )."-thumb.png";
                             Yii::$app->myhelper->videoThumb($filePath,$thumbPath);
                         }
                     }
                 }else{
-                   // print_r($model);exit;
-                    array_push($errorfiles, $file->name);
+                    array_push($errorfiles, $model->url);
                 }   
             }
-            $message =  "Successfully uploaded Files ".implode(", ", $successfiles);
-            $message .=  "<br>Error Files ".implode(", ", $errorfiles);
+            $success = $errors =  '';
+            if(!empty($successfiles)){
+                $success =  "Successfully uploaded Files- ".implode(", ", $successfiles);
+            }
+            if(!empty($errorfiles)){
+                $errors =  "Error Files- ".implode(", ", $errorfiles);
+            }
 
-            return ['success'=>$message];
+            return ['success'=>$success, 'errors'=>$errors];
         }
     }
 

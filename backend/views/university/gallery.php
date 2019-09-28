@@ -25,14 +25,18 @@ $this->registerJsFile('@web/js/picturefill.min.js',['depends' => [\yii\web\Jquer
 $this->registerJsFile('@web/js/lightgallery-all.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/jquery.mousewheel.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::className()]]);
-
 $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/masonry.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+
 ?>
 <?php 
 $this->registerCss("
     .app-title{
      display: none;
- }
+    }
+    .file-preview {
+			display:none;
+		}
  ");
  ?>
 <div class="university-index">
@@ -91,45 +95,55 @@ $this->registerCss("
 					'fileremoved'=>"function(){
 						if($(this).fileinput('getFileStack') <= 0 ){
 							$('.file-preview').hide();
-							$('#uploadstatus').slideUp('slow');
+							$('#uploadsuccess').hide(); 
+							$('#uploaderrors').hide();
 						}
 					}",
 					"filecleared"=>"function(){
 						if($(this).fileinput('getFileStack') <= 0 ){
 							$('.file-preview').hide();
-							$('#uploadstatus').slideUp('slow');
+							$('#uploadsuccess').hide(); 
+							$('#uploaderrors').hide();
 						}
 					}",
 
 					"filebatchuploadsuccess"=>"function(event, data){
+						$.pjax.reload({container:'#img-gallery-wrap'});
+						$('#uploadsuccess').hide(); 
+						$('#uploaderrors').hide(); 
 						if(data.response.success){
-							$('#uploadmessage').html(data.response.success);
-							$.pjax.reload({container:'#img-gallery-wrap'}); 
-							$('#uploadstatus').slideDown('slow');
+							$('#successmsg').html(data.response.success);
+							$('#uploadsuccess').slideDown('slow');
+						}
+						if(data.response.error){
+							$('#errormsg').html(data.response.error);
+							$('#uploaderrors').slideDown('slow');
 						}
 					}",
 
 				],
 			]);
 			?>
-			<div id="uploadstatus" style="display: none" class="callout callout-success">
-				<h4><i class="icon fa fa-check"></i> Success</h4>
-				<p id="uploadmessage"></p>
+			<div id="uploadsuccess" style="display: none" class="callout callout-success">
+				<p id="successmsg"></p>
+			</div>
+			<div id="uploaderrors" style="display: none" class="callout callout-error">
+				<p id="errormsg"></p>
 			</div>
 		</div>
 	</div>
+	<?php Pjax::begin([
+				'id'=>'img-gallery-wrap'
+			]); ?>
 	<div class="box box-default">
 		<div class="box-header with-border">
 			<i class="fa <?= ($type==1)?'fa-picture-o':' fa-play-circle' ?>" aria-hidden="true"></i>
 			<h3 class="box-title"><?= ($type==1)?'Images':'Videos' ?></h3>
 		</div>
 		<div class="box-body">
-			<?php Pjax::begin([
-				'id'=>'img-gallery-wrap'
-			]); ?>
-			<div id="lightgallery" class="list-unstyled row">
+			<div id="lightgallery" class="masonry-container list-unstyled row">
 				<?php foreach ($fileList as $key => $file) { ?>
-					<div class="col-md-3">
+					<div class="col-md-3 masonry-item">
 						<?php if($type == 1){
 							$fileUrl = $fBasePath.$file->url;
 						?>
@@ -157,23 +171,27 @@ $this->registerCss("
 						</div>
 					<?php } ?>
 				</div>
-				<?php Pjax::end(); ?>
 			</div>
 		</div>
+		<?php Pjax::end(); ?>
 	</div>
 </div>
 </div>
 </div>
 </div>
-	<?php
-	$this->registerCss("
-		.file-preview {
-			display:none;
-		}");
+<?php
 
 	$this->registerJs('
 		$(document).ready(function(){
 			function initFunctions(){
+
+				$(".masonry-container").masonry({
+					itemSelector: ".masonry-item",
+					columnWidth: 0,
+					//percentPosition: true
+				});
+
+
 				$lg = $("#lightgallery");
 				$lg.lightGallery({
 					selector:".gallery-file-wrap",
@@ -183,12 +201,16 @@ $this->registerCss("
 					});
 					$lg.on("onBeforeOpen.lg",function(event, index, fromTouch, fromThumb){
 						console.log(event, index, fromTouch, fromThumb);
-						});
-					}
-					initFunctions();
-					$(document).on("pjax:success", "#img-gallery-wrap",  function(event){
-						initFunctions();
-						});
-						});
-						');
-						?>
+				});
+			}
+			initFunctions();
+			$(document).on("pjax:success", "#img-gallery-wrap",  function(event){
+				initFunctions();
+				setTimeout(function(){
+					$("#masonry-container").masonry("reloadItems");
+					$("#masonry-container").masonry("layout");
+				},500)
+			});
+		});
+	');
+?>

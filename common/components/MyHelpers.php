@@ -407,7 +407,7 @@ class MyHelpers extends Component{
 
             public static function getUniversitytype()
             {
-                return [1 => 'Private University', 2=>'Public University', 3=>'State University',4=>'Central University',5=>'Deemed University', 6=>'Deemed to be University', 7=>'Autonomous Institute', 8=>'Open Universities'];
+                return [1 => 'Private University', 2=>'Public University', 3=>'State University',4=>'Central University',5=>'Deemed University', 6=>'Institution - Deemed-to-Be-a-University', 7=>'Institute of National Importance', 8=>'Autonomous Institute', 9=>'Open University'];
             }
 
             public static function getCollegetype()

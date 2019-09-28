@@ -84,7 +84,7 @@ class UserController extends Controller
 
     /*Get coursewise state list and default: India*/
     public static function actionGetStateslist($countryID=101){
-      $result = '';
+      $result = [];
       $model = \common\models\States::find()
       ->where(['countryID'=>$countryID])
       ->all();
@@ -96,7 +96,7 @@ class UserController extends Controller
 
     /*Get statewise city list and default: Maharastra*/
     public static function actionGetCitieslist($stateID=22){
-      $result = '';
+      $result = [];
       $model = \common\models\Cities::find()
       ->where(['stateID'=>$stateID])
       ->all();

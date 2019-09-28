@@ -15,11 +15,13 @@ class UniversitySearch extends University
     /**
      * @inheritdoc
      */
+    public $city_name;
+    public $state_name;
     public function rules()
     {
         return [
             [['id', 'cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['name', 'code', 'address', 'taluka', 'district', 'pincode', 'contact', 'fax', 'email', 'websiteurl', 'establish_year', 'approved_by', 'accredited_by', 'grade', 'about', 'logourl', 'createdDate', 'updatedDate','short_name'], 'safe'],
+            [['name', 'code', 'address', 'taluka', 'district', 'pincode', 'contact', 'fax', 'email', 'websiteurl', 'establish_year', 'approved_by', 'accredited_by', 'grade', 'about', 'logourl', 'createdDate', 'updatedDate','short_name', 'city_name', 'state_name'], 'safe'],
         ];
     }
 
@@ -41,7 +43,7 @@ class UniversitySearch extends University
      */
     public function search($params)
     {
-        $query = University::find();
+        $query = University::find()->joinWith(['city','state']);
 
         // add conditions that should always apply here
 
@@ -86,6 +88,8 @@ class UniversitySearch extends University
             ->andFilterWhere(['like', 'accredited_by', $this->accredited_by])
             ->andFilterWhere(['like', 'grade', $this->grade])
             ->andFilterWhere(['like', 'about', $this->about])
+            ->andFilterWhere(['like', 'cities.name', $this->city_name])
+            ->andFilterWhere(['like', 'states.name', $this->state_name])
             ->andFilterWhere(['like', 'logourl', $this->logourl]);
 
         return $dataProvider;

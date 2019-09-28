@@ -118,11 +118,13 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
   <?= $form->field($model, 'stateID')->dropDownList(json_decode($stateLists,true),['class'=>'form-control','prompt'=>'-- Select State --',
     'onchange'=>'$.get("../user/get-citieslist?stateID="+$(this).val(), function( data ) {
      data = $.parseJSON(data);
-     $(\'#university-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
-     $.each(data, function(index, value) {
+      $(\'#university-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
+      if(data == ""){
+      $.each(data, function(index, value) {
        $(\'#university-cityid\').append($(\'<option>\').text(value).attr(\'value\', index));
        });
-       });
+      }
+      });
        '])?>
     <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control','prompt'=>'-- Select City --'])?>
 
@@ -353,7 +355,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
         
         if(!empty($brochureFilePreview)){
-          $bfViewPath= Yii::$app->myhelper->getUBrochureBasePath($model->id);
+          $bfViewPath= Yii::$app->myhelper->getUBrochureUploadPath($model->id);
           foreach ($brochureFilePreview as $key => $brochure) {
             $downloadUrl = $bfViewPath.$brochure['url'];
             $brochureFilePreviewList[] = $downloadUrl;
@@ -375,7 +377,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
       <?php echo $form->field($model, 'bannerImg')->widget(FileInput::classname(), [
         'pluginOptions' => [
-          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
           'options' => ['multiple' => false,'accept' => 'image/*'],
           'initialPreview'=> $bannerImgPreview,
           'initialPreviewAsData'=>true,
@@ -446,26 +447,27 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
 
        ?>
 
-      <?= $form->field($universityBrochures, 'brochureFiles[]')->widget(FileInput::classname(), [
-      'options' => ['multiple' => true],
-      'pluginOptions' => [
-        'showUpload' => false,
-        'overwriteInitial'=>false,
-        'dropZoneEnabled'=>false,
-        'initialPreview'=> $brochureFilePreviewList,
-        'initialPreviewAsData'=>true,
-        'initialPreviewConfig'=> $brochurePreviewConfig,
-        'allowedFileExtensions' => ['pdf','doc','docx'],
-        'preferIconicPreview'=> true,
-        'previewFileIconSettings'=>[
-          'doc'=> '<i class="fa fa-file text-primary"></i>',
-          'xls'=> '<i class="fa fa-file-excel text-success"></i>',
-          'ppt'=> '<i class="fa fa-file-powerpoint text-danger"></i>',
+       <?= $form->field($universityBrochures, 'brochureFiles[]')->widget(FileInput::classname(), [
+        'options' => [
+          'multiple' => true
         ],
-        //'initialPreview'=> ArrayHelper::getColumn($initialPreviewConfig,'fileurl'),
-        //'initialPreviewConfig'=>$initialPreviewConfig
-      ],
-      'pluginEvents'=>[
+        'pluginOptions' => [
+          'showUpload' => false,
+          'overwriteInitial'=>false,
+          'dropZoneEnabled'=>false,
+          'initialPreview'=> $brochureFilePreviewList,
+          'initialPreviewAsData'=>true,
+          'initialPreviewConfig'=> $brochurePreviewConfig,
+          'allowedFileExtensions' => ['pdf','doc','docx'],
+          'preferIconicPreview'=> true,
+          'previewFileIconSettings'=>[
+            'doc'=> '<i class="fa fa-file text-primary"></i>',
+            'xls'=> '<i class="fa fa-file-excel text-success"></i>',
+            'ppt'=> '<i class="fa fa-file-powerpoint text-danger"></i>',
+          ],
+          'uploadUrl' => false,
+        ],
+        'pluginEvents'=>[
           'filebeforedelete'=>'function(){
             return new Promise(function(resolve, reject) {
               $.confirm({
@@ -490,11 +492,10 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
                 }); 
               }',
             ]
-    ]); ?>
+          ]); ?>
 
         <?php echo $form->field($model, 'logoImg')->widget(FileInput::classname(), [
           'pluginOptions' => [
-            'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
             'options' => ['multiple' => false,'accept' => 'image/*'],
             'initialPreview'=> $logoImgPreview,
             'initialPreviewAsData'=>true,

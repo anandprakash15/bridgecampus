@@ -52,10 +52,21 @@ echo Yii::$app->message->display();
                     }
                 ],
                 [
-                    'format'=>'html',
-                    //'contentOptions' => ['style' => 'width:45%;'],
-                    'attribute' => 'address'
+                    'label'=>'City',
+                    'contentOptions' => ['style' => 'width:15%;'],
+                    'attribute' => 'city_name',
+                    'value' => function($model){
+                        return  isset($model->city->name)?$model->city->name:'';
+                    }
                 ],
+                [
+                    'label'=>'State',
+                    'contentOptions' => ['style' => 'width:15%;'],
+                    'attribute' => 'state_name',
+                    'value' => function($model){
+                        return  isset($model->state->name)?$model->state->name:'';
+                    }
+                ]
                 /*[
                     'label'=>'City',
                     'contentOptions' => ['style' => 'width:45%;'],
