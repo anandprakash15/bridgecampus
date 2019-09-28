@@ -202,13 +202,14 @@ $this->registerCss("
 					$lg.on("onBeforeOpen.lg",function(event, index, fromTouch, fromThumb){
 						console.log(event, index, fromTouch, fromThumb);
 				});
+				
 			}
 			initFunctions();
 			$(document).on("pjax:success", "#img-gallery-wrap",  function(event){
 				initFunctions();
 				setTimeout(function(){
-					$("#masonry-container").masonry("reloadItems");
-					$("#masonry-container").masonry("layout");
+					$(".masonry-container").masonry("reloadItems");
+					$(".masonry-container").masonry("layout");
 				},500)
 			});
 		});
