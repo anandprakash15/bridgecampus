@@ -67,7 +67,8 @@ $this->registerCss("
 			<i class="fa fa-cloud-upload" aria-hidden="true"></i>
 			<h3 class="box-title">Upload File</h3>
 			<div class="box-tools">
-				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+				<button type="button" class="btn btn-box-tool custom-tool-btn">
+					<i class="fa fa-info-circle" aria-hidden="true"></i>
 				</button>
 			</div>
 		</div>
@@ -124,6 +125,7 @@ $this->registerCss("
 				],
 			]);
 			?>
+			<p class="help-block">Allowed File Extensions: <?= @implode(', ',$allowedFileExtensions)?></p>
 			<div id="uploadsuccess" style="display: none" class="callout callout-success">
 				<p id="successmsg"></p>
 			</div>
@@ -132,9 +134,7 @@ $this->registerCss("
 			</div>
 		</div>
 	</div>
-	<?php Pjax::begin([
-				'id'=>'img-gallery-wrap'
-			]); ?>
+	<?php Pjax::begin([ 'id'=>'img-gallery-wrap']); ?>
 	<div class="box box-default">
 		<div class="box-header with-border">
 			<i class="fa <?= ($type==1)?'fa-picture-o':' fa-play-circle' ?>" aria-hidden="true"></i>
@@ -188,7 +188,6 @@ $this->registerCss("
 				$(".masonry-container").masonry({
 					itemSelector: ".masonry-item",
 					columnWidth: 0,
-					//percentPosition: true
 				});
 
 
@@ -203,15 +202,22 @@ $this->registerCss("
 						console.log(event, index, fromTouch, fromThumb);
 				});
 				
+				$lg.on("onBeforeClose.lg",function(event, index, fromTouch, fromThumb){
+					reloadMasonry();
+				});
 			}
 			initFunctions();
 			$(document).on("pjax:success", "#img-gallery-wrap",  function(event){
 				initFunctions();
+				reloadMasonry();
+			});
+
+			function reloadMasonry(){
 				setTimeout(function(){
 					$(".masonry-container").masonry("reloadItems");
 					$(".masonry-container").masonry("layout");
-				},500)
-			});
+				},500);
+			}
 		});
 	');
 ?>

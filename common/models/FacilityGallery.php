@@ -37,7 +37,7 @@ class FacilityGallery extends \yii\db\ActiveRecord
             [['uc_type', 'type', 'facilityID', 'url'], 'required'],
             [['uc_type', 'type', 'facilityID', 'createdBy', 'updatedBy'], 'integer'],
             [['createdDate', 'updatedDate'], 'safe'],
-            [['imagevideo'], 'file','skipOnEmpty' => true, 'maxFiles' => 20],
+            [['imagevideo'], 'file','skipOnEmpty' => true, 'maxFiles' => 20, 'extensions' => 'jpg, jpeg, png, gif, mp4'],
             [['url'], 'string', 'max' => 500],
         ];
     }

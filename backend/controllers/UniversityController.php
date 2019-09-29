@@ -614,12 +614,13 @@ class UniversityController extends Controller
     {
         $this->layout= "university";
         $university = $this->findModel($id);
-        $fileList=[];
+        $videos = $images =[];
         $fBasePath = Yii::$app->myhelper->getFileBasePath(1,$university->id)."facility/";
         if (($model = Facility::findOne(['id'=>$fid])) == null) {
             $model = new Facility();
         }else{
-            $fileList = FacilityGallery::find()->where(['uc_type'=>1,'facilityID'=>$model->id])->all();
+            $images = FacilityGallery::find()->where(['uc_type'=>1, 'type'=>1,'facilityID'=>$model->id])->all();
+            $videos = FacilityGallery::find()->where(['uc_type'=>1, 'type'=>2,'facilityID'=>$model->id])->all();
         }
         //print_r($initialPreviewConfig);exit;
         
@@ -643,20 +644,19 @@ class UniversityController extends Controller
                 }
                 $facilityGallery->uc_type = 1;
                 $facilityGallery->facilityID = $model->id;
-                $filename = time().$key;
-                $facilityGallery->url = $filename.'.'.pathinfo($file->name, PATHINFO_EXTENSION);
-                if($facilityGallery->save()){
-                    $filePath = $uploadPath.$facilityGallery->url;
-                    if($file->saveAs($filePath)){
+                $facilityGallery->url = $file->name;
+                $filePath = $uploadPath.$facilityGallery->url;
+                if($file->saveAs($filePath)){
+                    if($facilityGallery->save()){
                         if($facilityGallery->type == 2){
-                            $thumbPath = $uploadPath.$filename."-thumb.png";
+                            $thumbPath = $uploadPath.pathinfo($file->name,PATHINFO_FILENAME)."-thumb.png";
                             Yii::$app->myhelper->videoThumb($filePath,$thumbPath);
                         }
                     }
                 }
             }
 
-            \Yii::$app->getSession()->setFlash('success', 'Successful.');
+            \Yii::$app->getSession()->setFlash('success', 'Facility Successfully Updated.');
             return $this->redirect(['facility-details','id'=>$university->id,'fid'=>$model->id]);
         }
 
@@ -666,7 +666,8 @@ class UniversityController extends Controller
             'university' => $university,
             'facilityGallery'=>$facilityGallery,
             'fBasePath'=>$fBasePath,
-            'fileList' => $fileList
+            'images'=>$images,
+            'videos' => $videos
         ]);
     }
 
@@ -679,10 +680,10 @@ class UniversityController extends Controller
         $fileType = "image";
 
         $fileList = UniversityGallery::find()->where(['universityID'=>$university->id,'type'=>$type])->all();
-        $allowedFileExtensions = ['jpg','jpeg','png','gif', 'svg'];
+        $allowedFileExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         if($type == 2){
             $fileType = "video";
-            $allowedFileExtensions = ['mp4','avi','mkv','mts','mpv','flv','3gp','avi'];
+            $allowedFileExtensions = ['mp4']; //'avi','mkv','mts','mpv','flv'
         }
         $fBasePath = Yii::$app->myhelper->getFileBasePath(1,$university->id,$type);
 
