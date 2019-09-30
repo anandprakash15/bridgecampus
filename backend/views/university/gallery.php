@@ -26,7 +26,7 @@ $this->registerJsFile('@web/js/lightgallery-all.min.js',['depends' => [\yii\web\
 $this->registerJsFile('@web/js/jquery.mousewheel.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
-$this->registerJsFile('@web/js/masonry.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/isotope.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 
 ?>
 <?php 
@@ -185,9 +185,10 @@ $this->registerCss("
 		$(document).ready(function(){
 			function initFunctions(){
 
-				$(".masonry-container").masonry({
+				$(".masonry-container").isotope({
 					itemSelector: ".masonry-item",
-					columnWidth: 0,
+					columnWidth: "25%",
+					percentPosition: true,
 				});
 
 
@@ -214,8 +215,8 @@ $this->registerCss("
 
 			function reloadMasonry(){
 				setTimeout(function(){
-					$(".masonry-container").masonry("reloadItems");
-					$(".masonry-container").masonry("layout");
+					$(".masonry-container").isotope("reloadItems");
+					$(".masonry-container").isotope("layout");
 				},500);
 			}
 		});

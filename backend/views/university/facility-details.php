@@ -36,7 +36,7 @@ $this->registerJsFile('@web/js/lightgallery-all.min.js',['depends' => [\yii\web\
 $this->registerJsFile('@web/js/jquery.mousewheel.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
-$this->registerJsFile('@web/js/masonry.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/isotope.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 
 echo Yii::$app->message->display();
 ?>
@@ -83,18 +83,18 @@ echo Yii::$app->message->display();
       <div class="form-group">
         <div class="control-label col-sm-2">Uploaded Images</div>
         <div class="col-md-10">
-            <div class="col-md-12 lightgallery masonry-container box-body box-comments">
-              <?php foreach ($images as $key => $file) { ?>
-                <div class="col-md-3  masonry-item">
-                  <?php 
-                  $encID=Yii::$app->myhelper->getEncryptID($file->id);
-                  $fileUrl = $fBasePath.$file->url;
-                  ?>
-                  <div class="gallery-file-wrap" data-src="<?= $fileUrl ?>">
-                    <img class="img-responsive img-thumbnail" src="<?= $fileUrl  ?>" data-key="<?= Url::to(['university/facility-gallery-delete','id'=>$file->id,'key'=>$encID]) ?>" />
-                  </div>
+          <div class="col-md-12 lightgallery masonry-container box-body box-comments">
+            <?php foreach ($images as $key => $file) { ?>
+              <div class="col-md-3  masonry-item">
+                <?php 
+                $encID=Yii::$app->myhelper->getEncryptID($file->id);
+                $fileUrl = $fBasePath.$file->url;
+                ?>
+                <div class="gallery-file-wrap" data-src="<?= $fileUrl ?>">
+                  <img class="img-responsive img-thumbnail" src="<?= $fileUrl  ?>" data-key="<?= Url::to(['university/facility-gallery-delete','id'=>$file->id,'key'=>$encID]) ?>" />
                 </div>
-              <?php } ?>
+              </div>
+            <?php } ?>
           </div>
         </div>
       </div>
@@ -163,9 +163,10 @@ $this->registerJs('
         download: false,
         });
 
-        $(".masonry-container").masonry({
+        $(".masonry-container").isotope({
           itemSelector: ".masonry-item",
-          columnWidth: 0,
+          columnWidth: "25%",
+          percentPosition: true,
           });
           $lg.on("onBeforeClose.lg",function(event, index, fromTouch, fromThumb){
             reloadMasonry();
@@ -174,8 +175,8 @@ $this->registerJs('
 
           initFunctions();
           function reloadMasonry(){
-            $(".masonry-container").masonry("reloadItems");
-            $(".masonry-container").masonry("layout");
+            $(".masonry-container").isotope("reloadItems");
+            $(".masonry-container").isotope("layout");
           }
           });
           ');
