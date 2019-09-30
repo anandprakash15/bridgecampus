@@ -21,12 +21,13 @@ $this->registerCssFile("@web/css/lightgallery.min.css", ['depends' => [\yii\boot
 
 $this->registerCssFile("@web/css/video-js.css", ['depends' => [\yii\bootstrap\BootstrapAsset::className()]]);
 
+$this->registerJsFile('@web/js/imagesloaded.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/isotope.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/picturefill.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/lightgallery-all.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/jquery.mousewheel.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
-$this->registerJsFile('@web/js/isotope.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 
 ?>
 <?php 
@@ -35,8 +36,9 @@ $this->registerCss("
      display: none;
     }
     .file-preview {
-			display:none;
-		}
+		display:none;
+	}
+
  ");
  ?>
 <div class="university-index">
@@ -182,15 +184,18 @@ $this->registerCss("
 <?php
 
 	$this->registerJs('
+		$masonry = $(".masonry-container");
 		$(document).ready(function(){
-			function initFunctions(){
-
-				$(".masonry-container").isotope({
+			function initFunctions(){				
+				$masonry.isotope({
 					itemSelector: ".masonry-item",
 					columnWidth: "25%",
 					percentPosition: true,
 				});
 
+				$masonry.imagesLoaded().progress( function() {
+					$masonry.isotope("layout");
+				});
 
 				$lg = $("#lightgallery");
 				$lg.lightGallery({
@@ -215,8 +220,8 @@ $this->registerCss("
 
 			function reloadMasonry(){
 				setTimeout(function(){
-					$(".masonry-container").isotope("reloadItems");
-					$(".masonry-container").isotope("layout");
+					$masonry.isotope("reloadItems");
+					$masonry.isotope("layout");
 				},500);
 			}
 		});

@@ -31,12 +31,13 @@ $this->registerCssFile("@web/css/lightgallery.min.css", ['depends' => [\yii\boot
 
 $this->registerCssFile("@web/css/video-js.css", ['depends' => [\yii\bootstrap\BootstrapAsset::className()]]);
 
+$this->registerJsFile('@web/js/imagesloaded.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/isotope.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/picturefill.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/lightgallery-all.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/jquery.mousewheel.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/video.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 $this->registerJsFile('@web/js/lg-deletebutton.js',['depends' => [\yii\web\JqueryAsset::className()]]);
-$this->registerJsFile('@web/js/isotope.pkgd.min.js',['depends' => [\yii\web\JqueryAsset::className()]]);
 
 echo Yii::$app->message->display();
 ?>
@@ -153,6 +154,7 @@ $this->registerCss("
   ");
 
 $this->registerJs('
+  $masonry = $(".masonry-container");
   $(document).ready(function(){
     function initFunctions(){
       $lg = $(".lightgallery");
@@ -163,11 +165,16 @@ $this->registerJs('
         download: false,
         });
 
-        $(".masonry-container").isotope({
+        $masonry.isotope({
           itemSelector: ".masonry-item",
           columnWidth: "25%",
           percentPosition: true,
-          });
+        });
+
+        $masonry.imagesLoaded().progress( function() {
+          $masonry.isotope("layout");
+        });
+
           $lg.on("onBeforeClose.lg",function(event, index, fromTouch, fromThumb){
             reloadMasonry();
             });
