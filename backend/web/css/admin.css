@@ -498,7 +498,7 @@ a:focus {
   position: relative;
   margin: 0;
   padding: 0;
-  border-bottom: 1px solid #1c1c1c;
+  border-bottom: 1px solid #1e2122;
 }
 .sidebar-menu > li > a {
   padding: 12px 5px 12px 15px;
@@ -3075,7 +3075,7 @@ table.text-center th {
   margin: 0;
 }
 .treeview-menu > li:not(:last-child){
-  border-bottom: 1px solid #1c1c1c;
+  border-bottom: 1px solid #2c2c2c;
 }
 .treeview-menu > li > a {
   padding: 12px 5px 12px 15px;

@@ -14,7 +14,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/admin.css',
-        'css/skin-black.css',
+        'css/skin-blue.css',
         'css/font-awesome/css/font-awesome.css',
         'css/jquery-confirm.min.css'
     ];
