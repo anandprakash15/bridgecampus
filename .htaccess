@@ -9,7 +9,7 @@ Options -Indexes
 	php_value max_input_time 300
 	php_value session.gc_maxlifetime 1200
 	RewriteRule ^bca-admin(.*)$ backend/web/$1 [L,PT]
-	RewriteRule ^(.*)$ frontend/web/$1 [L] 
+	RewriteRule ^(.*)$ frontend/$1 [L] 
 </IfModule>
 
 # Deny accessing below extensions
