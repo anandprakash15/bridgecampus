@@ -2,7 +2,8 @@
 /yii
 /yii_test
 /yii_test.bat
-
+/bridgecampus
+/frontend
 # phpstorm project files
 .idea
 
