@@ -10,6 +10,8 @@ $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Frontends', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+$status = Yii::$app->myhelper->getActiveInactive();
+
 ?>
 <div class="frontend-view">
 
@@ -29,18 +31,59 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'about:ntext',
-            'about_status',
-            'privacy:ntext',
-            'privacy_status',
-            'term_condition:ntext',
-            'term_condition_status',
-            'createdBy',
-            'updatedBy',
-            'created_date',
-            'updated_date',
-        ],
+            [    
+                'label' => 'About',
+                'value' => $status[$model['about_status']],
+            ],
+            [    
+                'label' => 'Privacy',
+                'value' => $status[$model['privacy_status']],
+            ],
+            [    
+                'label' => 'Term And Condition',
+                'value' => $status[$model['term_condition_status']],
+            ],
+            [    
+                'label' => 'Vision',
+                'value' =>  $status[$model['vision_status']],
+            ],
+            [    
+                'label' => 'Mission',
+                'value' => $status[$model['mission_status']],
+            ],
+            [    
+                'label' => 'Disclaimer',
+                'value' => $status[$model['disclaimer_status']],
+            ],
+            [    
+                'label' => 'Faq',
+                'value' => $status[$model['faq_status']],
+            ],
+            [    
+                'label' => 'Contact Us',
+                'value' => $status[$model['contact_us_status']],
+            ],
+            [    
+                'label' => 'Site Map',
+                'value' => $status[$model['site_map_status']],
+            ],
+            [    
+                'label' => 'Why Choose Us',
+                'value' => $status[$model['wcu_status']],
+            ],
+            [    
+                'label' => 'Management Team',
+                'value' => $status[$model['mt_status']],
+            ],
+            [    
+                'label' => 'Careers',
+                'value' => $status[$model['careers_status']],
+            ],
+            [    
+                'label' => 'Our Blog',
+                'value' => $status[$model['ob_status']],
+            ],
+        ]
     ]) ?>
 
 </div>

@@ -35,12 +35,12 @@ class FrontendController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FrontendSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = $this->findModel(1);
+        /*$searchModel = new FrontendSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);*/
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
     }
 
@@ -93,6 +93,27 @@ class FrontendController extends Controller
         }
 
         return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Frontend model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('view', [
             'model' => $model,
         ]);
     }
