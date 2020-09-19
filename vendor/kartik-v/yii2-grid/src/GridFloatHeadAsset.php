@@ -3,8 +3,8 @@
 /**
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
- * @version   3.3.0
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2020
+ * @version   3.3.6
  */
 
 namespace kartik\grid;
@@ -24,6 +24,7 @@ class GridFloatHeadAsset extends AssetBundle
      */
     public function init()
     {
+        $this->depends = array_merge(["kartik\\grid\\GridViewAsset"], $this->depends);
         $this->setSourcePath(__DIR__ . '/assets');
         $this->setupAssets('js', ['js/jquery.floatThead']);
         parent::init();

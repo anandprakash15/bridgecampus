@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "isd_codes".
@@ -41,4 +42,13 @@ class IsdCodes extends \yii\db\ActiveRecord
             'code' => 'Code',
         ];
     }
+
+    public static function getIsdCode(){
+
+        $isdData= IsdCodes::find()->orderBy([ 'code' => SORT_ASC])->all();
+        $listData= \yii\helpers\ArrayHelper::map($isdData,'id','code');
+        return $listData;
+    }
+
+
 }

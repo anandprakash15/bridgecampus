@@ -17,10 +17,13 @@ use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use common\models\UniversityCollegeCourse;
 use common\models\search\UniversityCollegeCourseSearch;
+use common\models\search\CollegeTestimonialSearch;
+use common\models\CollegeTestimonial;
 use common\models\CollegeGallery;
 use yii\web\UploadedFile;
 use common\models\Approved;
 use common\models\Accredite;
+use common\models\CollegeReview;
 use common\models\Accredited;
 use common\models\Affiliate;
 use common\models\CourseDetails;
@@ -711,8 +714,8 @@ class CollegeController extends Controller
         $this->layout= "college";
         $college = $this->findModel($id);
 
-        $searchModel = new ReviewSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$college->id,'college');
+        $searchModel = new \common\models\search\CollegeReviewSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$college->id);
         
         return $this->render('review', [
             'college' => $college,
@@ -721,27 +724,27 @@ class CollegeController extends Controller
         ]);
     }
 
-    public function actionReviewDetails($id,$rid = null)
-    {
-        $this->layout= "college";
-        $college = $this->findModel($id);
+    // public function actionReviewDetails($id,$rid = null)
+    // {
+    //     $this->layout= "college";
+    //     $college = $this->findModel($id);
 
-        $model = Review::findOne(['id'=>$rid]);    
-        if (($model = Review::findOne(['id'=>$rid])) == null) {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
+    //     $model = Review::findOne(['id'=>$rid]);    
+    //     if (($model = Review::findOne(['id'=>$rid])) == null) {
+    //         throw new NotFoundHttpException('The requested page does not exist.');
+    //     }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           \Yii::$app->getSession()->setFlash('success', 'Successful.');
-           return $this->redirect(['review','id'=>$id]);
-       }
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //        \Yii::$app->getSession()->setFlash('success', 'Successful.');
+    //        return $this->redirect(['review','id'=>$id]);
+    //    }
 
 
-       return $this->render('review-details', [
-            'model' => $model,
-            'college' => $college,
-        ]);
-    }
+    //    return $this->render('review-details', [
+    //         'model' => $model,
+    //         'college' => $college,
+    //     ]);
+    // }
 
     /**
      * Deletes an existing College model.
@@ -789,4 +792,147 @@ class CollegeController extends Controller
         return ActiveForm::validate($model);
     }
 }
+
+public function actionReviewCreate($id, $fid = null)
+    {
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        if (($model = CollegeReview::findOne(['id'=>$fid])) == null) {
+            $model = new CollegeReview();
+        }
+        $model->college_name  = $id;
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['review','id'=>$college->id]);
+        }
+       return $this->render('review_create', [
+        'model' => $model,
+        'college' => $college
+    ]);
+    }
+
+public function actionReviewDetails($id,$rid = null)
+{
+    $this->layout= "college";
+    $college = $this->findModel($id);
+
+    if (($model = CollegeReview::findOne(['id'=>$rid])) == null) {
+        $model = new CollegeReview();
+    }
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+       \Yii::$app->getSession()->setFlash('success', 'Successful.');
+       return $this->redirect(['review','id'=>$id]);
+    }
+    return $this->render('review_create', [
+        'model' => $model,
+        'college' => $college,
+    ]);
+}
+
+public function actionTestimonialDetails($id, $fid = null)
+{
+        $this->layout= "college";
+        $college = $this->findModel($id);
+        $searchModel = new CollegeTestimonialSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$college->id,'college');
+        
+        return $this->render('testimonial-details-view', [
+            'college' => $college,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+}
+
+
+public function actionTestimonialCreate($id,$fid = null)
+    {
+        $this->layout= "college";
+        $college = $this->findModel($id);
+
+        if (($model = CollegeTestimonial::findOne(['id'=>$fid])) == null) {
+            $model = new CollegeTestimonial();
+//            $model->scenario = "create";
+        }
+        $model->col_uniID  = $id;
+        $imgPreview = [];
+        $imgPreviewConfig = [];
+        $oldFile = "";
+        $uploadPath = Yii::$app->myhelper->getUploadPath(1,$college->id)."testimonial/";
+        $fViewPath= Yii::$app->myhelper->getFileBasePath(1,$college->id)."testimonial/";
+        if(!empty($model->url)){
+            $imgPreview = [$fViewPath.$model->url];
+//            if($model->gtype == 6)
+//            {
+//                $imgPreviewConfig = ["type" => "video", "filetype"=> "video/mp4","downloadUrl"=> $fViewPath.$model->url,'showRemove'=>false];
+//            }else{
+                $imgPreviewConfig = ["downloadUrl"=> true,'showRemove'=>false,"downloadUrl"=> $fViewPath.$model->url];
+//            }
+            $oldFile = $uploadPath.$model->url;
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+                       
+            $urlImage = UploadedFile::getInstance($model, 'visitor_photo');
+            $filename = time();
+            if(!empty($urlImage))
+            {
+                $model->url = $filename.".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                
+                $model->visitor_photo = $urlImage->name;
+            }
+            if($model->save()){
+                
+                FileHelper::createDirectory($uploadPath,0777,true);
+                if(!empty($urlImage))
+                {
+                    
+                    $filePath = $uploadPath.$model->url;
+                    $urlImage->saveAs($filePath);
+
+                    if($oldFile != ""){
+                        @unlink($oldFile);
+//                        if($model->gtype == 6){
+//                            @unlink($uploadPath.pathinfo($oldFile, PATHINFO_FILENAME )."-thumb.png");
+//                        }
+                    }
+//                    if($model->gtype == 6){
+//                        $thumbPath = $uploadPath.$filename."-thumb.png";
+//                        Yii::$app->myhelper->videoThumb($filePath,$thumbPath);
+//                    }
+                }
+            }
+            else {
+                print_r($model->getError());
+            }
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['testimonial-details','id'=>$college->id]);
+        }
+
+
+       return $this->render('testimonial-create', [
+        'model' => $model,
+        'college' => $college,
+        'imgPreview'=>$imgPreview,
+        'imgPreviewConfig'=> $imgPreviewConfig
+    ]);
+   }
+
+
+   public function actionGallerystatus(){
+        if(Yii::$app->request->post())
+        {   
+            $id= $_POST['id'];
+            $status = $_POST['status'] == 'notActive' ?'0' : '1';
+            
+            $model =CollegeGallery::findOne($id);
+            $model->status = $status;
+            $model->save();
+            
+            $data = array('id' => $id, 'status' =>$status);
+            print_r(json_encode($data));
+        }
+    }
 }

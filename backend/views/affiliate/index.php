@@ -14,7 +14,6 @@ $status = Yii::$app->myhelper->getActiveInactive();
 
 echo Yii::$app->message->display();
 ?>
-
 <div class="Affiliations-index">
     <div class="custumbox box box-info">
         <div class="box-body">

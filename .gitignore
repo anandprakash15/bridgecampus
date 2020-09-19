@@ -4,11 +4,14 @@
 /yii_test.bat
 /bridgecampus
 /frontend
+/ffmpeg
+
 # phpstorm project files
 .idea
 
 # netbeans project files
 nbproject
+ffmpeg
 
 # zend studio for eclipse project files
 .buildpath
@@ -34,3 +37,7 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
+
+# ffmpeg ignore all 
+.ffmpeg
+

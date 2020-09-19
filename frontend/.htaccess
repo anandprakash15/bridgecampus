@@ -1,4 +1,4 @@
-RewriteEngine On
+/*RewriteEngine On
 
 RewriteRule ^$ http://127.0.0.1:4000/ [P,L]
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -8,3 +8,4 @@ RewriteRule ^(.*)$ http://127.0.0.1:4000/$1 [P,L]
 RewriteBase /
 RewriteCond %{THE_REQUEST} index\.php
 RewriteRule ^index\.php$ http://127.0.0.1:4000/ [R=301,L]
+*/

@@ -49,29 +49,14 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
    ]);?>
 
     <?= $form->field($model, 'programID')->widget(Select2::classname(), [
-      'options' => ['placeholder' => 'Search Program...'],
-      'data' => $program,
-      'size' => Select2::SMALL,
-      'pluginOptions' => [
-        'allowClear' => true,
-        'minimumInputLength' => 1,
-        'language' => [
-          'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+       'name' => 'programID',
+        'data' => Yii::$app->myhelper->getProgram(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Program'],
+            'pluginOptions' => [
+                'allowClear' => true
         ],
-        'ajax' => [
-          'url' => \yii\helpers\Url::to(['program/program-list']),
-          'dataType' => 'json',
-          'data' => new JsExpression('function(params) { 
-            
-            return {q:params.term}; 
-          }')
-        ],
-        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-        'templateResult' => new JsExpression('function(type) { return type.text; }'),
-        'templateSelection' => new JsExpression('function (type) { return type.text; }'),
-      ],
     ]);?>
-
     
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -83,21 +68,50 @@ $validateUrl = ($model->isNewRecord)?Url::to(['courses/validate']):Url::to(['cou
       <?= $form->field($model, 'code',['enableAjaxValidation' => true])->textInput(['maxlength' => true,'disabled'=>true]) ?>
     <?php } ?>
 
-    <?= $form->field($model, 'certification_type')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
-
-    <?= $form->field($model, 'qualification_type')->dropDownList(Yii::$app->myhelper->getCDType(),['class'=>'form-control'])?>
-
+    <?= $form->field($model, 'certification_type')->widget(Select2::classname(), [
+       'name' => 'certification_type',
+        'data' => Yii::$app->myhelper->getCertificationType(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Certification Type'],
+            'pluginOptions' => [
+                'allowClear' => true
+        ],
+    ]);?>
+    
+    <?= $form->field($model, 'qualification_type')->widget(Select2::classname(), [
+       'name' => 'qualification_type',
+        'data' => Yii::$app->myhelper->getQualificationType(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Qualification Type'],
+            'pluginOptions' => [
+                'allowClear' => true
+        ],
+    ]);?>
 
     <?= $form->field($model, 'full_part_time')->dropDownList(Yii::$app->myhelper->getFullPartTime(),['class'=>'form-control'])?>
 
-    
-
     <?= $form->field($model, 'courseType')->dropDownList(Yii::$app->myhelper->getCourseType(),['class'=>'form-control'])?>
 
-    <?= $form->field($model, 'duration')->dropDownList(Yii::$app->myhelper->getCourseDuration(),['class'=>'form-control'])?>
-    
-    <?= $form->field($model, 'medium_of_teaching')->dropDownList(Yii::$app->myhelper->getMedium(),['class'=>'form-control'])?>
-
+    <?= $form->field($model, 'duration')->widget(Select2::classname(), [
+       'name' => 'duration',
+        'data' => Yii::$app->myhelper->getCourseDurationType(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Duration Type'],
+            'pluginOptions' => [
+                'allowClear' => true
+        ],
+    ]);?>
+       
+    <?= $form->field($model, 'medium_of_teaching')->widget(Select2::classname(), [
+       'name' => 'medium_of_teaching',
+        'data' => Yii::$app->myhelper->getMedium(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Mode of Teaching'],
+            'pluginOptions' => [
+                'allowClear' => true
+        ],
+    ]);?>
+       
     <?= $form->field($model, 'required_skillset')->widget(CKEditor::className(), [
       'options' => ['rows' => 6],
       'preset' => 'standard',

@@ -15,6 +15,7 @@ $this->params['subtitle'] = '<h1>Courses <a class="btn btn-success btn-xs" href=
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $university->name;
 $this->params['breadcrumbs'][] = 'Courses';
+$status = Yii::$app->myhelper->getActiveInactive();
 
 echo Yii::$app->message->display();
 ?>
@@ -22,7 +23,7 @@ echo Yii::$app->message->display();
 <div class="university-index">
 	<div class="custumbox box box-info">
 		<div class="box-body">
-			<?= GridView::widget([
+                <?= GridView::widget([
                 'striped'=>false,
                 'hover'=>true,
                 'panel'=>['type'=>'default', 'heading'=>$this->title,'after'=>false],
@@ -40,21 +41,44 @@ echo Yii::$app->message->display();
                     ['class' => 'yii\grid\SerialColumn'],
 
                     [
-                     'label'=>'Course Name',
-                     'contentOptions' => ['style' => 'width:50%;'],
-                     'attribute' => 'course_name',
-                     'value' => function($model){
-                        return $model['course']['name'];
-                    }
-                ],
-                [
-                	'label'=>'Program',
-                	'contentOptions' => ['style' => 'width:25%;'],
-                    'attribute' => 'program_name',
-                    'value' => function($model){
-                        return $model['course']['program']['name'];
-                    }
-                ],
+                         'label'=>'Course Name',
+                         'contentOptions' => ['style' => 'width:30%;'],
+                         'attribute' => 'course_name',
+                         'value' => function($model){
+                            return $model['course']['name'];
+                            }
+                    ],
+                    [
+                         'label'=>'Short Name',
+                         'contentOptions' => ['style' => 'width:10%;'],
+                         'attribute' => 'short_name',
+                         'value' => function($model){
+                            return $model['course']['short_name'];
+                        }
+                    ],
+                    [
+                    	'label'=>'Program',
+                        'attribute' => 'program_name',
+                        'value' => function($model){
+                            return $model['course']['program']['name'];
+                        }
+                    ],
+                    [
+                         'label'=>'Course Type',
+                         'attribute' => 'full_part_time',
+                         'value' => function($model){
+                            return $model['course']['full_part_time'] ==1 ?"Full Time" : "Part Time";
+                            }
+                    ],
+                     [
+                        'attribute' => 'status',
+                        'filter' => $status,
+                        'value' => function($model)use($status){
+                            return $status[$model['status']];
+                        }
+
+                    ],
+
 
                 [
                     'class' => 'yii\grid\ActionColumn',
@@ -66,7 +90,7 @@ echo Yii::$app->message->display();
                         },
                         'exams' => function ($url, $model, $key) {
                             $btn = Html::button("Add Exams",['class'=>'btn btn-primary btn btn-xs']);
-                            return Html::a($btn,["university/add-exams", 'id' => $model->id],['title'=>'Add Exams']);
+                            return Html::a($btn,["university/add-exams", 'id' => $model->id, 'programID'=>$model['course']['programID']],['title'=>'Add Exams']);
                         },
                     ]
                 ],

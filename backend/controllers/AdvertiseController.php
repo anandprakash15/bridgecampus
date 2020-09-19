@@ -43,6 +43,7 @@ class AdvertiseController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout= "advertise";
         $searchModel = new AdvertiseSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -72,15 +73,12 @@ class AdvertiseController extends Controller
      */
     public function actionCreate()
     {
+        $this->layout= "advertise";
         $model = new Advertise();
 
         if ($model->load(Yii::$app->request->post())) {
             $model->fromDate = date('Y-m-d',strtotime($model->fromDate));
             $model->toDate = date('Y-m-d',strtotime($model->toDate));
-            if(!$model->save()){
-                print_r($model);
-                exit;
-            }
             \Yii::$app->getSession()->setFlash('success', 'Successfully.');
             return $this->redirect(['index']);
         }
@@ -125,6 +123,8 @@ class AdvertiseController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
             return $this->redirect(['index']);
+        } else{
+            print_r($model->getErrors());
         }
 
         return $this->render('update', [
@@ -167,37 +167,39 @@ class AdvertiseController extends Controller
     }
 
     public function actionSearchList($q = null,$type=null) {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $out = ['results' => ['id' => '', 'text' => '']];
-        if (!is_null($q) && !is_null($type)) {
-            $query = new Query;
-            switch ($type) {
-                case 1:
-                    $from = "university";
-                    break;
-                case 2:
-                    $from = "college";
-                    break;
-                case 3:
-                    $from = "college";
-                    break;
+
+exit('asfasdfsf');
+        // \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // $out = ['results' => ['id' => '', 'text' => '']];
+        // if (!is_null($q) && !is_null($type)) {
+        //     $query = new Query;
+        //     switch ($type) {
+        //         case 1:
+        //             $from = "university";
+        //             break;
+        //         case 2:
+        //             $from = "college";
+        //             break;
+        //         case 3:
+        //             $from = "college";
+        //             break;
                 
-                default:
-                    $from='';
-                    break;
-            }
-            if(!empty($from)){
-                $query->select(["id", new \yii\db\Expression("name AS text")])
-                ->from($from)
-                ->where(['like', 'name', $q])
-                ->andWhere(['status'=>1])
-                ->limit(20);
-                $command = $query->createCommand();
-                $data = $command->queryAll();
-                $out['results'] = array_values($data);
-            }
-        }
-        return $out;
+        //         default:
+        //             $from='';
+        //             break;
+        //     }
+        //     if(!empty($from)){
+        //         $query->select(["id", new \yii\db\Expression("name AS text")])
+        //         ->from($from)
+        //         ->where(['like', 'name', $q])
+        //         ->andWhere(['status'=>1])
+        //         ->limit(20);
+        //         $command = $query->createCommand();
+        //         $data = $command->queryAll();
+        //         $out['results'] = array_values($data);
+        //     }
+        // }
+        // return $out;
     }
 
     public function actionCourseList($q = null,$type=null,$coll_univID=null,$programID=null) {
@@ -246,7 +248,6 @@ class AdvertiseController extends Controller
         $items = [];
         if(!empty($type) && !empty($coll_univID) && !empty($gtype)){
 
-
             $query->select(['*'])
             ->from('college_university_advpurpose')
             ->where(['like', 'url', $q])
@@ -258,5 +259,9 @@ class AdvertiseController extends Controller
             }
         }
         return ['items'=>$items];
+    }
+
+    public function actionSearchCollege($q = null,$type=null) {
+
     }
 }

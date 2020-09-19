@@ -35,21 +35,13 @@ echo Yii::$app->message->display();
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 [
-                    'contentOptions' => ['style' => 'width:45%;'],
+                    'contentOptions' => ['style' => 'width:30%;'],
                     'attribute' => 'name'
                 ],
                 [
                     'label'=>'Short Name',
                     'contentOptions' => ['style' => 'width:10%;'],
                     'attribute' => 'short_name',
-                ],
-                [
-                    'label'=>'Code',
-                    'contentOptions' => ['style' => 'width:15%;'],
-                    'attribute' => 'code',
-                    'value' => function($model){
-                        return  Yii::$app->myhelper->getUniversityCode($model->code);
-                    }
                 ],
                 [
                     'label'=>'City',
@@ -65,6 +57,23 @@ echo Yii::$app->message->display();
                     'attribute' => 'state_name',
                     'value' => function($model){
                         return  isset($model->state->name)?$model->state->name:'';
+                    }
+                ],
+               [
+                   'label'=>'Country',
+                   // 'contentOptions' => ['style' => 'width:15%;'],
+                   'attribute' => 'countryID',
+                   'value' => function($model){
+                       return  isset($model->country->name)?$model->country->name:'';
+                   }
+               ],
+                [
+                    'label'=>'Status',
+                    'contentOptions' => ['style' => 'width:15%;'],
+                    'attribute' => 'status',
+                    'filter' => $status,
+                    'value' => function($model)use($status){
+                        return $status[$model['status']] ? $status[$model['status']]:'';
                     }
                 ]
                 /*[

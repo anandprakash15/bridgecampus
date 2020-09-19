@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use yii\helpers\Url;
 use kartik\widgets\FileInput;
 use yii\widgets\Pjax;
+//use kartik\widgets\SwitchInput;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\UniversitySearch */
@@ -152,6 +153,20 @@ $this->registerCss("
 							<div class="gallery-file-wrap" data-src="<?= $fileUrl ?>">
 								<img class="img-responsive img-thumbnail" data-key="<?= Url::to(['delete-gallery-file','id'=>$file->id]) ?>" src="<?= $fileUrl  ?>" />
 							</div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <?= $file['url']?>    
+                                                            </div>
+                                                        </div>   
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div id="radioBtn" class="btn-group">
+                                                                    <?php  $status = $file['status'] == 1 ? 'Active' : 'notActive';?>    
+                                                                    <a class="btn btn-primary btn-sm <?= $file["status"] == 1 ? "Active" : "notActive";?>" data-toggle="<?= $file['id']?>" data-title="active" onclick="myFunction(this)">Active</a>
+                                                                    <a class="btn btn-primary btn-sm <?= $file['status'] == 0 ? "Active" : "notActive";?>" data-toggle="<?= $file['id']?>" data-title="notActive" onclick="myFunction(this)">Inactive</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 						<?php }else{ 
 							$videoID= "video".$key;
 							$fileUrl = $fBasePath.$file->url;
@@ -164,10 +179,24 @@ $this->registerCss("
 									<source src="<?=$fileUrl?>" type="video/mp4">
 										Your browser does not support HTML5 video.
 									</video>
-								</div>
-								<div class="gallery-file-wrap" data-poster="<?= $thumbPath ?>"  data-html="#<?= $videoID ?>" >
-							      <img data-key="<?= Url::to(['delete-gallery-file','id'=>$file->id]) ?>"  class="img-responsive img-thumbnail" src="<?= $thumbPath ?>"  />
-							  </div>
+                                                        </div>
+                                                        <div class="gallery-file-wrap" data-poster="<?= $thumbPath ?>"  data-html="#<?= $videoID ?>" >
+                                                            <img data-key="<?= Url::to(['delete-gallery-file','id'=>$file->id]) ?>"  class="img-responsive img-thumbnail" src="<?= $thumbPath ?>"  />
+                                                        </div>
+                                                         <div class="form-group">
+                                                            <div class="input-group">
+                                                                <?= $file['url']?>    
+                                                            </div>
+                                                        </div>   
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div id="radioBtn" class="btn-group">
+                                                                    <?php  $status = $file['status'] == 1 ? 'Active' : 'notActive';?>    
+                                                                    <a class="btn btn-primary btn-sm <?= $file["status"] == 1 ? "Active" : "notActive";?>" data-toggle="<?= $file['id']?>" data-title="active" onclick="myFunction(this)">Active</a>
+                                                                    <a class="btn btn-primary btn-sm <?= $file['status'] == 0 ? "Active" : "notActive";?>" data-toggle="<?= $file['id']?>" data-title="notActive" onclick="myFunction(this)">Inactive</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 							
 							<?php } ?>
 						</div>
@@ -225,5 +254,46 @@ $this->registerCss("
 				},500);
 			}
 		});
+                
+               
+                $("#radioBtn a").on("click", function(e) {
+                    var sel = $(this).data("title");
+                    var tog = $(this).data("toggle");
+                    var selVal = $("#"+tog).prop("value", sel);
+                    console.log(selVal);
+                });
 	');
 ?>
+<?php 
+$this->registerCss("
+	#radioBtn .notActive{
+            color: #3276b1;
+            background-color: #fff;
+        }
+	");
+?>
+<script>
+    function myFunction(e) {
+        var status = $(e).data('title');
+        var id = $(e).data('toggle');
+       
+        $.ajax({
+                url: "gallerystatus",
+                type:"POST",            
+                data:{
+                    'status': status,
+                    'id': id
+                },
+                dataType:"json",
+                success:function(data){
+                    console.log(data);
+                    
+                    if(data==null){
+                        $("#product_type").empty();    
+                    }else{
+                        location.reload();
+                    }
+                }
+            });
+    }
+</script>

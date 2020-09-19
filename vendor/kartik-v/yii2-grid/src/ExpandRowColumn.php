@@ -3,8 +3,8 @@
 /**
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
- * @version   3.3.0
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2020
+ * @version   3.3.6
  */
 
 namespace kartik\grid;
@@ -201,6 +201,12 @@ class ExpandRowColumn extends DataColumn
     public $detailAnimationDuration = 'slow';
 
     /**
+     * @var string the message to be shown while the detail content is loading or being rendered. Defaults to
+     * `<small>Loading &hellip;</small>`
+     */
+    public $msgDetailLoading;
+
+    /**
      * @var string hashed javascript variable to store grid expand row options
      */
     protected $_hashVar;
@@ -239,12 +245,15 @@ class ExpandRowColumn extends DataColumn
         if (!isset($this->detailRowCssClass)) {
             $this->detailRowCssClass = $this->grid->getCssClass(GridView::BS_TABLE_INFO);
         }
+        if (!isset($this->msgDetailLoading)) {
+            $this->msgDetailLoading = Yii::t('kvgrid', '<small>Loading &hellip;</small>');
+        }
         $this->initColumnSettings([
             'hiddenFromExport' => true,
             'mergeHeader' => true,
             'hAlign' => GridView::ALIGN_CENTER,
             'vAlign' => GridView::ALIGN_MIDDLE,
-            'width' => '50px'
+            'width' => '50px',
         ]);
         parent::init();
         if (empty($this->detail) && empty($this->detailUrl)) {
@@ -293,6 +302,7 @@ class ExpandRowColumn extends DataColumn
                 'collapseAll' => false,
                 'expandAll' => false,
                 'extraData' => $this->extraData,
+                'msgDetailLoading' => $this->msgDetailLoading
             ]
         );
         $this->_hashVar = 'kvExpandRow_' . hash('crc32', $clientOptions);
@@ -312,10 +322,10 @@ class ExpandRowColumn extends DataColumn
         /** @noinspection PhpUnusedLocalVariableInspection */
         $icon = '';
         if ($value === GridView::ROW_EXPANDED) {
-            $type = 'collapsed';
+            $type = 'expanded';
             $icon = $this->collapseIcon;
         } elseif ($value === GridView::ROW_COLLAPSED) {
-            $type = 'expanded';
+            $type = 'collapsed';
             $icon = $this->expandIcon;
         } else {
             return $value;
@@ -327,8 +337,7 @@ class ExpandRowColumn extends DataColumn
             Html::addCssClass($detailOptions, 'skip-export');
         }
         $detailOptions['data-index'] = $index;
-        $detailOptions['data-key'] = !is_string($key) && !is_numeric($key) ?
-            (is_array($key) ? Json::encode($key) : (string)$key) : $key;
+        $detailOptions['data-key'] = GridView::parseKey($key);
         Html::addCssClass($detailOptions, ['kv-expanded-row', $this->_colId]);
         $content = Html::tag('div', $detail, $detailOptions);
         return <<< HTML
@@ -407,10 +416,10 @@ HTML;
             return parent::renderHeaderCellContent();
         }
         $icon = $this->expandIcon;
-        $css = 'kv-expand-header-icon kv-state-collapsed';
+        $css = 'kv-expand-header-icon kv-state-expanded';
         if ($this->defaultHeaderState === GridView::ROW_EXPANDED) {
             $icon = $this->collapseIcon;
-            $css = 'kv-expand-header-icon kv-state-expanded';
+            $css = 'kv-expand-header-icon kv-state-collapsed';
         }
         return "<div class='{$css}'>{$icon}</div>";
     }

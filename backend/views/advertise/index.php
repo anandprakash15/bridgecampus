@@ -7,8 +7,8 @@ use kartik\grid\GridView;
 /* @var $searchModel common\models\search\SpecializationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Advertises';
-$this->params['subtitle'] = '<h1>Advertise '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
+$this->title = 'Main Banner';
+$this->params['subtitle'] = '<h1>Main Banner '.Yii::$app->myhelper->getCreatenew($roleid = array(1),'','Add').'</h1>';
 $this->params['breadcrumbs'][] = $this->title;
 $status = Yii::$app->myhelper->getActiveInactive();
 $type = Yii::$app->myhelper->getAdvertisetype();
@@ -21,7 +21,7 @@ echo Yii::$app->message->display();
             <?= GridView::widget([
                 'striped'=>false,
                 'hover'=>true,
-                'panel'=>['type'=>'default', 'heading'=>'Advertise List','after'=>false],
+                'panel'=>['type'=>'default', 'heading'=>'Main Banner List','after'=>false],
                 'toolbar'=> [
                     '{export}',
                     '{toggleData}',
@@ -31,13 +31,13 @@ echo Yii::$app->message->display();
                 'columns' => [
                     ['class' => 'kartik\grid\SerialColumn'],
 
-                    [
-                        'attribute' => 'status',
-                        'filter' => $type,
-                        'value' => function($model)use($type){
-                            return $type[$model['type']];
-                        }
-                    ],
+                    // [
+                    //     'attribute' => 'status',
+                    //     'filter' => $type,
+                    //     'value' => function($model)use($type){
+                    //         return $type[$model['type']];
+                    //     }
+                    // ],
 
                     [
                         'attribute' => 'coll_univID',

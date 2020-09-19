@@ -37,6 +37,36 @@ echo Yii::$app->message->display();
                     ['class' => 'kartik\grid\SerialColumn'],
 
                     'name',
+                    
+                    [
+                        'label'=>'Short Name',
+                        'contentOptions' => ['style' => 'width:10%;'],
+                        'attribute' => 'sortname'
+                    ],
+                    [
+                        'label'=>'City',
+                        'contentOptions' => ['style' => 'width:15%;'],
+                        'attribute' => 'city_name',
+                        'value' => function($model){
+                            return  isset($model->city->name)?$model->city->name:'';
+                        }
+                    ],
+                    [
+                        'label'=>'State',
+                        'contentOptions' => ['style' => 'width:15%;'],
+                        'attribute' => 'state_name',
+                        'value' => function($model){
+                            return  isset($model->state->name)?$model->state->name:'';
+                        }
+                    ],
+                    [
+                       'label'=>'Country',
+                       'contentOptions' => ['style' => 'width:15%;'],
+                       'attribute' => 'countryID',
+                       'value' => function($model){
+                           return   isset($model->country->name)?$model->country->name:'';
+                        }
+                    ],
                     [
                         'attribute' => 'status',
                         'filter' => $status,

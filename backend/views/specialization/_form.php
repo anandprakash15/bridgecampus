@@ -1,15 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
-use kartik\widgets\SwitchInput;
-use yii\helpers\ArrayHelper;
-use app\models\User;
-use kartik\widgets\FileInput;
-use app\components\CustomUrlRule;
 use common\widgets\CKEditor;
-use iutbay\yii2kcfinder\KCFinder;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Specialization */

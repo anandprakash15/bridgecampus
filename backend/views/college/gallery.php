@@ -134,6 +134,20 @@ $this->registerCss("
 											<div class="gallery-file-wrap" data-src="<?= $fileUrl ?>">
 												<img class="img-responsive img-thumbnail" data-key="<?= Url::to(['delete-gallery-file','id'=>$file->id]) ?>" src="<?= $fileUrl  ?>" />
 											</div>
+											<div class="form-group">
+                                                <div class="input-group">
+                                                    <?= $file['url']?>    
+                                                </div>
+                                            </div>
+											 <div class="form-group">
+                                                <div class="input-group">
+                                                    <div id="radioBtn" class="btn-group">
+                                                        <?php  $status = $file['status'] == 1 ? 'Active' : 'notActive';?>    
+                                                        <a class="btn btn-primary btn-sm <?= $file["status"] == 1 ? "Active" : "notActive";?>" data-toggle="<?= $file['id']?>" data-title="active" onclick="myFunction(this)">Active</a>
+                                                        <a class="btn btn-primary btn-sm <?= $file['status'] == 0 ? "Active" : "notActive";?>" data-toggle="<?= $file['id']?>" data-title="notActive" onclick="myFunction(this)">Inactive</a>
+                                                    </div>
+                                                </div>
+                                            </div>
 										<?php }else{ 
 											$videoID= "video".$key;
 											$fileUrl = $fBasePath.$file->url;
@@ -150,6 +164,20 @@ $this->registerCss("
 											<div class="gallery-file-wrap" data-poster="<?= $thumbPath ?>"  data-html="#<?= $videoID ?>" >
 												<img data-key="<?= Url::to(['delete-gallery-file','id'=>$file->id]) ?>"  class="img-responsive img-thumbnail" src="<?= $thumbPath ?>"  />
 											</div>
+											<div class="form-group">
+                                            <div class="input-group">
+                                            	<div class="form-group">
+	                                                <div class="input-group">
+	                                                    <?= $file['url']?>    
+	                                                </div>
+	                                            </div>
+                                                <div id="radioBtn" class="btn-group">
+                                                    <?php  $status = $file['status'] == 1 ? 'Active' : 'notActive';?>    
+                                                    <a class="btn btn-primary btn-sm <?= $file["status"] == 1 ? "Active" : "notActive";?>" data-toggle="<?= $file['id']?>" data-title="active" onclick="myFunction(this)">Active</a>
+                                                    <a class="btn btn-primary btn-sm <?= $file['status'] == 0 ? "Active" : "notActive";?>" data-toggle="<?= $file['id']?>" data-title="notActive" onclick="myFunction(this)">Inactive</a>
+                                                </div>
+                                            </div>
+                                        </div>
 
 										<?php } ?>
 									</div>
@@ -167,7 +195,12 @@ $this->registerCss("
 $this->registerCss("
 	.file-preview {
 		display:none;
-	}");
+	}
+#radioBtn .notActive{
+            color: #3276b1;
+            background-color: #fff;
+        }
+	");
 
 $this->registerJs('
 	$(document).ready(function(){
@@ -190,3 +223,28 @@ $this->registerJs('
 					});
 					');
 					?>
+<script>
+    function myFunction(e) {
+        var status = $(e).data('title');
+        var id = $(e).data('toggle');
+       
+        $.ajax({
+                url: "gallerystatus",
+                type:"POST",            
+                data:{
+                    'status': status,
+                    'id': id
+                },
+                dataType:"json",
+                success:function(data){
+                    console.log(data);
+                    
+                    if(data==null){
+                        $("#product_type").empty();    
+                    }else{
+                        location.reload();
+                    }
+                }
+            });
+    }
+</script>

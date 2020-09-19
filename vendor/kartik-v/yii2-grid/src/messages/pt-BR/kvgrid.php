@@ -17,13 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Krajee Solutions' => 'Krajee Soluções',
-    'Krajee Yii2 Grid Export Extension' => 'Extensão Krajee Yii2 Grid Export',
     'Actions' => 'Ações',
     'Active' => 'Ativo',
     'Add Book' => 'Adicionar Livro',
     'All' => 'Todos',
-    'Are you sure to delete this {item}?' => 'Você tem certeza de que deseja excluir esse {item}',
+    'Are you sure to delete this {item}?' => 'Você tem certeza de que deseja excluir esse {item}?',
     'Book Listing' => 'Listagem dos Livros',
     'CSV' => 'CSV',
     'Clear selection' => 'Limpar seleção',
@@ -51,6 +49,8 @@ return [
     'Invalid or bad editable data' => 'Dado editável inválido ou com problemas',
     'JSON' => 'JSON',
     'JavaScript Object Notation' => 'Notação de Objetos JavaScript',
+    'Krajee Solutions' => 'Krajee Soluções',
+    'Krajee Yii2 Grid Export Extension' => 'Extensão Krajee Yii2 Grid Export',
     'Library' => 'Biblioteca',
     'Microsoft Excel 95+' => 'Microsoft Excel 95+',
     'No data found' => 'Nenhum registro encontrado',
@@ -89,4 +89,6 @@ return [
     'items-many' => 'muitos itens',
     'krajee, grid, export, yii2-grid, pdf' => 'krajee, grid, export, yii2-grid, pdf',
     '© Krajee Yii2 Extensions' => '© Krajee Yii2 Extensões',
+    '<small>Loading &hellip;</small>' => '',
+    'items-acc' => '',
 ];

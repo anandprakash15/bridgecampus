@@ -40,9 +40,9 @@ class Program extends \yii\db\ActiveRecord
         return [
             [['name', 'status'], 'required'],
             [['program_code', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['createdDate', 'updatedDate'], 'safe'],
+            [['createdDate', 'updatedDate', 'name','short_name', 'programID'], 'safe'],
             [['description'], 'string'],
-            [['name','short_name'], 'string', 'max' => 200],
+//            [['name','short_name', 'programID'], 'string', 'max' => 200],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
         ];

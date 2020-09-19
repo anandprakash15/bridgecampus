@@ -50,9 +50,15 @@ echo Yii::$app->message->display();
                     ],
                 ],
             ]); ?>
-        </div>
-    </div>
+            <div class="form-group" style="float:left">
+    <button id="back_btn" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
 </div>
+        </div>
+        
+    </div>
+    
+</div>
+
 
 <?php 
 $this->registerCss("

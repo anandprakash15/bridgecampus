@@ -13,12 +13,12 @@ $this->title = $university->name.' Review Details';
 $this->params['subtitle'] = '<h1>Review Details</h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $university->name;
-$this->params['breadcrumbs'][] = ['label' =>$model->createdBy0->fullname , 'url' => ['user/update','id'=>$model->createdBy0->id]];
+//$this->params['breadcrumbs'][] = ['label' =>$model->createdBy0->fullname , 'url' => ['user/update','id'=>$model->createdBy0->id]];
 $this->params['breadcrumbs'][] = 'Review Details';
 ?>
 <div class="course-details-form box box-info">
    <div class="box-header with-border">
-      <h4 class="box-title">Name: <?= $model->createdBy0->fullname ?>  
+      <h4 class="box-title">Name: <?php // echo $model->createdBy0->fullname ?>  
       <?php if(!empty($model->course)){ ?>
         / Course: <?= $model->course->name ?>
       <?php } ?>

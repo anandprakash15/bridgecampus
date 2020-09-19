@@ -72,4 +72,10 @@ class Approved extends \yii\db\ActiveRecord
             'description' => 'Description',
         ];
     }
+    
+    public static function getApprovedData(){
+        $approvedData= Approved::find()->all();
+        $listData= \yii\helpers\ArrayHelper::map($approvedData,'id','name');
+        return $listData;
+    }
 }

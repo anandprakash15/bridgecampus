@@ -5,6 +5,8 @@ use kartik\grid\GridView;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use softark\duallistbox\DualListbox;
+use common\models\Courses;
+use common\models\Program;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\UniversitySearch */
@@ -13,18 +15,19 @@ use softark\duallistbox\DualListbox;
 $this->title = 'Reviews: '.$college->name;
 $this->params['subtitle'] = '<h1>Reviews</h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Colleges', 'url' => ['index']];
+$this->params['subtitle'] = '<h1> Reviews <a class="btn btn-success btn-xs" href="'.Url::to(['review-create','id'=>$college->id]).'">Add</a></h1>';
 $this->params['breadcrumbs'][] = $college->name;
 $this->params['breadcrumbs'][] = 'Reviews';
-$status = Yii::$app->myhelper->getActiveInactive();
+$status = Yii::$app->myhelper->getReviewStatus();
 $ftype = Yii::$app->myhelper->getFacility();
 
 echo Yii::$app->message->display();
 ?>
 
 <div class="college-review-index">
-	<div class="custumbox box box-info">
-		<div class="box-body">
-			<?= GridView::widget([
+    <div class="custumbox box box-info">
+        <div class="box-body">
+            <?= GridView::widget([
                 'striped'=>false,
                 'hover'=>true,
                 'panel'=>['type'=>'default', 'heading'=>$this->title,'after'=>false],
@@ -41,23 +44,36 @@ echo Yii::$app->message->display();
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
-                        'attribute' => 'fullname',
+                        'label'=>'Student Name',
+                        'attribute' => 'visitor_name',
                         'value' => function($model){
-                            return $model->createdBy0->fullname;
+                            return $model->visitor_name;
                         }
                     ],
                     [
-                        'attribute' => 'createdDate',
+                        'attribute' => 'course',
                         'value' => function($model){
-                            return date('d-m-Y H:m A');
+                            $res = $model = Courses::findOne($model['course']);
+                            return $res['name'];
                         }
                     ],
                     [
-                        'attribute' => 'status',
+                    'label'=>'Program',
+                    'contentOptions' => ['style' => 'width:20%;'],
+                    'attribute' => 'program',
+                    'value' => function($model){
+                            $res = $model = Program::findOne($model['program']);
+                            return $res['name'];
+                        }
+                    ],
+                    [
+                        'label'=>'Status',
+                        'attribute' => 'review_status',
                         'filter' => $status,
                         'value' => function($model)use($status){
-                            return $status[$model['status']];
+                            return $status[$model['review_status']] ? $status[$model['review_status']]:'';
                         }
+
                     ],
             ],
         ]); ?>
@@ -66,8 +82,8 @@ echo Yii::$app->message->display();
 </div>
 <?php 
 $this->registerCss("
-	.app-title{
-		display: none;
-	}
-	");
-	?>
+    .app-title{
+        display: none;
+    }
+    ");
+    ?>

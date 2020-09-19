@@ -11,7 +11,7 @@ use softark\duallistbox\DualListbox;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $courseDetails->course->name.' Add Exams';
-$this->params['subtitle'] = '<h1>Add Exams</h1>';
+$this->params['subtitle'] = '<h1>Add '.$courseDetails->course->short_name.' Exams Accepted </h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$courseDetails->university->id]];
 $this->params['breadcrumbs'][] = ['label' => $courseDetails->course->name, 'url' => ['course-details','id'=>$courseDetails->id]];

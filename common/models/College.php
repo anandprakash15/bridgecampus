@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $name
-  * @property string $sortname
+ * @property string $sortname
  * @property string $bannerURL
  * @property string $area
  * @property string $code
@@ -71,7 +71,7 @@ class College extends \yii\db\ActiveRecord
             [['brochureFile'], 'file', 'extensions'=>'pdf, doc, docx'],
             [['cityID', 'stateID', 'countryID','ownership', 'status', 'createdBy', 'updatedBy'], 'integer'],
             [['about', 'vission', 'mission'], 'string'],
-            [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by', 'affiliate_to'], 'safe'],
+            [['createdDate', 'updatedDate','sortname','bannerURL','area','approved_by', 'accredited_by', 'affiliate_to', 'also_known_as', ' isd_code', 'std_code', 'motto', 'founder', 'chancellor', 'vice_chancellor', 'chairman', 'director', 'principal', 'dean', 'register_name', 'placement_details', 'app_government_auth', ' naac_grade', 'naac_cgpa', 'naac_validity_date', 'campus_size', 'longitude', 'latitude'], 'safe'],
             [['name', 'address','brochureurl'], 'string', 'max' => 500],
             [['code', 'taluka', 'district', 'contact', 'fax', 'email', 'logourl'], 'string', 'max' => 100],
             [['pincode'], 'string', 'max' => 20],
@@ -105,8 +105,9 @@ class College extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'College Name',
             'sortname' => 'Short Name',
+            'also_known_as' => 'Also Known as',
             'bannerURL' => 'College Image',
             'area' => 'Area',
             'code' => 'Code',

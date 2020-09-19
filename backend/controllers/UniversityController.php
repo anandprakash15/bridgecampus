@@ -28,6 +28,9 @@ use common\models\Facility;
 use common\models\search\ReviewSearch;
 use common\models\Review;
 use common\models\CollegeUniversityAdvpurpose;
+use common\models\Unitestimonial;
+use common\models\search\UnitestimonialSearch;
+use common\models\UniversityReview;
 use common\models\search\CollegeUniversityAdvpurposeSearch;
 use common\models\CourseSpecialization;
 use common\models\UniversityCollegeCourseSpecialization;
@@ -37,6 +40,10 @@ use common\models\FacilityGallery;
 use common\models\UniversityBrochure;
 use common\models\ApprovedGovernment;
 use common\models\UniversityExam;
+use common\models\Department;
+use common\models\DepartmentUniversity;
+use common\models\search\DepartmentSearch;
+use common\models\search\DepartmentCourseSearch;
 use yii\base\Model;
 
 
@@ -79,9 +86,9 @@ class UniversityController extends Controller
     public function actionReview($id){
         $this->layout= "university";
         $university = $this->findModel($id);
-
-        $searchModel = new ReviewSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        $searchModel = new \common\models\search\UniversityReviewSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id);
         
         return $this->render('review', [
             'university' => $university,
@@ -95,15 +102,15 @@ class UniversityController extends Controller
         $this->layout= "university";
         $university = $this->findModel($id);
 
-        if (($model = Review::findOne(['id'=>$rid])) == null) {
-            $model = new Review();
+        if (($model = UniversityReview::findOne(['id'=>$rid])) == null) {
+            $model = new UniversityReview();
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
            \Yii::$app->getSession()->setFlash('success', 'Successful.');
            return $this->redirect(['review','id'=>$id]);
         }
-        return $this->render('review-details', [
+        return $this->render('review-create', [
             'model' => $model,
             'university' => $university,
         ]);
@@ -144,6 +151,7 @@ class UniversityController extends Controller
     public function actionAddSpecializations($id)
     {
         $this->layout= "university";
+        $oldSpecializationsName = [];
         $courseDetails = UniversityCollegeCourse::findOne($id);
         Yii::$app->params['uTitle'] = $courseDetails->university->name;
         Yii::$app->params['uID'] = $courseDetails->university->id;
@@ -154,7 +162,12 @@ class UniversityController extends Controller
         $specializationModels = UniversityCollegeCourseSpecialization::find()->joinWith(['courseSpecialization'])->where(['coll_univID'=>$courseDetails->id,'type'=>1])->all();
         //print_r($specializationModels);exit;
         $oldSpecializations = ArrayHelper::getColumn($specializationModels,'course_specializationID');
-
+        
+      
+        foreach($oldSpecializations as $oldSpecialization) {
+            $oldSpecializationsName [$oldSpecialization] =$specializations[$oldSpecialization];
+        }
+        
         $ucsmodel->course_specializationID = $oldSpecializations;
 
         $ucsmodel->coll_univID = $courseDetails->id;
@@ -194,19 +207,20 @@ class UniversityController extends Controller
             'courseDetails' => $courseDetails,
             'specializations'=>$specializations,
             'ucsmodel' => $ucsmodel,
-            'specializationModels' => $specializationModels
+            'specializationModels' => $specializationModels,
+            'oldSpecialization' => $oldSpecializationsName
         ]);
     }
 
 
-    public function actionAddExams($id)
+    public function actionAddExams($id, $programID = null)
     {
         $this->layout= "university";
         $courseDetails = UniversityCollegeCourse::findOne($id);
         Yii::$app->params['uTitle'] = $courseDetails->university->name;
         Yii::$app->params['uID'] = $courseDetails->university->id;
-        $exams = ArrayHelper::map(Exam::find()->all(),'id','exam_name');
-        
+        $exams = ArrayHelper::map(Exam::find()->where(['programID'=>$programID])->asArray()->all(),'id','exam_name');
+
         $uexamModel = new UniversityExam();
 
         $oldExams = ArrayHelper::getColumn(UniversityExam::find()->where(['uccID'=>$courseDetails->id])->asArray()->all(),'examID');
@@ -345,7 +359,7 @@ class UniversityController extends Controller
         $model = new University();
         $universityBrochures = new UniversityBrochure();
         if ($model->load(Yii::$app->request->post())) {
-
+            
             $model->approved_by = implode(",",(array) $model->approved_by);
             $model->accredited_by = implode(",",(array) $model->accredited_by);
             $model->affiliate_to = implode(",",(array) $model->affiliate_to);
@@ -408,6 +422,7 @@ class UniversityController extends Controller
             'accredited_by' => [],
             'affiliate_to' => [],
             'approvedGovernment' => [],
+            'approving_government_authority'=>[],
             'universityBrochures'=>$universityBrochures,
             'brochureFilePreview' => [],
         ]);
@@ -514,7 +529,7 @@ class UniversityController extends Controller
 
                 \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
             }else{
-                //print_r($model);exit;
+                print_r($model->getErrors());exit;
                 \Yii::$app->getSession()->setFlash('error', 'Error occured while update.');
             }
             return $this->redirect(['view','id'=>$model->id]);
@@ -560,6 +575,12 @@ class UniversityController extends Controller
             $model->affiliate_to = ArrayHelper::map(Affiliate::find()->where(new \yii\db\Expression("id IN(".$model->affiliate_to.")"))->asArray()->all(),'id','name');
         }else{
             $model->affiliate_to = [];
+        }
+        
+        if(!empty($model->approving_government_authority)){
+            $model->approving_government_authority = ArrayHelper::map(ApprovedGovernment::find()->where(new \yii\db\Expression("id IN(".$model->approving_government_authority.")"))->asArray()->all(),'id','name');
+        }else{
+            $model->approving_government_authority = [];
         }
         $brochures = UniversityBrochure::find()->where(['universityID'=>$model->id])->all();
         $status = Yii::$app->myhelper->getActiveInactive();
@@ -802,6 +823,22 @@ class UniversityController extends Controller
             'searchModel'=> $searchModel,
         ]);
     }
+    
+    public function actionDepartmentCourses($id){
+        
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        $searchModel = new DepartmentCourseSearch();
+        
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('department-courses', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
 
 
     public function actionAddCourses($id){
@@ -944,4 +981,256 @@ class UniversityController extends Controller
     }
 }
 
+    public function actionTestimonial($id){
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        $searchModel = new ReviewSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('testimonial', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel
+        ]);
+    }
+    
+    public function actionTestimonialDetails($id,$fid = null)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+        $searchModel = new UnitestimonialSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('testimonial-details-view', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+    
+    public function actionTestimonialCreate($id,$fid = null)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        if (($model = Unitestimonial::findOne(['id'=>$fid])) == null) {
+            $model = new Unitestimonial();
+//            $model->scenario = "create";
+        }
+        $model->col_uniID  = $id;
+        $imgPreview = [];
+        $imgPreviewConfig = [];
+        $oldFile = "";
+        $uploadPath = Yii::$app->myhelper->getUploadPath(1,$university->id)."testimonial/";
+        $fViewPath= Yii::$app->myhelper->getFileBasePath(1,$university->id)."testimonial/";
+        if(!empty($model->url)){
+            $imgPreview = [$fViewPath.$model->url];
+//            if($model->gtype == 6)
+//            {
+//                $imgPreviewConfig = ["type" => "video", "filetype"=> "video/mp4","downloadUrl"=> $fViewPath.$model->url,'showRemove'=>false];
+//            }else{
+                $imgPreviewConfig = ["downloadUrl"=> true,'showRemove'=>false,"downloadUrl"=> $fViewPath.$model->url];
+//            }
+            $oldFile = $uploadPath.$model->url;
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+                       
+            $urlImage = UploadedFile::getInstance($model, 'visitor_photo');
+            $filename = time();
+            if(!empty($urlImage))
+            {
+                $model->url = $filename.".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                
+                $model->visitor_photo = $urlImage->name;
+            }
+            if($model->save()){
+                
+                FileHelper::createDirectory($uploadPath,0777,true);
+                if(!empty($urlImage))
+                {
+                    
+                    $filePath = $uploadPath.$model->url;
+                    $urlImage->saveAs($filePath);
+
+                    if($oldFile != ""){
+                        @unlink($oldFile);
+//                        if($model->gtype == 6){
+//                            @unlink($uploadPath.pathinfo($oldFile, PATHINFO_FILENAME )."-thumb.png");
+//                        }
+                    }
+//                    if($model->gtype == 6){
+//                        $thumbPath = $uploadPath.$filename."-thumb.png";
+//                        Yii::$app->myhelper->videoThumb($filePath,$thumbPath);
+//                    }
+                }
+            }
+            \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['testimonial-details','id'=>$university->id]);
+        }
+
+
+       return $this->render('testimonial', [
+        'model' => $model,
+        'university' => $university,
+        'imgPreview'=>$imgPreview,
+        'imgPreviewConfig'=> $imgPreviewConfig
+    ]);
+   }
+   
+   public function actionReviewCreate($id, $fid = null)
+    {
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        if (($model = UniversityReview::findOne(['id'=>$fid])) == null) {
+            $model = new UniversityReview();
+        }
+        $model->university_name  = $id;
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           \Yii::$app->getSession()->setFlash('success', 'Updated Successfully.');
+            return $this->redirect(['review','id'=>$university->id]);
+        }
+       return $this->render('review-create', [
+        'model' => $model,
+        'university' => $university
+    ]);
+    }
+    
+     public function actionDepartmentIndex($id){
+        $this->layout= "university";
+        $university = $this->findModel($id);
+        $searchModel = new DepartmentSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$university->id,'university');
+        
+        return $this->render('department_list', [
+            'university' => $university,
+            'dataProvider'=> $dataProvider,
+            'searchModel'=> $searchModel,
+        ]);
+    }
+    
+    public function actionDepartmentCreate($id, $fid = null)
+    {
+        $this->layout= "university";
+        $department = ArrayHelper::map(\common\models\Department::find()->where(['status'=>1])->all(),'id','name');
+        
+        $deptModel = new DepartmentUniversity();
+        $uniDept = DepartmentUniversity::find()->where(['university_id'=>$id])->all();
+        $oldDept = ArrayHelper::getColumn($uniDept,'dept_id');
+        $deptModel->dept_id = $oldDept;
+//        foreach($oldSpecializations as $oldSpecialization) {
+//            $oldSpecializationsName [$oldSpecialization] =$specializations[$oldSpecialization];
+//        }
+//        $uniDept->dept_id = $oldDept;
+//
+//
+//        echo "<pre>";
+//        print_r($deptModel);
+//        echo "</pre>";
+//        exit;
+//        $ucsmodel->coll_univID = $courseDetails->id;
+
+//        if ($ucsmodel->load(Yii::$app->request->post())) {
+//            Model::loadMultiple($specializationModels, Yii::$app->request->post());
+//            foreach ($specializationModels as $key => $specializationModel) {
+//                $specializationModel->save();
+//            }
+//            $newSpecializations = array_diff((array)$ucsmodel['course_specializationID'], (array)$oldSpecializations);
+//
+//            $deletedSpecializations = array_diff((array)$oldSpecializations,(array)$ucsmodel['course_specializationID']);
+//
+//
+//            foreach ($newSpecializations as $key => $specialization) {
+//                $nucsmodel = new UniversityCollegeCourseSpecialization();
+//                $nucsmodel->coll_univID = $courseDetails->id;
+//                $nucsmodel->course_specializationID = $specialization;
+//                $nucsmodel->type = 1;
+//                $nucsmodel->status = 1;
+//                if(!$nucsmodel->save()){
+//                    //print_r($nucsmodel);exit;
+//                }    
+//            }
+//
+//            if(!empty($deletedSpecializations))
+//            {
+//                UniversityCollegeCourseSpecialization::deleteAll(['coll_univID' => $courseDetails->id, 'course_specializationID' =>  array_values($deletedSpecializations)]);
+//            }
+//
+//            \Yii::$app->getSession()->setFlash('success', 'Specializations successfully added in course '.$courseDetails->course->name.".");
+//            
+//            return $this->redirect(['add-specializations','id'=>$courseDetails->id]);
+//        }
+//
+     
+        return $this->render('department_create', [
+//            'courseDetails' => $courseDetails,
+            'specializations'=>$department,
+            'ucsmodel' => $deptModel,
+                'universityId'=>$id
+        ]);
+    }
+    
+    public function actionGallerystatus(){
+        if(Yii::$app->request->post())
+        {	
+            $id= $_POST['id'];
+            $status = $_POST['status'] == 'notActive' ?'0' : '1';
+            
+            $model =UniversityGallery::findOne($id);
+            $model->status = $status;
+            $model->save();
+            
+            $data = array('id' => $id, 'status' =>$status);
+            print_r(json_encode($data));
+        }
+    }
+
+    public function actionAddDepartment($id) {
+
+        $this->layout= "university";
+        $university = $this->findModel($id);
+
+        $courses = ArrayHelper::map(Department::find()->where(['status'=>1])->all(),'id','name');
+
+        $ucmodel = new UniversityCollegeCourse();
+        $ucmodel->scenario = UniversityCollegeCourse::SCENARIO_UC_CREATE;
+
+        $oldCourses = ArrayHelper::getColumn(UniversityCollegeCourse::find()->where(['universityID'=>$university->id])->asArray()->all(),'courseID');
+        $ucmodel->courseID = $oldCourses;
+
+        $ucmodel->universityID = $university->id;
+        if ($ucmodel->load(Yii::$app->request->post())) {
+
+            $newCourse = array_diff((array)$ucmodel['courseID'], (array)$oldCourses);
+
+            $deletedCourse = array_diff((array)$oldCourses,(array)$ucmodel['courseID']);    
+            foreach ($newCourse as $key => $courseID) {
+                $nucmodel = new UniversityCollegeCourse();
+                $nucmodel->universityID = $university->id;
+                $nucmodel->courseID = $courseID;
+                $nucmodel->status = 1;
+                if(!$nucmodel->save()){
+                    //print_r($nucmodel);exit;
+                }    
+            }
+
+            if(!empty($deletedCourse))
+            {
+                UniversityCollegeCourse::deleteAll(['universityID' => $university->id, 'courseID' =>  array_values($deletedCourse)]);
+            }
+
+            \Yii::$app->getSession()->setFlash('success', 'Courses successfully added in university '.$university->name.".");
+            
+            return $this->redirect(['department','id'=>$university->id]);
+        }
+        
+        return $this->render('department_list', [
+            'university' => $university,
+            'courses'=>$courses,
+            'ucmodel' => $ucmodel,
+        ]);
+    }
 }

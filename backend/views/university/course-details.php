@@ -15,7 +15,7 @@ use yii\web\JsExpression;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $universityandcourse->university->name.' Add Courses Details';
-$this->params['subtitle'] = '<h1>Add Courses Details</h1>';
+$this->params['subtitle'] = '<h1>Add '.$universityandcourse->course->short_name.' Details </h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $universityandcourse->university->name;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$universityandcourse->university->id]];

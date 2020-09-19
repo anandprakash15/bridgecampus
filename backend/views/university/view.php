@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
+use kartik\rating\StarRating;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\University */
@@ -39,12 +40,28 @@ echo Yii::$app->message->display();
                     <td class="col-md-8"><?= $model->short_name ?></td>
                 </tr>
                 <tr>
+                    <th class="col-md-4">Also Known As:</th>
+                    <td class="col-md-8"><?= $model->also_known_as ?></td>
+                </tr>
+                <tr>
                     <th class="col-md-4">Establish Year:</th>
                     <td class="col-md-8"><?= $model->establish_year ?></td>
                 </tr>
                 <tr>
                     <th class="col-md-4">NAAC Grade:</th>
-                    <td class="col-md-8"><?= $model->grade ?></td>
+                    <td class="col-md-8"><?= Yii::$app->myhelper->getNAACGradeDataById($model->grade) ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">NAAC CGPA:</th>
+                    <td class="col-md-8">
+                       <?= $model->naac_cgpa ?>
+                   </td>
+               </tr>
+                <tr>
+                     <th class="col-md-4">NAAC Validity Date:</th>
+                     <td class="col-md-8">
+                        <?= $model->naac_validity_date ?>
+                    </td>
                 </tr>
                 <tr>
                     <th class="col-md-4">Approved By:</th>
@@ -52,16 +69,25 @@ echo Yii::$app->message->display();
                         <?php foreach($model->approved_by as $id => $approved_by ){ ?>
                          <a href="<?= Url::to(['approved/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $approved_by ?></a> 
                      <?php } ?>
-                 </td>
-             </tr>
-             <tr>
-                <th class="col-md-4">Accredited By:</th>
-                <td class="col-md-8">
-                    <?php foreach($model->accredited_by as $id => $accredited_by ){ ?>
-                     <a href="<?= Url::to(['accredited/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $accredited_by ?></a> 
-                 <?php } ?>
-             </td>
-         </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Approving Government Authority:</th>
+                    <td class="col-md-8">
+                        <?php 
+                             foreach($model->approving_government_authority as $id => $approving_government_authority ){ ?>
+                         <a href="<?php  echo Url::to(['approved-government/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?php echo $approving_government_authority ?></a> 
+                        <?php } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Accredited By:</th>
+                    <td class="col-md-8">
+                            <?php foreach($model->accredited_by as $id => $accredited_by ){ ?>
+                             <a href="<?= Url::to(['accredited/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $accredited_by ?></a> 
+                         <?php } ?>
+                    </td>
+                 </tr>
          <tr>
             <th class="col-md-4">Affiliate To:</th>
             <td class="col-md-8">
@@ -70,18 +96,7 @@ echo Yii::$app->message->display();
                <?php } ?>
            </td>
         </tr>
-        <tr>
-            <th class="col-md-4">NAAC CGPA:</th>
-            <td class="col-md-8">
-               <?= $model->naac_cgpa ?>
-           </td>
-       </tr>
-       <tr>
-            <th class="col-md-4">NAAC Validity Date:</th>
-            <td class="col-md-8">
-               <?= $model->naac_validity_date ?>
-           </td>
-       </tr>
+        
        <tr>
             <th class="col-md-4">Status:</th>
             <td class="col-md-8">
@@ -132,9 +147,50 @@ echo Yii::$app->message->display();
                     <td class="col-md-8"><?= $model->vice_chancellor ?></td>
                 </tr>
                 <tr>
+                    <th class="col-md-4">Director:</th>
+                    <td class="col-md-8"><?= $model->director ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Principal:</th>
+                    <td class="col-md-8"><?= $model->principal ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Dean:</th>
+                    <td class="col-md-8"><?= $model->dean ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Placement Officer:</th>
+                    <td class="col-md-8"><?= $model->placementOfficer ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Registrar:</th>
+                    <td class="col-md-8"><?= $model->registrar ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">University Type:</th>
+                    <td class="col-md-8"><?= $model->utype ?></td>
+                </tr>
+                <tr>
                     <th class="col-md-4">Campus Size:</th>
                     <td class="col-md-8"><?= $model->campus_size ?></td>
-                </tr>    
+                </tr>
+                <tr>
+                    <th class="col-md-4">University Rating:</th>
+                    <td class="col-md-8">
+                        <?php 
+                        echo StarRating::widget([
+                            'name' => 'university_rating',
+                            'value' => $model->university_rating,
+                            'pluginOptions' => [
+                                'readonly' => true,
+                                'showClear' => false,
+                                'showCaption' => false,
+                                'size'=>'md'
+                            ],
+                        ]);
+                        ?>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -201,7 +257,7 @@ echo Yii::$app->message->display();
         <table class="table table-bordered">
             <tbody> 
                 <tr>
-                    <th class="col-md-4">ISD Code:</th>
+                    <th class="col-md-4">Country Code:</th>
                     <td class="col-md-8"><?= isset($model->isdCodes->code)?$model->isdCodes->code:'' ?></td>
                 </tr>
                 <tr>
@@ -209,7 +265,7 @@ echo Yii::$app->message->display();
                     <td class="col-md-8"><?= $model->std_code ?></td>
                 </tr>                 
                 <tr>
-                    <th class="col-md-4">Contact:</th>
+                    <th class="col-md-4">Contact Number:</th>
                     <td class="col-md-8"><?= $model->contact ?></td>
                 </tr>
                 <tr>
@@ -224,10 +280,7 @@ echo Yii::$app->message->display();
                     <th class="col-md-4">Website URL:</th>
                     <td class="col-md-8"><a href="<?= $model->websiteurl ?>"><?= $model->websiteurl ?></a></td>
                 </tr>
-                <tr>
-                    <th class="col-md-4">University Type:</th>
-                    <td class="col-md-8"><?= $model->utype ?></td>
-                </tr>
+                
             </tbody>
         </table>
     </div>

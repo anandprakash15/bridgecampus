@@ -66,6 +66,12 @@ class University extends \yii\db\ActiveRecord
      */
     public $bannerImg;
     public $logoImg;
+//    public $director;
+//    public $principal;
+//    public $dean;        
+//    public $placementOfficer;        
+//    public $registrar;        
+    
     public static function tableName()
     {
         return 'university';
@@ -82,14 +88,15 @@ class University extends \yii\db\ActiveRecord
             
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy','isd_codesID'], 'integer'],
             [['about','utype', 'vision', 'mission', 'motto', 'colours','also_known_as'], 'string'],
-            [['createdDate', 'updatedDate','short_name','bannerURL','area','approved_by', 'accredited_by', 'std_code', 'affiliate_to', 'approving_government_authority', 'naac_cgpa', 'naac_validity_date','campus_size'], 'safe'],
+            [['createdDate', 'updatedDate','short_name', 'university_rating','bannerURL','area','approved_by', 'isd_codesID','accredited_by', 'std_code', 'affiliate_to', 'approving_government_authority', 'naac_cgpa', 'naac_validity_date','campus_size'], 'safe'],
 
             [['name'], 'string', 'max' => 300],
             [['pincode', 'establish_year'], 'string', 'max' => 20],
-            [['address', 'founder', 'chancellor', 'vice_chancellor'], 'string', 'max' => 500],
+            [['address', 'founder', 'chancellor', 'vice_chancellor', 'registrar', 'director', 'principal', 'dean', 'placementOfficer'], 'string', 'max' => 500],
             [['taluka', 'district', 'contact', 'fax', 'email', 'logourl'], 'string', 'max' => 50],
             [['websiteurl', 'longitude', 'latitude'], 'string', 'max' => 100],
             [['grade'], 'string', 'max' => 10],
+            [['university_rating'], 'string', 'max' => 5],
             ['code', 'codeunique'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['createdBy' => 'id']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updatedBy' => 'id']],
@@ -130,7 +137,7 @@ class University extends \yii\db\ActiveRecord
             'taluka' => 'Taluka',
             'district' => 'District',
             'pincode' => 'Pincode',
-            'isd_codesID' => 'ISD Code',
+            'isd_codesID' => 'Country Code',
             'std_code' => 'STD Code',
             'contact' => 'Contact',
             'fax' => 'Fax',
@@ -151,7 +158,7 @@ class University extends \yii\db\ActiveRecord
             'founder' => 'Founder',
             'chancellor' => 'Chancellor',
             'vice_chancellor' => 'Vice Chancellor',
-            'affiliated_to' => 'Affiliated To',
+            'affiliate_to' => 'Affiliated To',
             'logourl' => 'Logourl',
             'longitude' => 'Longitude',
             'latitude' => 'Latitude',
@@ -160,6 +167,11 @@ class University extends \yii\db\ActiveRecord
             'status' => 'Status',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
+            'director' => 'Director',
+            'principal' => 'Principal',
+            'dean' => 'Dean',
+            'placementOfficer' => 'Placement Officer',
+            'registrar' => 'Registrar',
             'bannerImg' => 'Banner Image',
             'brochureImg' => 'Brochure Upload',
             'logoImg' => 'University Logo',

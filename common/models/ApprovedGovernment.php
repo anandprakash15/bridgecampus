@@ -71,4 +71,10 @@ class ApprovedGovernment extends \yii\db\ActiveRecord
             'description' => 'Description',
         ];
     }
+    
+    public static function getApprovedGovernmentData(){
+        $approvedData= ApprovedGovernment::find()->all();
+        $listData= \yii\helpers\ArrayHelper::map($approvedData,'id','name');
+        return $listData;
+    }
 }

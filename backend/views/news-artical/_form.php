@@ -75,24 +75,13 @@ $kcfOptions = array_merge(KCFinder::$kcfDefaultOptions, [
 
 
    <?= $form->field($model, 'programID')->widget(Select2::classname(), [
-      'options' => ['placeholder' => 'Search Program...'],
-      'data' => $program,
-      'size' => Select2::SMALL,
-      'pluginOptions' => [
-        'allowClear' => true,
-        'minimumInputLength' => 1,
-        'language' => [
-          'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+       'name' => 'programID',
+        'data' => Yii::$app->myhelper->getProgram(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Program'],
+            'pluginOptions' => [
+                'allowClear' => true
         ],
-        'ajax' => [
-          'url' => \yii\helpers\Url::to(['program/program-list']),
-          'dataType' => 'json',
-          'data' => new JsExpression('function(params) { return {q:params.term}; }')
-        ],
-        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-        'templateResult' => new JsExpression('function(type) { return type.text; }'),
-        'templateSelection' => new JsExpression('function (type) { return type.text; }'),
-      ],
     ]);?>
 
    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>

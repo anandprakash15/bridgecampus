@@ -77,6 +77,11 @@ class CoursesSearch extends Courses
             ->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'courses.short_name', $this->short_name])
             ->andFilterWhere(['like', 'program.name', $this->program]);
+        
+        $dataProvider->sort->attributes['program'] = [
+        'asc' => ['programID' => SORT_ASC],
+        'desc' => ['programID' => SORT_DESC],
+    ];
         return $dataProvider;
     }
 }

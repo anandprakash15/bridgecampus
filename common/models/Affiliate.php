@@ -69,4 +69,10 @@ class Affiliate extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+    
+    public static function getAllAffiliatedData(){
+        $affiliateData= Affiliate::find()->orderBy([ 'name' => SORT_ASC])->all();
+        $listData= \yii\helpers\ArrayHelper::map($affiliateData,'id','name');
+        return $listData;
+    }
 }

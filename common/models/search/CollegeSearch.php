@@ -12,6 +12,9 @@ use common\models\College;
  */
 class CollegeSearch extends College
 {
+    public $city_name;
+    public $state_name;
+    public $country_name;
     /**
      * @inheritdoc
      */
@@ -19,7 +22,7 @@ class CollegeSearch extends College
     {
         return [
             [['id', 'cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy'], 'integer'],
-            [['name', 'code', 'address', 'taluka', 'district', 'pincode', 'contact', 'fax', 'email', 'websiteurl', 'establish_year', 'approved_by', 'accredited_by', 'affiliate_to', 'rating', 'about', 'vission', 'mission', 'logourl', 'createdDate', 'updatedDate'], 'safe'],
+            [['name', 'code', 'address', 'taluka', 'district', 'pincode', 'contact', 'fax', 'email', 'websiteurl', 'establish_year', 'approved_by', 'accredited_by', 'affiliate_to', 'rating', 'about', 'vission', 'mission', 'logourl', 'createdDate', 'updatedDate', 'sortname', 'city_name', 'state_name', 'country_name'], 'safe'],
         ];
     }
 
@@ -41,7 +44,7 @@ class CollegeSearch extends College
      */
     public function search($params)
     {
-        $query = College::find();
+        $query = College::find()->joinWith(['city','state', 'country']);
 
         // add conditions that should always apply here
 
@@ -73,6 +76,7 @@ class CollegeSearch extends College
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'address', $this->address])
+            ->andFilterWhere(['like', 'sortname', $this->sortname])
             ->andFilterWhere(['like', 'taluka', $this->taluka])
             ->andFilterWhere(['like', 'district', $this->district])
             ->andFilterWhere(['like', 'pincode', $this->pincode])
@@ -88,7 +92,23 @@ class CollegeSearch extends College
             ->andFilterWhere(['like', 'about', $this->about])
             ->andFilterWhere(['like', 'vission', $this->vission])
             ->andFilterWhere(['like', 'mission', $this->mission])
+            ->andFilterWhere(['like', 'cities.name', $this->city_name])
+            ->andFilterWhere(['like', 'states.name', $this->state_name])
+            ->andFilterWhere(['like', 'countries.name', $this->country_name])
             ->andFilterWhere(['like', 'logourl', $this->logourl]);
+
+            $dataProvider->sort->attributes['city_name'] = [
+            'asc' => ['cityID' => SORT_ASC],
+            'desc' => ['cityID' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['state_name'] = [
+            'asc' => ['stateID' => SORT_ASC],
+            'desc' => ['stateID' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['country_name'] = [
+            'asc' => ['countryID' => SORT_ASC],
+            'desc' => ['countryID' => SORT_DESC],
+        ];
 
         return $dataProvider;
     }

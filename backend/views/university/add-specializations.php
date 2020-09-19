@@ -13,7 +13,7 @@ use softark\duallistbox\DualListbox;
 $this->title = $courseDetails->course->name.' Add Specializations';
 $this->params['subtitle'] = '<h1>Add Specializations</h1>';
 $this->params['breadcrumbs'][] = ['label' => 'Universities', 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $courseDetails->university->name;
+$this->params['breadcrumbs'][] = $courseDetails->university->name;
 $this->params['breadcrumbs'][] = ['label' => 'Courses', 'url' => ['courses','id'=>$courseDetails->university->id]];
 $this->params['breadcrumbs'][] = ['label' => $courseDetails->course->name, 'url' => ['course-details','id'=>$courseDetails->id]];
 $this->params['breadcrumbs'][] = 'Add Specializations';
@@ -23,7 +23,7 @@ echo Yii::$app->message->display();
 <div class="university-index">
 	<div class="custumbox box box-info">
 		<div class="box-body">
-			<?php $form = ActiveForm::begin(); ?>
+                    <?php $form = ActiveForm::begin(); ?>
 			<?php
 			$options = [
 				'multiple' => true,
@@ -46,12 +46,37 @@ echo Yii::$app->message->display();
 			<?php ActiveForm::end(); ?>
 		</div>
 	</div>
+    </div>
 
-	</div>
-	<?php 
-	$this->registerCss("
-		.app-title{
-			display: none;
-		}
-		");
-		?>
+ <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Specialization Name</th>
+                <th scope="col">Short Name</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                if($oldSpecialization) {
+                    $i=1;
+                foreach($oldSpecialization as $key => $value){
+            ?>
+                <tr>
+                    <th scope="row"><?= $i++;?></th>
+                    <td><?= '<a href="'.Url::to(['specialization/update','id'=>$key]).'">'.$value.'</a></h1>'?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <?php }}?>
+           
+        </tbody>
+    </table>
+<?php 
+$this->registerCss("
+    .app-title{
+            display: none;
+    }
+    ");
+?>

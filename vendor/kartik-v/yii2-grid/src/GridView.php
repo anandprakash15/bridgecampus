@@ -3,12 +3,13 @@
 /**
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
- * @version   3.3.0
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2020
+ * @version   3.3.6
  */
 
 namespace kartik\grid;
 
+use Closure;
 use kartik\base\BootstrapInterface;
 use kartik\base\BootstrapTrait;
 use kartik\base\Config;
@@ -59,6 +60,16 @@ use yii\widgets\Pjax;
 class GridView extends YiiGridView implements BootstrapInterface
 {
     use BootstrapTrait;
+
+    /**
+     * @var string the top part of the table after the header (used for location of the page summary row)
+     */
+    const POS_TOP = 'top';
+
+    /**
+     * @var string the bottom part of the table before the footer (used for location of the page summary row)
+     */
+    const POS_BOTTOM = 'bottom';
 
     /**
      * @var string the **default** bootstrap contextual color type (applicable only for panel contextual style)
@@ -406,6 +417,12 @@ class GridView extends YiiGridView implements BootstrapInterface
      * This label will replace the plural word `items-many` within the grid summary text.
      */
     public $itemLabelMany;
+
+    /**
+     * @var string the default label shown for each record in the grid (accusative case). This is applicable for few
+     * languages like German.
+     */
+    public $itemLabelAccusative;
 
     /**
      * @var string the template for rendering the grid within a bootstrap styled panel.
@@ -778,6 +795,11 @@ HTML;
     public $showPageSummary = false;
 
     /**
+     * @var string location of the page summary row (whether [[POS_TOP]] or [[POS_BOTTOM]])
+     */
+    public $pageSummaryPosition = self::POS_BOTTOM;
+
+    /**
      * @array the HTML attributes for the page summary container. The following special options are recognized:
      *
      * - `tag`: _string_, the tag used to render the page summary. Defaults to `tbody`.
@@ -902,6 +924,8 @@ HTML;
      * - `menuOptions`: _array_, HTML attributes for the export dropdown menu. Defaults to `['class' => 'dropdown-menu
      *   dropdown-menu-right']`. This property is to be setup exactly as the `options` property required by the
      *   [[\yii\bootstrap\Dropdown]] widget.
+     * - `skipExportElements`: _array_, the list of jQuery element selectors that will be skipped and removed from
+     *   export. Defaults to `['.sr-only', '.hide']`.
      */
     public $export = [];
 
@@ -981,9 +1005,9 @@ HTML;
      * container with the configured HTML attributes. The ID for the container will be auto generated.
      */
     public $containerOptions = [];
-    
+
     /**
-     * Whether to hash export config and prevent data tampering of the export config when transmitting this between 
+     * Whether to hash export config and prevent data tampering of the export config when transmitting this between
      * client and server during grid data export. Defaults to `true`. You may set this to `false` if your config
      * contains dynamic data (like current date time). However, note that when `false` it adds the possibility of
      * your client data being tampered during grid export when read by server.
@@ -1071,12 +1095,7 @@ HTML;
         }
         $this->initBsVersion();
         Html::addCssClass($this->options, 'is-bs' . ($this->isBs4() ? '4' : '3'));
-        if (empty($this->options['id'])) {
-            $this->options['id'] = $this->getId();
-        }
-        if (empty($this->pjaxSettings['options']['id'])) {
-            $this->pjaxSettings['options']['id'] = $this->options['id'] . '-pjax';
-        }
+        $this->initPjaxContainerId();
         if (!isset($this->itemLabelSingle)) {
             $this->itemLabelSingle = Yii::t('kvgrid', 'item');
         }
@@ -1088,6 +1107,9 @@ HTML;
         }
         if (!isset($this->itemLabelMany)) {
             $this->itemLabelMany = Yii::t('kvgrid', 'items-many');
+        }
+        if (!isset($this->itemLabelAccusative)) {
+            $this->itemLabelAccusative = Yii::t('kvgrid', 'items-acc');
         }
         $isBs4 = $this->isBs4();
         if ($isBs4) {
@@ -1115,6 +1137,29 @@ HTML;
         }
         $this->_toggleButtonId = $this->options['id'] . '-togdata-' . ($this->_isShowAll ? 'all' : 'page');
         parent::init();
+    }
+
+    /**
+     * Get pjax container identifier
+     * @return string
+     */
+    public function getPjaxContainerId()
+    {
+        $this->initPjaxContainerId();
+        return $this->pjaxSettings['options']['id'];
+    }
+
+    /**
+     * Initializes pjax container identifier
+     */
+    public function initPjaxContainerId()
+    {
+        if (empty($this->options['id'])) {
+            $this->options['id'] = $this->getId();
+        }
+        if (empty($this->pjaxSettings['options']['id'])) {
+            $this->pjaxSettings['options']['id'] = $this->options['id'] . '-pjax';
+        }
     }
 
     /**
@@ -1177,14 +1222,57 @@ HTML;
         if (!isset($this->pageSummaryRowOptions['class'])) {
             $this->pageSummaryRowOptions['class'] = ($this->isBs4() ? 'table-' : '') . 'warning kv-page-summary';
         }
-        $cells = [];
-        /** @var DataColumn $column */
-        foreach ($this->columns as $column) {
-            $cells[] = $column->renderPageSummaryCell();
+        Html::addCssClass($this->pageSummaryRowOptions, $this->options['id']);
+        $row = $this->getPageSummaryRow();
+        if ($row === null) {
+            return '';
         }
         $tag = ArrayHelper::remove($this->pageSummaryContainer, 'tag', 'tbody');
-        $content = Html::tag('tr', implode('', $cells), $this->pageSummaryRowOptions);
+        $content = Html::tag('tr', $row, $this->pageSummaryRowOptions);
         return Html::tag($tag, $content, $this->pageSummaryContainer);
+    }
+
+    /**
+     * Get the page summary row markup
+     * @return string
+     */
+    protected function getPageSummaryRow()
+    {
+        $columns = array_values($this->columns);
+        $cols = count($columns);
+        if ($cols === 0) {
+            return null;
+        }
+        $cells = [];
+        $skipped = [];
+        for ($i = 0; $i < $cols; $i++) {
+            /** @var DataColumn $column */
+            $column = $columns[$i];
+            if (!method_exists($column, 'renderPageSummaryCell')) {
+                $cells[] = Html::tag('td');
+                continue;
+            }
+            $cells[] = $column->renderPageSummaryCell();
+            if (!empty($column->pageSummaryOptions['colspan'])) {
+                $span = (int)$column->pageSummaryOptions['colspan'];
+                $dir = ArrayHelper::getValue($column->pageSummaryOptions, 'data-colspan-dir', 'ltr');
+                if ($span > 0) {
+                    $fm = ($dir === 'ltr') ? ($i + 1) : ($i - $span + 1);
+                    $to = ($dir === 'ltr') ? ($i + $span - 1) : ($i - 1);
+                    for ($j = $fm; $j <= $to; $j++) {
+                        $skipped[$j] = true;
+                    }
+                }
+            }
+        }
+        if (!empty($skipped)) {
+            for ($i = 0; $i < $cols; $i++) {
+                if (isset($skipped[$i])) {
+                    $cells[$i] = '';
+                }
+            }
+        }
+        return implode('', $cells);
     }
 
     /**
@@ -1195,9 +1283,44 @@ HTML;
     {
         $content = parent::renderTableBody();
         if ($this->showPageSummary) {
-            return $content . $this->renderPageSummary();
+            $summary = $this->renderPageSummary();
+            return $this->pageSummaryPosition === self::POS_TOP ? ($summary . $content) : ($content . $summary);
         }
         return $content;
+    }
+
+    /**
+     * Renders a table row with the given data model and key.
+     * @param mixed $model the data model to be rendered
+     * @param mixed $key the key associated with the data model
+     * @param int $index the zero-based index of the data model among the model array returned by [[dataProvider]].
+     * @return string the rendering result
+     */
+    public function renderTableRow($model, $key, $index)
+    {
+        $cells = [];
+        /* @var $column Column */
+        foreach ($this->columns as $column) {
+            $cells[] = $column->renderDataCell($model, $key, $index);
+        }
+        if ($this->rowOptions instanceof Closure) {
+            $options = call_user_func($this->rowOptions, $model, $key, $index, $this);
+        } else {
+            $options = $this->rowOptions;
+        }
+        $options['data-key'] = static::parseKey($key);
+        Html::addCssClass($options, $this->options['id']);
+        return Html::tag('tr', implode('', $cells), $options);
+    }
+
+    /**
+     * Parses the key and returns parsed key value as string based on the data type
+     * @param mixed $key
+     * @return string
+     */
+    public static function parseKey($key)
+    {
+        return is_array($key) ? Json::encode($key) : (is_object($key) ? serialize($key) : (string)$key);
     }
 
     /**
@@ -1384,6 +1507,7 @@ HTML;
             'items' => $this->itemLabelPlural,
             'items-few' => $this->itemLabelFew,
             'items-many' => $this->itemLabelMany,
+            'items-acc' => $this->itemLabelAccusative,
         ];
         $pagination = $this->dataProvider->getPagination();
         if ($pagination !== false) {
@@ -1490,6 +1614,7 @@ HTML;
                 ],
                 'options' => ['class' => 'btn ' . $this->_defaultBtnCss, 'title' => Yii::t('kvgrid', 'Export')],
                 'menuOptions' => ['class' => 'dropdown-menu dropdown-menu-right '],
+                'skipExportElements' => ['.sr-only', '.hide'],
             ],
             $this->export
         );
@@ -1999,7 +2124,18 @@ HTML;
     protected function renderToolbarContainer()
     {
         $tag = ArrayHelper::remove($this->toolbarContainerOptions, 'tag', 'div');
-        $this->addCssClass($this->toolbarContainerOptions, self::BS_PULL_RIGHT);
+
+        /**
+         * allow to override the float declaration:
+         * forcing float-right only if no float is defined in toolbarContainerOptions
+         */
+        if (
+            !strpos($this->toolbarContainerOptions['class'], $this->getCssClass(self::BS_PULL_RIGHT))
+            && !strpos($this->toolbarContainerOptions['class'], $this->getCssClass(self::BS_PULL_LEFT))
+        ) {
+            $this->addCssClass($this->toolbarContainerOptions, self::BS_PULL_RIGHT);
+        }
+
         return Html::tag($tag, $this->renderToolbar(), $this->toolbarContainerOptions);
     }
 
@@ -2100,6 +2236,7 @@ HTML;
                     'target' => ArrayHelper::getValue($this->export, 'target', self::TARGET_BLANK),
                     'messages' => $this->export['messages'],
                     'exportConversions' => $this->exportConversions,
+                    'skipExportElements' => $this->export['skipExportElements'],
                     'showConfirmAlert' => ArrayHelper::getValue($this->export, 'showConfirmAlert', true),
                 ]
             );

@@ -27,7 +27,9 @@
         "softark/yii2-dual-listbox": "dev-master",
         "iutbay/yii2-kcfinder": "dev-master",
         "wbraganca/yii2-dynamicform": "*",
-        "yiisoft/yii2-bootstrap4": "^2.0"
+        "yiisoft/yii2-bootstrap4": "^2.0",
+        "kartik-v/yii2-widget-rating": "*",
+        "kartik-v/yii2-widget-switchinput": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

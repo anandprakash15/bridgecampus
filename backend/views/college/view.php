@@ -34,7 +34,27 @@ echo Yii::$app->message->display();
                         <td class="col-md-8"><?= Yii::$app->myhelper->getCollegeCode($model->code) ?></td>
                     </tr>
                     <tr>
+                        <th class="col-md-4">Short Name:</th>
+                        <td class="col-md-8"><?= $model->sortname  ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Also Known as:</th>
+                        <td class="col-md-8"><?= $model->also_known_as  ?></td>
+                    </tr>
+                    <tr>
                         <th class="col-md-4">Establish Year:</th>
+                        <td class="col-md-8"><?= $model->establish_year ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">NAAC Grade:</th>
+                        <td class="col-md-8"><?= $model->establish_year ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">NAAC CGPA:</th>
+                        <td class="col-md-8"><?= $model->establish_year ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">NAAC Validity Date:</th>
                         <td class="col-md-8"><?= $model->establish_year ?></td>
                     </tr>
                     <tr>
@@ -58,6 +78,14 @@ echo Yii::$app->message->display();
                         </td>
                     </tr>
                     <tr>
+                        <th class="col-md-4">Approving Government Authority:</th>
+                        <td class="col-md-8">
+                            <?php foreach($model->approved_by as $id => $approved_by ){ ?>
+                               <a href="<?= Url::to(['approved/update','id'=>$id]) ?>" class="btn btn-default btn-xs"><?= $approved_by ?></a> 
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    <tr>
                         <th class="col-md-4">Accredited By:</th>
                         <td class="col-md-8">
                             <?php foreach($model->accredited_by as $id => $accredited_by ){ ?>
@@ -73,6 +101,14 @@ echo Yii::$app->message->display();
                             <?php } ?>
                         </td>
                     </tr>
+                    <tr>
+                        <th class="col-md-4">College Rating:</th>
+                        <td class="col-md-8"><?= $model->rating ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Status:</th>
+                        <td class="col-md-8"><?= $model->status ?></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -87,6 +123,14 @@ echo Yii::$app->message->display();
         </div>
         <div class="box-body">
             <?= $model->about ?>
+             <table class="table table-bordered">
+                <tbody>                  
+                    <tr>
+                        <th class="col-md-4">About:</th>
+                        <td class="col-md-8"><?= $model->about ?></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -100,6 +144,7 @@ echo Yii::$app->message->display();
         </div>
         <div class="box-body">
             <?= $model->vission ?>
+            
         </div>
     </div>
 
@@ -113,6 +158,58 @@ echo Yii::$app->message->display();
         </div>
         <div class="box-body">
             <?= $model->mission ?>
+            <table class="table table-bordered">
+                <tbody>                  
+                    <tr>
+                        <th class="col-md-4">Motto:</th>
+                        <td class="col-md-8"><?= $model->motto ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Founder:</th>
+                        <td class="col-md-8"><?= $model->founder ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Chancellor:</th>
+                        <td class="col-md-8"><?= $model->chancellor ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Vice Chancellor:</th>
+                        <td class="col-md-8"><?= $model->vice_chancellor ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Chairman:</th>
+                        <td class="col-md-8"><?= $model->chairman ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Principal:</th>
+                        <td class="col-md-8"><?= $model->principal ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Director:</th>
+                        <td class="col-md-8"><?= $model->director ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Dean:</th>
+                        <td class="col-md-8"><?= $model->dean ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Placement Officier:</th>
+                        <td class="col-md-8"><?= $model->placement_details ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Registrar:</th>
+                        <td class="col-md-8"><?= $model->register_name ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">College Type:</th>
+                        <td class="col-md-8"><?= $model->ctype ?></td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-4">Campus Size:</th>
+                        <td class="col-md-8"><?= $model->campus_size ?></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="custumbox box box-warning">
@@ -175,6 +272,14 @@ echo Yii::$app->message->display();
             <table class="table table-bordered">
                 <tbody>                  
                     <tr>
+                        <th class="col-md-4">ISD Code:</th>
+                        <td class="col-md-8"><?= $model->isd_code ?></td>
+                    </tr>
+                     <tr>
+                        <th class="col-md-4">STD Code:</th>
+                        <td class="col-md-8"><?= $model->std_code ?></td>
+                    </tr>
+                     <tr>
                         <th class="col-md-4">Contact:</th>
                         <td class="col-md-8"><?= $model->contact ?></td>
                     </tr>
@@ -190,13 +295,43 @@ echo Yii::$app->message->display();
             </table>
         </div>
     </div>
-    <div class="custumbox box box-danger">
-    <div class="box-body">
-        <table class="table table-bordered">
-            <tbody>                  
+    <div class="custumbox box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Banner & Brochures</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tbody>                  
                 <tr>
                     <th class="col-md-4">Banner Image:</th>
                     <td class="col-md-8"><?= Html::img(Url::to($fBasePath.$model->bannerURL),['class' => 'img-responsive','style'=>'width:100px;height:100px']) ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="custumbox box box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title">Google Coordinates</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tbody>                  
+                <tr>
+                    <th class="col-md-4">Longitude:</th>
+                    <td class="col-md-8"><?= $model->longitude ?></td>
+                </tr>
+                <tr>
+                    <th class="col-md-4">Latitude:</th>
+                    <td class="col-md-8"><?= $model->latitude ?></td>
                 </tr>
             </tbody>
         </table>

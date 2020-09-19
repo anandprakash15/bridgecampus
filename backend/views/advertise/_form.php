@@ -43,9 +43,10 @@ use backend\controllers\UserController;
           'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
         ],
         'ajax' => [
-          'url' => \yii\helpers\Url::to(['advertise/search-list']),
+          'url' => \yii\helpers\Url::to(['advertise/search']),
           'dataType' => 'json',
-          'data' => new JsExpression('function(params) { return {q:params.term,type:$("#advertise-type").val()}; }')
+          // 'data' => new JsExpression('function(params) { return {q:params.term,type:$("#advertise-type").val()}; }')
+          'data' => new JsExpression('function(params) { return {q:params.term}; }')
         ],
         'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
         'templateResult' => new JsExpression('function(type) { return type.text; }'),

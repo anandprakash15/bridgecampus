@@ -10,6 +10,9 @@ use kartik\widgets\FileInput;
 use yii\helpers\Url;
 use common\widgets\CKEditor;
 use iutbay\yii2kcfinder\KCFinder;
+use yii\helpers\ArrayHelper;
+use kartik\rating\StarRating;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\Specialization */
 /* @var $form yii\widgets\ActiveForm */
@@ -62,10 +65,20 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
       <?= $form->field($model, 'code')->textInput(['maxlength' => true,'disabled'=>true]) ?>
     <?php } ?>
 
+   <?php 
+    $universityData= \common\models\UniversityTypeData::find()->where(['status' => 'Active'])->orderBy([ 'university_name' => SORT_ASC])->all();
 
-   <?= $form->field($model, 'utype')->dropDownList(Yii::$app->myhelper->getUniversitytype(),['class'=>'form-control'])?>
-
-
+    $listuniversity=ArrayHelper::map($universityData,'id','university_name');
+    echo $form->field($model, 'utype')->widget(Select2::classname(), [
+        'name' => 'utype',
+        'data' => $listuniversity,
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select University ...',],
+            'pluginOptions' => [
+                'allowClear' => true
+        ]
+      ]);
+   ?>
    <?= $form->field($model, 'address')->widget(CKEditor::className(), [
     'options' => ['rows' => 6],
     'preset' => 'standard',
@@ -74,8 +87,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
       /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
     ]
   ]) ?>
-
-
 
    <?php
 
@@ -119,39 +130,29 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
     'onchange'=>'$.get("../user/get-citieslist?stateID="+$(this).val(), function( data ) {
      data = $.parseJSON(data);
       $(\'#university-cityid\').empty().append("<option value=\'\'>-- Select City --</option>");
-      if(data == ""){
+     
       $.each(data, function(index, value) {
        $(\'#university-cityid\').append($(\'<option>\').text(value).attr(\'value\', index));
        });
-      }
       });
        '])?>
     <?= $form->field($model, 'cityID')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control','prompt'=>'-- Select City --'])?>
 
 
        <?= $form->field($model, 'pincode')->textInput(['maxlength' => true]) ?>
+       
+       <?php // echo $form->field($model, 'countryCode')->dropDownList(Yii::$app->myhelper->getCountryCode(),['class'=>'form-control', 'prompt'=>'-- Select Country Code --'])?>
 
-       <?= $form->field($model, 'isd_codesID')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'ISD Code...'],
-        'size' => Select2::MEDIUM,
-        'initValueText'=>isset($model->isdCodes->code)?$model->isdCodes->code:'',
-        'pluginOptions' => [
-          'allowClear' => true,
-          'multiple' => false,
-          'minimumInputLength' => 1,
-          'language' => [
-            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-          ],
-          'ajax' => [
-            'url' => \yii\helpers\Url::to(['countries/get-isd-codes']),
-            'dataType' => 'json',
-            'data' => new JsExpression('function(params) { return {q:params.term}; }')
-          ],
-          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-          'templateResult' => new JsExpression('function(type) { return type.text; }'),
-          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
-        ],
-      ]);?>
+         <?=
+            $form->field($model, 'isd_codesID')->widget(Select2::classname(), [
+            'name'=> 'countryCode',
+            'data' =>Yii::$app->myhelper->getCountryCode(),
+            'size' => Select2::SMALL,
+            'options' => ['placeholder' => 'Select Country Code ...', 'multiple' => false],
+              'pluginOptions' => [
+                  'allowClear' => true
+          ]]);
+          ?>
 
       <?= $form->field($model, 'std_code')->textInput(['maxlength' => true]) ?>
 
@@ -236,6 +237,51 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
         ]
       ]) ?>
+      
+        <?= $form->field($model, 'director')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+        
+        <?= $form->field($model, 'principal')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+    
+    <?= $form->field($model, 'dean')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+    
+    <?= $form->field($model, 'placementOfficer')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
+    
+    <?= $form->field($model, 'registrar')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'standard',
+        'clientOptions'=>[
+          'removePlugins' => 'save,newpage,print,pastetext,pastefromword,forms,language,flash,spellchecker,about,smiley,div,flag',
+          /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
+        ]
+      ]) ?>
 
       <?= $form->field($model, 'campus_size')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],
@@ -245,102 +291,64 @@ $validateUrl = ($model->isNewRecord)?Url::to(['university/validate']):Url::to(['
           /* 'filebrowserUploadUrl' => Url::to(['course-documents/upload-image']),*/
         ]
       ]) ?>
-
+   
+        <?php echo $form->field($model, 'university_rating')->widget(StarRating::classname(), [
+            'pluginOptions' => ['size'=>'md']
+        ]);?>
+      
       <?= $form->field($model, 'affiliate_to')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Affiliate To...'],
-        'data' => $affiliate_to,
-        'size' => Select2::SMALL,
-
-        'pluginOptions' => [
-          'allowClear' => true,
-          'multiple' => true,
-          'minimumInputLength' => 1,
-          'language' => [
-            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-          ],
-          'ajax' => [
-            'url' => \yii\helpers\Url::to(['affiliate/affiliate-list']),
-            'dataType' => 'json',
-            'data' => new JsExpression('function(params) { return {q:params.term}; }')
-          ],
-          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-          'templateResult' => new JsExpression('function(type) { return type.text; }'),
-          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+          'name'=> 'affiliate_to',
+          'data' => common\models\Affiliate::getAllAffiliatedData(),
+          'size' => Select2::SMALL,
+          'options' => ['placeholder' => 'Select Affiliate To ...', 'multiple' => true],
+            'pluginOptions' => [
+                'allowClear' => true
         ],
       ]);?>
 
 
       <?= $form->field($model, 'approving_government_authority')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Approving Government Authority...'],
-        'data' => $approvedGovernment,
-        'size' => Select2::SMALL,
-
-        'pluginOptions' => [
-          'allowClear' => true,
-          'multiple' => true,
-          'minimumInputLength' => 1,
-          'language' => [
-            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-          ],
-          'ajax' => [
-            'url' => \yii\helpers\Url::to(['approved-government/approved-by-government-list']),
-            'dataType' => 'json',
-            'data' => new JsExpression('function(params) { return {q:params.term}; }')
-          ],
-          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-          'templateResult' => new JsExpression('function(type) { return type.text; }'),
-          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+          'name' => 'approving_government_authority',
+            'data' => common\models\ApprovedGovernment::getApprovedGovernmentData(),
+            'size' => Select2::SMALL,
+            'options' => ['placeholder' => 'Select Approving Government Authority...', 'multiple' => true],
+            'pluginOptions' => [
+                'allowClear' => true
         ],
       ]);?>
 
 
       <?= $form->field($model, 'approved_by')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Approved By...'],
-        'data' => $approved_by,
+        'name' => 'approved_by',
+        'data' => common\models\Approved::getApprovedData(),
         'size' => Select2::SMALL,
-        'pluginOptions' => [
-          'allowClear' => true,
-          'multiple' => true,
-          'minimumInputLength' => 1,
-          'language' => [
-            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-          ],
-          'ajax' => [
-            'url' => \yii\helpers\Url::to(['approved/approved-by-list']),
-            'dataType' => 'json',
-            'data' => new JsExpression('function(params) { return {q:params.term}; }')
-          ],
-          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-          'templateResult' => new JsExpression('function(type) { return type.text; }'),
-          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        'options' => ['placeholder' => 'Select Approved ...', 'multiple' => true],
+            'pluginOptions' => [
+                'allowClear' => true
         ],
       ]);?>
 
 
       <?= $form->field($model, 'accredited_by')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Accredited By...'],
-        'data' => $accredited_by,
+        'name' => 'approved_by',
+        'data' => common\models\Accredited::getAllAccreditedData(),
         'size' => Select2::SMALL,
-
-        'pluginOptions' => [
-          'allowClear' => true,
-          'multiple' => true,
-          'minimumInputLength' => 1,
-          'language' => [
-            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-          ],
-          'ajax' => [
-            'url' => \yii\helpers\Url::to(['accredited/accredited-by-list']),
-            'dataType' => 'json',
-            'data' => new JsExpression('function(params) { return {q:params.term}; }')
-          ],
-          'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-          'templateResult' => new JsExpression('function(type) { return type.text; }'),
-          'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        'options' => ['placeholder' => 'Select Accredited by ...', 'multiple' => true],
+            'pluginOptions' => [
+                'allowClear' => true
         ],
       ]);?>
-
-      <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
+   
+      <?= $form->field($model, 'grade')->widget(Select2::classname(), [
+        'name' => 'grade',
+        'data' => Yii::$app->myhelper->getNAACGradeData(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Grade ...',],
+            'pluginOptions' => [
+                'allowClear' => true
+        ]
+      ]);?>
+   
       <?= $form->field($model, 'naac_cgpa')->textInput(['maxlength' => true]) ?>
       <?= $form->field($model, 'naac_validity_date')->textInput(['maxlength' => true]) ?>
 

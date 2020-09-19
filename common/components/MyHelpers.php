@@ -11,6 +11,12 @@ use yii\bootstrap\ActiveForm;
 use common\components\CustomUrlRule;
 use yii\db\Query;
 use common\models\Program;
+use common\models\Courses;
+use common\models\CourseCertificationType;
+use common\models\CourseQualificationType;
+use common\models\CourseDuration;
+use common\models\CourseModeOfTeaching;
+use common\models\ExamLevel;
 use common\models\Role;
 use common\models\ExamCategory;
 use common\models\CampusFacilities;
@@ -83,6 +89,11 @@ class MyHelpers extends Component{
             {
                 return [1 => 'Active', 0=>'Inactive'];
             }
+            
+            public static function getReviewStatus()
+            {
+                return [1 => 'Approved', 2 => 'Pending', 3 => 'Blocked'];
+            }
 
             public static function getPlacementData(){
                 return [1=>'Highest Package National', 2=>'Highest Package International', 3=>'Average Package', 4=>'Lowest Package'];   
@@ -115,9 +126,9 @@ class MyHelpers extends Component{
                 return [1 => 'Under Graduate',2=>'Post Graduate', 3=>'Post Masters', 4 =>'Advanced Masters', 5=>'Doctorate', 6=>'Post Doctorate', 7=>'After 10th'];
             }
 
-            public static function getExamLevel(){
-                return [1 => 'National Level Exam', 2=>'State Level Exam', 3 =>'Institute Level Exam'];
-            }
+//            public static function getExamLevel(){
+//                return [1 => 'National Level Exam', 2=>'State Level Exam', 3 =>'Institute Level Exam'];
+//            }
 
             public static function getExamMode(){
                 return [1 => 'Online Mode', 2=>'Paper Based'];
@@ -278,7 +289,8 @@ class MyHelpers extends Component{
 
             public static function getMedium()
             {
-                return [0 => 'Afrikaans',
+                return [
+                0 => 'Afrikaans',
                 1 => 'Albanian',
                 2 => 'Amharic',
                 3 => 'Arabic (Egyptian Spoken)',
@@ -407,7 +419,29 @@ class MyHelpers extends Component{
 
             public static function getUniversitytype()
             {
-                return [1 => 'Private University', 2=>'Public University', 3=>'State University',4=>'Central University',5=>'Deemed University', 6=>'Institution - Deemed-to-Be-a-University', 7=>'Institute of National Importance', 8=>'Autonomous Institute', 9=>'Open University'];
+                return [
+                    1=>'Central University',
+                    2=>'Central Open University',
+                    3=>'Deemed University Government',
+                    4=>'Deemed University Government Aided',
+                    5=>'Deemed University Private',
+                    6=>'Institute of National Importance',
+                    7=>'Institution Under State Legislature Act',
+                    8=>'State Private University',
+                    9=>'State Open University',
+                    10=>'State Private Open University',
+                    11=>'State Public University'
+//                    1 =>'Private University', 
+//                    2=>'Public University', 
+//                    3=>'State University',
+//                    4=>'Central University',
+//                    5=>'Deemed University', 
+//                    6=>'Institution - Deemed-to-Be-a-University', 
+//                    7=>'Institute of National Importance', 
+//                    8=>'Autonomous Institute', 
+//                    9=>'Open University',
+                    
+                ];
             }
 
             public static function getCollegetype()
@@ -421,6 +455,21 @@ class MyHelpers extends Component{
                 $result = '';
                 $model = Program::find()
                 ->where(['status'=>1])
+				->orderBy([ 'name' => SORT_ASC])
+				 ->groupBy('name')
+                ->all();
+                if(!empty($model)){
+                    $result = ArrayHelper::map($model, 'id', 'name');
+                }
+
+                return $result;
+            }
+            
+            public function getCourse(){
+                $result = '';
+                $model = Courses::find()
+                ->where(['status'=>1])
+				->orderBy([ 'name' => SORT_ASC])
                 ->all();
                 if(!empty($model)){
                     $result = ArrayHelper::map($model, 'id', 'name');
@@ -432,6 +481,7 @@ class MyHelpers extends Component{
             public function getExamCategory(){
                 $result = '';
                 $model = ExamCategory::find()
+                ->orderBy([ 'name' => SORT_ASC])
                 ->all();
                 if(!empty($model)){
                     $result = ArrayHelper::map($model, 'id', 'name');
@@ -541,5 +591,337 @@ class MyHelpers extends Component{
 
     public function getIndustrySector(){
         return ArrayHelper::map(IndustrySector::find()->select(['id','name'])->asArray()->all(),'id','name');
+    }
+    
+    public static function getCountryCode() {
+        return [
+            1 =>'+0',
+            2 =>'+1',
+            3 =>'+1242',
+            4 =>'+1246',
+            5=>'+1264',
+            6=>'+1268',
+            7=>'+1284',
+            8=>'+1340',
+            9=>'+1345',
+            10=>'+1441',
+            11=>'+1473',
+            12=>'+1649',
+            13=>'+1664',
+            14=>'+1670',
+            15=>'+1671',
+            16=>'+1684',
+            17=>'+1721',
+            18=>'+1758',
+            19=>'+1767',
+            20=>'+1784',
+            21=>'+1787',
+            22=>'+1809',
+            23=>'+1829',
+            24=>'+1849',
+            25=>'+1868',
+            26=>'+1869',
+            27=>'+1939',
+            28=>'+20',
+            29=>'+211',
+            30=>'+212',
+            31=>'+213',
+            32=>'+216',
+            33=>'+218',
+            34=>'+220',
+            35=>'+221',
+            36=>'+222',
+            37=>'+223',
+            38=>'+224',
+            39=>'+225',
+            40=>'+226',
+            41=>'+227',
+            42=>'+228',
+            43=>'+229',
+            44=>'+230',
+            45=>'+231',
+            46=>'+232',
+            47=>'+233',
+            48=>'+234',
+            49=>'+235',
+            50=>'+236',
+            51=>'+237',
+            52=>'+238',
+            53=>'+239',
+            54=>'+240',
+            55=>'+241',
+            56=>'+242',
+            57=>'+243',
+            58=>'+244',
+            59=>'+245',
+            60=>'+246',
+            61=>'+248',
+            62=>'+249',
+            63=>'+250',
+            64=>'+251',
+            65=>'+252',
+            66=>'+253',
+            67=>'+254',
+            68=>'+255',
+            69=>'+256',
+            70=>'+257',
+            71=>'+258',
+            72=>'+260',
+            73=>'+261',
+            74=>'+262',
+            75=>'+263',
+            76=>'+264',
+            77=>'+265',
+            78=>'+266',
+            79=>'+267',
+            80=>'+268',
+            81=>'+269',
+            82=>'+27',
+            83=>'+290',
+            84=>'+291',
+            85=>'+297',
+            86=>'+298',
+            87=>'+299',
+            88=>'+30',
+            89=>'+31',
+            90=>'+32',
+            91=>'+33',
+            92=>'+34',
+            93=>'+350',
+            94=>'+351',
+            95=>'+352',
+            96=>'+353',
+            97=>'+354',
+            98=>'+355',
+            99=>'+356',
+            100=>'+357',
+            101=>'+358',
+            102=>'+359',
+            103=>'+36',
+            104=>'+370',
+            105=>'+371',
+            106=>'+372',
+            107=>'+373',
+            108=>'+374',
+            109=>'+375',
+            110=>'+376',
+            111=>'+377',
+            112=>'+378',
+            113=>'+379',
+            114=>'+380',
+            115=>'+381',
+            116=>'+382',
+            117=>'+383',
+            118=>'+385',
+            119=>'+386',
+            120=>'+387',
+            121=>'+389',
+            122=>'+39',
+            123=>'+40',
+            124=>'+41',
+            125=>'+420',
+            126=>'+421',
+            127=>'+423',
+            128=>'+43',
+            129=>'+44',
+            130=>'+44-1481',
+            131=>'+44-1534',
+            132=>'+44-1624',
+            133=>'+45',
+            134=>'+46',
+            135=>'+47',
+            136=>'+48',
+            137=>'+49',
+            138=>'+500',
+            139=>'+501',
+            140=>'+502',
+            141=>'+503',
+            142=>'+504',
+            143=>'+505',
+            144=>'+506',
+            145=>'+507',
+            146=>'+508',
+            147=>'+509',
+            148=>'+51',
+            149=>'+52',
+            150=>'+53',
+            151=>'+54',
+            152=>'+55',
+            153=>'+56',
+            154=>'+57',
+            155=>'+58',
+            156=>'+590',
+            157=>'+591',
+            158=>'+592',
+            159=>'+593',
+            160=>'+594',
+            161=>'+595',
+            162=>'+596',
+            163=>'+597',
+            164=>'+598',
+            165=>'+599',
+            166=>'+60',
+            167=>'+61',
+            168=>'+62',
+            169=>'+63',
+            170=>'+64',
+            171=>'+65',
+            172=>'+66',
+            173=>'+670',
+            174=>'+672',
+            175=>'+673',
+            176=>'+674',
+            177=>'+675',
+            178=>'+676',
+            179=>'+677',
+            180=>'+678',
+            181=>'+679',
+            182=>'+680',
+            183=>'+681',
+            184=>'+682',
+            185=>'+683',
+            186=>'+685',
+            187=>'+686',
+            188=>'+687',
+            189=>'+688',
+            190=>'+689',
+            191=>'+690',
+            192=>'+691',
+            193=>'+692',
+            194=>'+7',
+            195=>'+81',
+            196=>'+82',
+            197=>'+84',
+            198=>'+850',
+            199=>'+852',
+            200=>'+853',
+            201=>'+855',
+            202=>'+856',
+            203=>'+86',
+            204=>'+876',
+            205=>'+880',
+            206=>'+886',
+            207=>'+90',
+            208=>'+91',
+            209=>'+92',
+            210=>'+93',
+            211=>'+94',
+            212=>'+95',
+            213=>'+960',
+            214=>'+961',
+            215=>'+962',
+            216=>'+963',
+            217=>'+964',
+            218=>'+965',
+            219=>'+966',
+            220=>'+967',
+            221=>'+968',
+            222=>'+970',
+            223=>'+971',
+            224=>'+972',
+            225=>'+973',
+            226=>'+974',
+            227=>'+975',
+            228=>'+976',
+            229=>'+977',
+            230=>'+98',
+            231=>'+992',
+            232=>'+993',
+            233=>'+994',
+            234=>'+995',
+            235=>'+996',
+            236=>'+998'
+        ];
+    }
+    
+    public static function getNAACGradeData() {
+        return[
+            1=>'A++',
+            2=>'A+',
+            3=>'A',
+            4=>'B++',
+            5=>'B+',
+            6=>'B',
+            7=>'C',
+            8=>'D'
+        ];
+    }
+    
+    public static function getNAACGradeDataById($id) {
+        $naac = [1=>'A++',
+                2=>'A+',
+                3=>'A',
+                4=>'B++',
+                5=>'B+',
+                6=>'B',
+                7=>'C',
+                8=>'D'
+        ];
+        return (isset($id)&& !empty($id) && is_numeric ($id))? $naac[$id]:'';
+    }
+    
+    public function getCertificationType(){
+        $result = '';
+        $model = \common\models\CourseType::find()
+        ->where(['statue'=>1])
+		->orderBy([ 'name' => SORT_ASC])
+        ->all();
+        if(!empty($model)){
+            $result = ArrayHelper::map($model, 'id', 'name');
+        }
+
+        return $result;
+    }
+    
+    public function getQualificationType(){
+        $result = '';
+        $model = CourseQualificationType::find()
+        ->where(['statue'=>1])
+		->orderBy([ 'name' => SORT_ASC])
+        ->all();
+        if(!empty($model)){
+            $result = ArrayHelper::map($model, 'id', 'name');
+        }
+
+        return $result;
+    }
+    
+    public function getCourseDurationType(){
+        $result = '';
+        $model = CourseDuration::find()
+        ->where(['status'=>1])
+		->orderBy([ 'name' => SORT_ASC])
+        ->all();
+        if(!empty($model)){
+            $result = ArrayHelper::map($model, 'id', 'name');
+        }
+
+        return $result;
+    }
+    
+    public function getCourseMediumTeaching(){
+        $result = '';
+        $model = CourseModeOfTeaching::find()
+        ->where(['status'=>1])
+		->orderBy([ 'name' => SORT_ASC])
+        ->all();
+        if(!empty($model)){
+            $result = ArrayHelper::map($model, 'id', 'name');
+        }
+
+        return $result ? $result :'';
+    }
+    
+    public function getExamLevel(){
+        $result = '';
+        $model = ExamLevel::find()
+        ->where(['status'=>1])
+		->orderBy([ 'name' => SORT_ASC])
+        ->all();
+        if(!empty($model)){
+            $result = ArrayHelper::map($model, 'id', 'name');
+        }
+
+        return $result ? $result :'';
     }
 }

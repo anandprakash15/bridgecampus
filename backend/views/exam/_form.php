@@ -48,51 +48,44 @@ Yii::$app->session->set('KCFINDER', $kcfOptions);
      <?= $form->field($model, 'short_code')->textInput(['maxlength' => true]) ?>
 
      <?= $form->field($model, 'programID')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Search...'],
-        'data' => $program,
+       'name' => 'programID',
+        'data' => Yii::$app->myhelper->getProgram(),
         'size' => Select2::SMALL,
-        'pluginOptions' => [
-            'allowClear' => true,
-            'minimumInputLength' => 1,
-            'language' => [
-                'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-            ],
-            'ajax' => [
-                'url' => \yii\helpers\Url::to(['program/program-list']),
-                'dataType' => 'json',
-                'data' => new JsExpression('function(params) { return {q:params.term}; }')
-            ],
-            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-            'templateResult' => new JsExpression('function(type) { return type.text; }'),
-            'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        'options' => ['placeholder' => 'Select Program'],
+            'pluginOptions' => [
+                'allowClear' => true
         ],
     ]);?>
 
-     <?= $form->field($model, 'courseID')->widget(Select2::classname(), [
-        'options' => ['placeholder' => 'Search...'],
-        'data' => $course,
+    <?= $form->field($model, 'courseID')->widget(Select2::classname(), [
+       'name' => 'courseID',
+        'data' => Yii::$app->myhelper->getCourse(),
         'size' => Select2::SMALL,
-        'pluginOptions' => [
-            'allowClear' => true,
-            'minimumInputLength' => 1,
-            'language' => [
-                'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-            ],
-            'ajax' => [
-                'url' => \yii\helpers\Url::to(['courses/course-list']),
-                'dataType' => 'json',
-                'data' => new JsExpression('function(params) { return {q:params.term}; }')
-            ],
-            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-            'templateResult' => new JsExpression('function(type) { return type.text; }'),
-            'templateSelection' => new JsExpression('function (type) { return type.text; }'),
+        'options' => ['placeholder' => 'Select Course'],
+            'pluginOptions' => [
+                'allowClear' => true
         ],
     ]);?>
 
-  <?= $form->field($model, 'exam_course_level')->dropDownList(Yii::$app->myhelper->getCourseLevel(),['class'=>'form-control'])?>
-
-  <?= $form->field($model, 'exam_level')->dropDownList(Yii::$app->myhelper->getExamLevel(),['class'=>'form-control'])?>
-
+     <?= $form->field($model, 'exam_course_level')->widget(Select2::classname(), [
+       'name' => 'exam_course_level',
+        'data' => Yii::$app->myhelper->getCertificationType(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Course Level'],
+            'pluginOptions' => [
+                'allowClear' => true
+        ],
+    ]);?>
+     
+    <?= $form->field($model, 'exam_level')->widget(Select2::classname(), [
+       'name' => 'exam_level',
+        'data' => Yii::$app->myhelper->getExamLevel(),
+        'size' => Select2::SMALL,
+        'options' => ['placeholder' => 'Select Exam Level'],
+            'pluginOptions' => [
+                'allowClear' => true
+        ],
+    ]);?>
   <?php 
     $model->exam_mode = ($model->isNewRecord)?'1':$model->exam_mode;
   ?>

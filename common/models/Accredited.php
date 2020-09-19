@@ -73,4 +73,10 @@ class Accredited extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+    
+    public static function getAllAccreditedData(){
+        $affiliateData= Accredited::find()->all();
+        $listData= \yii\helpers\ArrayHelper::map($affiliateData,'id','name');
+        return $listData;
+    }
 }

@@ -149,7 +149,9 @@ $this->registerCss('
                 ['label' => '<i class="fa fa-circle-o"></i> Gallery', 'url' => ['/university/gallery','id'=>@Yii::$app->params['uID'],'type'=>1]],
                 ['label' => '<i class="fa fa-circle-o"></i> Facilities', 'url' => ['/university/facility','id'=>@Yii::$app->params['uID']]],
                 ['label' => '<i class="fa fa-circle-o"></i> Review', 'url' => ['/university/review','id'=>@Yii::$app->params['uID']]],
-                ['label' => '<i class="fa fa-circle-o"></i> Advertise Materials', 'url' => ['/university/advertise-materials','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Advertisement Material', 'url' => ['/university/advertise-materials','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Department', 'url' => ['/university/department-index','id'=>@Yii::$app->params['uID']]],
+                ['label' => '<i class="fa fa-circle-o"></i> Testimonials', 'url' => ['/university/testimonial-details','id'=>@Yii::$app->params['uID']]],
 
               ],
               'submenuTemplate' => "\n<ul class='treeview-menu'>\n{items}\n</ul>\n",

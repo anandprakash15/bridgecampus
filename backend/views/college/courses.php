@@ -32,8 +32,8 @@ echo Yii::$app->message->display();
                     '{toggleData}',
                 ],
                 'rowOptions' => function ($model, $key, $index, $grid) {
-                   /* $url = Url::to(['update','id'=> $model['id']]);
-                    return ['onclick' => 'location.href="'.$url.'"'];*/
+                    $url = Url::to(['update','id'=> $model['id']]);
+                    return ['onclick' => 'location.href="'.$url.'"']; 
                 },
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
@@ -42,22 +42,33 @@ echo Yii::$app->message->display();
 
                     [
                        'label'=>'Name',
-                       'contentOptions' => ['style' => 'width:50%;'],
-                       'attribute' => 'cname',
+                       'contentOptions' => ['style' => 'width:40%;'],
                        'value' => function($model){
-                        return $model['course']['name'];
-                    }
-                ],
-                [
-                	'label'=>'Program',
-                	'contentOptions' => ['style' => 'width:25%;'],
-                    'attribute' => 'program',
-                    'value' => function($model){
-                        return $model['course']['program']['name'];
-                    }
-                ],
+                            return $model['course']['name'];
+                        }
+                    ],
+                    [
+                       'label'=>'Short Name',
+                       'value' => function($model){
+                         return $model['course']['short_name'];
+                        }
+                    ],
+                    [
+                    	'label'=>'Program',
+                    	'contentOptions' => ['style' => 'width:25%;'],
+                        'attribute' => 'program',
+                        'value' => function($model){
+                            return $model['course']['program']['name'];
+                        }
+                    ],
+                    [
+                           'label'=>'Course Type',
+                           'value' => function($model){
+                             return $model['course']['full_part_time'] == 1 ? 'Full Time' : 'Part Time';
+                            }
+                        ],
 
-                [
+                    [
                     'class' => 'kartik\grid\ActionColumn',
                     'width'=>'30%',
                     'buttons' => [
