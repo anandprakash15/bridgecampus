@@ -30,7 +30,7 @@ use yii\widgets\Menu;
               'items' => [
                 ['label' => 'Classified Ads', 'url' => ['/']],
                 ['label' => 'Display Ads', 'url' => ['/advertise/index']],
-                ['label' => 'Classified Display Ads', 'url' => ['/']],
+                ['label' => 'Classified Display Ads', 'url' => ['/advertise-banner']],
                 ['label' => 'Video Ads', 'url' => ['/']],
               ],
             ],

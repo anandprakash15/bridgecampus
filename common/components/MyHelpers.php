@@ -523,7 +523,9 @@ class MyHelpers extends Component{
     public function getUploadPath($ucType,$ucID,$fileType = ""){
         if($ucType == 1){
             $ucType = "university";
-        }else{
+        } else if($ucType ==2) {
+            $ucType = "advertise";
+        } else{
             $ucType = "college";
         }
 
@@ -544,6 +546,8 @@ class MyHelpers extends Component{
             $ucType = "/university";
         }else if($ucType == 2){
             $ucType = "/college";
+        } else if($ucType == 3) {
+            $ucType = "/advertise";
         }
         
         if($ucID !=""){
