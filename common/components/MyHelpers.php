@@ -928,4 +928,19 @@ class MyHelpers extends Component{
 
         return $result ? $result :'';
     }
+    
+    public function getCreatenewUrl($allowbyrole,$url = null, $label='Create New', $bannerId)
+    {
+       $roleid = Yii::$app->user->identity->roleID;
+            if(in_array($roleid, $allowbyrole)){
+//               return  Html::a('<b>Register</b>', 
+//                    ['story/create', 'id' =>39,'usr'=>'11'], 
+//                    ['class' => 'profile-link']);
+              if($url){
+                return Html::a($label, [$url , 'id' =>39,'usr'=>'11'], ['class' => 'btn btn-success btn-xs']);
+            }else{
+                return Html::a($label, ['create', 'bannerId' =>$bannerId], ['class' => 'btn btn-success btn-xs']);
+            } 
+        }
+   }
 }

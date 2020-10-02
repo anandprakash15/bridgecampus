@@ -49,64 +49,22 @@ use yii\helpers\Url;
         ]) 
     ?>
 
-    <?php //echo $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
-
-    <?php
-      $bannerImgPreview  = "";
-      $brochureFilePreviewList = $brochurePreviewConfig = [];
-      if(!$model->isNewRecord){
-        $fViewPath= Yii::$app->myhelper->getFileBasePath(3,$model->id);
-        if(!empty($model->image)){
-          $bannerImgPreview = [$fViewPath.$model->image];
-        }
-      }
-
-      ?>
-
-
     <?php echo $form->field($model, 'image')->widget(FileInput::classname(), [
         'pluginOptions' => [
-          'options' => ['multiple' => false,'accept' => 'image/*'],
-          'initialPreview'=> $bannerImgPreview,
-          'initialPrevisewAsData'=>true,
-          'initialPreviewFileType'=> 'image',
-          'initialPreviewConfig'=>[[
-            'downloadUrl'=> $bannerImgPreview,
-            'url'=>($model->id)? Url::to(['delete-file','id'=>$model->id,'property'=>'bannerURL']):'',
-            'extra'=> ['id'=> 100]
-          ]
-        ],
-        'overwriteInitial'=>true,
-        'dropZoneEnabled'=> false,
-        'showCaption' => true,
-        'showRemove' => false,
-        'showUpload' => false,
-      ],
-      'pluginEvents'=>[
-        'filebeforedelete'=>'function(){
-          return new Promise(function(resolve, reject) {
-            $.confirm({
-              title: "Confirmation!",
-              content: "Are you sure you want to delete this file?",
-              type: "red",
-              buttons: {   
-                ok: {
-                  btnClass: "btn-primary text-white",
-                  keys: ["enter"],
-                  action: function(){
-                   console.log();
-                   resolve();
-                 }
-                 },
-                 cancel: function(){
-                  $.alert("File deletion was aborted! ");
-                }
-              }
-              });
-              }); 
-            }',
+          'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+          'options' => ['multiple' => false],
+          'initialPreview'=> $imgPreview,
+          'initialPreviewConfig'=> [
+            $imgPreviewConfig
           ],
-        ]);?>
+          'initialPreviewAsData'=>true,
+          'overwriteInitial'=>true,
+          'dropZoneEnabled'=> false,
+          'showCaption' => true,
+          'showRemove' => false,
+          'showUpload' => false,
+        ],
+      ]);?>
 
     <?php 
    $show_duration_days = 'none';
@@ -139,7 +97,8 @@ use yii\helpers\Url;
     ]
   ]);?>
 
-   <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?> <?php
+   <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?> 
+   <?php
 
    $contriesList = UserController::actionGetCountrieslist();
    if($model->isNewRecord){
@@ -161,29 +120,29 @@ use yii\helpers\Url;
     }
   }
   ?>
-
-  <?= $form->field($model, 'country')->dropDownList(json_decode($contriesList,true),['class'=>'form-control input-sm',
+  
+  <?= $form->field($model, 'country')->dropDownList(json_decode($contriesList,true),['class'=>'form-control',
     'onchange'=>'$.get("../user/get-stateslist?countryID="+$(this).val(), function( data ) {
       data = $.parseJSON(data);
-      $(\'#advertise-banner-state\').empty().append("<option value=\'\'>-- Select State --</option>");
-      $(\'#advertise-banner-city\').empty().append("<option value=\'\'>-- Select City --</option>");
+      $(\'#advertisebanner-state\').empty().append("<option value=\'\'>-- Select State --</option>");
+      $(\'#advertisebanner-city\').empty().append("<option value=\'\'>-- Select City --</option>");
       $.each(data, function(index, value) {
-       $(\'#advertise-banner-state\').append($(\'<option>\').text(value).attr(\'value\', index));
+       $(\'#advertisebanner-city\').append($(\'<option>\').text(value).attr(\'value\', index));
        });
        });
        ','prompt'=>'-- Select Country --'])?>
 
-  <?= $form->field($model, 'state')->dropDownList(json_decode($stateLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select State --',
+  <?= $form->field($model, 'state')->dropDownList(json_decode($stateLists,true),['class'=>'form-control','prompt'=>'-- Select State --',
     'onchange'=>'$.get("../user/get-citieslist?stateID="+$(this).val(), function( data ) {
      data = $.parseJSON(data);
-     $(\'#advertise-banner-city\').empty().append("<option value=\'\'>-- Select City --</option>");
-     $.each(data, function(index, value) {
-       $(\'#advertise-banner-city\').append($(\'<option>\').text(value).attr(\'value\', index));
+      $(\'#advertisebanner-city\').empty().append("<option value=\'\'>-- Select City --</option>");
+     
+      $.each(data, function(index, value) {
+       $(\'#advertisebanner-city\').append($(\'<option>\').text(value).attr(\'value\', index));
        });
-       });
+      });
        '])?>
-
-    <?= $form->field($model, 'city')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control input-sm','prompt'=>'-- Select City --'])?>
+    <?= $form->field($model, 'city')->dropDownList(json_decode($citiesLists,true),['class'=>'form-control','prompt'=>'-- Select City --'])?>
 
    <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 

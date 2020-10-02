@@ -139,14 +139,14 @@ use yii\widgets\Menu;
                     <i class="fa fa-angle-left pull-right"></i>
                     </span></a>',
                     'items' => [
-                        ['label' => 'Ad Listing Type', 'url' => ['/']],
-                        ['label' => 'Ad Purpose', 'url' => ['/']],
+                        ['label' => 'Ad Listing Type', 'url' => ['/advertise-type/index']],
+                        ['label' => 'Ad Purpose', 'url' => ['/advertise-purpose-type/index']],
                         ['label' => 'Display Ad Pages', 'url' => ['/']],
                         ['label' => 'Display Ad Location', 'url' => ['/adv-display-ad-location/index']],
                         ['label' => 'Classified Ad Pages', 'url' => ['/']],
-                        ['label' => 'Classified Ad Location', 'url' => ['/']],
+                        ['label' => 'Classified Ad Location', 'url' => ['/classified-ad-locations']],
                         ['label' => 'Classified-Display Ad Pages', 'url' => ['/']],
-                        ['label' => 'Classified-Display Ad Location', 'url' => ['/']],
+                        ['label' => 'Classified-Display Ad Location', 'url' => ['/classified-display-ad-locations']],
                       ]
                   ],
                   [

@@ -73,7 +73,7 @@ class AdvertiseController extends Controller
      */
     public function actionCreate()
     {
-        $this->layout= "advertise";
+//        $this->layout= "advertise";
         $model = new Advertise();
 
         if ($model->load(Yii::$app->request->post())) {

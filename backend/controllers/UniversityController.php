@@ -314,7 +314,6 @@ class UniversityController extends Controller
                 $model->urlImage = $urlImage->name;
             }
             if($model->save()){
-                
                 FileHelper::createDirectory($uploadPath,0777,true);
                 if(!empty($urlImage))
                 {

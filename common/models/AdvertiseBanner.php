@@ -42,7 +42,7 @@ class AdvertiseBanner extends \yii\db\ActiveRecord
     {
         return [
             [['institute_name'], 'required'],
-            [['date_from', 'to_date', 'created_at', 'updated_at'], 'safe'],
+            [['date_from', 'to_date', 'created_at', 'updated_at', 'bannerType'], 'safe'],
             [['country', 'state', 'city', 'status', 'created_by', 'updated_by'], 'integer'],
             [['institute_name', 'short_name', 'image', 'url'], 'string', 'max' => 45],
             [['title_description', 'sub_title_description'], 'string', 'max' => 250],

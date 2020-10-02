@@ -30,15 +30,6 @@ echo Yii::$app->message->display();
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'kartik\grid\SerialColumn'],
-
-                    // [
-                    //     'attribute' => 'status',
-                    //     'filter' => $type,
-                    //     'value' => function($model)use($type){
-                    //         return $type[$model['type']];
-                    //     }
-                    // ],
-
                     [
                         'attribute' => 'coll_univID',
                         'filter' => false,

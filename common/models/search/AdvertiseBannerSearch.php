@@ -2,6 +2,7 @@
 
 namespace common\models\search;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\AdvertiseBanner;
@@ -18,7 +19,7 @@ class AdvertiseBannerSearch extends AdvertiseBanner
     {
         return [
             [['id', 'country', 'state', 'city', 'status', 'created_by', 'updated_by'], 'integer'],
-            [['institute_name', 'short_name', 'title_description', 'sub_title_description', 'image', 'date_from', 'to_date', 'url', 'created_at', 'updated_at'], 'safe'],
+            [['institute_name', 'short_name', 'title_description', 'sub_title_description', 'image', 'date_from', 'to_date', 'url', 'created_at', 'updated_at', 'bannerType'], 'safe'],
         ];
     }
 
@@ -38,7 +39,7 @@ class AdvertiseBannerSearch extends AdvertiseBanner
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $rid)
     {
         $query = AdvertiseBanner::find();
 
@@ -76,6 +77,7 @@ class AdvertiseBannerSearch extends AdvertiseBanner
             ->andFilterWhere(['like', 'title_description', $this->title_description])
             ->andFilterWhere(['like', 'sub_title_description', $this->sub_title_description])
             ->andFilterWhere(['like', 'image', $this->image])
+            ->andFilterWhere(['like', 'bannerType', $rid])
             ->andFilterWhere(['like', 'url', $this->url]);
 
         return $dataProvider;
