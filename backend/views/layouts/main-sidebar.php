@@ -88,6 +88,21 @@ use yii\widgets\Menu;
                 <i class="fa fa-angle-left pull-right"></i>
                 </span></a>',
                 'items' => [
+                [
+                  'label' => 'Master File Upload',
+                  'url' => ['#'],
+                  'options'=>['class'=>'treeview'],
+                  'template' => '<a href="#"><span>{label}</span>
+                  <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                  </span></a>',
+                  'items' => [
+                        ['label' => 'Courses', 'url' => ['/courses/master-course-file-upload']],
+                        ['label' => 'Program', 'url' => ['/program/master-course-file-upload']],
+                        ['label' => 'Specilization', 'url' => ['/specialization/master-course-file-upload']],
+                        ['label' => 'University', 'url' => ['/university/master-course-file-upload']],
+                    ]
+                  ],
                   [
                   'label' => 'Collge Drop-Downs',
                   'url' => ['#'],

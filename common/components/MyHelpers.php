@@ -525,7 +525,9 @@ class MyHelpers extends Component{
             $ucType = "university";
         } else if($ucType ==2) {
             $ucType = "advertise";
-        } else{
+        }else if($ucType ==3) {
+            $ucType = "masterFileUpload";
+        }else{
             $ucType = "college";
         }
 
@@ -933,9 +935,6 @@ class MyHelpers extends Component{
     {
        $roleid = Yii::$app->user->identity->roleID;
             if(in_array($roleid, $allowbyrole)){
-//               return  Html::a('<b>Register</b>', 
-//                    ['story/create', 'id' =>39,'usr'=>'11'], 
-//                    ['class' => 'profile-link']);
               if($url){
                 return Html::a($label, [$url , 'id' =>39,'usr'=>'11'], ['class' => 'btn btn-success btn-xs']);
             }else{
@@ -943,4 +942,74 @@ class MyHelpers extends Component{
             } 
         }
    }
+   
+   public function getProgramNameByName($name){
+        $model = Program::find()
+            ->select('id')    
+            ->where(['status'=>1])
+            ->andWhere('name LIKE :query')
+            ->addParams([':query'=>'%'.$name.'%'])        
+            ->orderBy([ 'name' => SORT_ASC])
+            ->groupBy('name')
+            ->one();
+        if(!empty($model)){
+            return $model['id'];
+        }
+    }
+    
+    public function getCertificationTypeByName($name){
+        $model = \common\models\CourseType::find()
+            ->select('id')    
+            ->where(['statue'=>1])
+            ->andWhere('name LIKE :query')
+            ->addParams([':query'=>'%'.$name.'%'])
+            ->orderBy([ 'name' => SORT_ASC])
+            ->one();
+        if(!empty($model)){
+           return $model['id'];
+        }
+    }
+    
+    public function getQualificationTypeByName($name){
+        $model = CourseQualificationType::find()
+            ->select('id')    
+            ->where(['statue'=>1])
+            ->andWhere('name LIKE :query')
+            ->addParams([':query'=>'%'.$name.'%'])
+            ->orderBy([ 'name' => SORT_ASC])
+            ->orderBy([ 'name' => SORT_ASC])
+            ->one();
+        if(!empty($model)){
+            return $model['id'];
+        }
+    }
+    
+    public function getCourseDurationTypeByName($name){
+        $model = CourseDuration::find()
+          ->select('id')    
+            ->where(['status'=>1])
+            ->andWhere('name LIKE :query')
+            ->addParams([':query'=>'%'.$name.'%'])
+            ->orderBy([ 'name' => SORT_ASC])
+            ->orderBy([ 'name' => SORT_ASC])
+            ->one();
+        if(!empty($model)){
+            return $model['id'];
+        }
+    }
+    
+    public function getCourseMediumTeachingByName($name){
+        $model = CourseModeOfTeaching::find()
+         ->select('id')    
+            ->where(['status'=>1])
+            ->andWhere('name LIKE :query')
+            ->addParams([':query'=>'%'.$name.'%'])
+            ->orderBy([ 'name' => SORT_ASC])
+            ->orderBy([ 'name' => SORT_ASC])
+            ->one();
+        if(!empty($model)){
+            return $model['id'];
+        }
+    }
+    
 }
