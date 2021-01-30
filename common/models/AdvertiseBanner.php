@@ -82,9 +82,10 @@ class AdvertiseBanner extends \yii\db\ActiveRecord
             if ($this->isNewRecord) {
                 $this->created_by = \Yii::$app->user->identity->id;
                 $this->created_at = date('Y-m-d H:i:s');
+            } else {
+                $this->updated_at = date('Y-m-d H:i:s');
+                $this->updated_by = \Yii::$app->user->identity->id;
             }
-            $this->updated_at = \Yii::$app->user->identity->id;
-            $this->updated_by = \Yii::$app->user->identity->id;
             return true;
         }
         return false;

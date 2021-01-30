@@ -28,10 +28,11 @@ use yii\widgets\Menu;
               <i class="fa fa-angle-left pull-right"></i>
               </span></a>',
               'items' => [
-                ['label' => 'Classified Ads', 'url' => ['/']],
-                ['label' => 'Display Ads', 'url' => ['/advertise/index']],
-                ['label' => 'Classified Display Ads', 'url' => ['/advertise-banner']],
-                ['label' => 'Video Ads', 'url' => ['/']],
+                ['label' => 'Classified Ads', 'url' => ['/advertise-classified-display-ad-locations/index']],
+                // ['label' => 'Display Ads', 'url' => ['/advertise/index']],
+                ['label' => 'Display Ads', 'url' => ['/advertise-banner/index']],
+                ['label' => 'Classified Display Ads', 'url' => ['/advertise-classified-display-ad-locations/index']],
+                ['label' => 'Video Ads', 'url' => ['/advertise-video-ads/index']],
               ],
             ],
             ['label' => 'Front End', 'url' => ['/frontend/index']],
@@ -156,12 +157,13 @@ use yii\widgets\Menu;
                     'items' => [
                         ['label' => 'Ad Listing Type', 'url' => ['/advertise-type/index']],
                         ['label' => 'Ad Purpose', 'url' => ['/advertise-purpose-type/index']],
-                        ['label' => 'Display Ad Pages', 'url' => ['/']],
+                        // ['label' => 'Display Ad Pages', 'url' => ['/']],
                         ['label' => 'Display Ad Location', 'url' => ['/adv-display-ad-location/index']],
-                        ['label' => 'Classified Ad Pages', 'url' => ['/']],
+                        // ['label' => 'Classified Ad Pages', 'url' => ['/']],
                         ['label' => 'Classified Ad Location', 'url' => ['/classified-ad-locations']],
-                        ['label' => 'Classified-Display Ad Pages', 'url' => ['/']],
+                        // ['label' => 'Classified-Display Ad Pages', 'url' => ['/']],
                         ['label' => 'Classified-Display Ad Location', 'url' => ['/classified-display-ad-locations']],
+                        ['label' => 'Video ads', 'url' => ['/advertise-video-banner']],
                       ]
                   ],
                   [

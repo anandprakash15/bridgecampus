@@ -54,12 +54,3 @@ echo Yii::$app->message->display();
         </div>
     </div>
 </div>
-
-<?php 
-$this->registerCss("
-    .app-title{
-       display: none;
-   }
-   ");
-   ?>
-

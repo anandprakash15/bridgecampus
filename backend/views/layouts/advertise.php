@@ -149,7 +149,6 @@ $this->registerCss('
               foreach ($advertiseList as $key => $value) {
                         $url = Url::to(['advertise-banner/index','id'=>@Yii::$app->params['uID'],'rid'=>$key]);
                             $menuItems[] = ['label' => $value , 'url' => $url];
-//                    $menuItems[] = ['label' => $value , 'url' => '/educationalparadise/backend/web/advertise-banner/index?banner='.$value];
                 }
 
             echo Menu::widget([

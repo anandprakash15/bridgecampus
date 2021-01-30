@@ -101,8 +101,10 @@ class AdvertiseBannerController extends Controller
             $model->to_date = date('Y-m-d',strtotime($model->to_date));
             $model->bannerType = $bannerName['id'];
             $instituteImg = UploadedFile::getInstance($model, 'image');
+            $filename = time();
             if(!empty($instituteImg))
             {
+                $model->url = $filename.".".pathinfo($instituteImg->name, PATHINFO_EXTENSION);
                 $model->image = $instituteImg->name;;
             }
             if($model->save()) {
@@ -166,8 +168,10 @@ class AdvertiseBannerController extends Controller
                 $model->to_date = date('Y-m-d',strtotime($model->to_date));
 
                 $instituteImg = UploadedFile::getInstance($model, 'image');
+                $filename = time();
                 if(!empty($instituteImg))
                 {
+                    $model->url = $filename.".".pathinfo($instituteImg->name, PATHINFO_EXTENSION);
                     $model->image = $instituteImg->name;;
                 }
                 if($model->save()) {
