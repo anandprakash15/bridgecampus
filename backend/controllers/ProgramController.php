@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
+use common\models\MasterFileUpload;
+use yii\helpers\FileHelper;
 
 
 /**
@@ -161,5 +163,78 @@ class ProgramController extends Controller
             $out['results'] = array_values($data);
         }
         return $out;
+    }
+    
+    public function actionMasterCourseFileUpload() {
+        
+        $model = new MasterFileUpload();
+        if ($model->load(Yii::$app->request->post())) {  
+            $filename = time();
+            $urlImage = \yii\web\UploadedFile::getInstance($model, 'name');
+            
+            if(!empty($urlImage))
+            {
+                $model->name = $filename.".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                $model->urlImage = $urlImage->name;
+                if(!$model->save()) {
+                    \Yii::$app->getSession()->setFlash('error', "Unable to saveMaster Upload data");
+                }
+            }
+            $uploadPath = Yii::$app->myhelper->getUploadPath(3,@Yii::$app->params['uID'])."program/";
+           
+            FileHelper::createDirectory($uploadPath,0775,true);
+            
+            $urlImage->saveAs($uploadPath.$model->name);
+            
+            require_once dirname(__FILE__) . '/../../vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
+            
+            $inputFileName = $uploadPath.$model->name;
+            if(file_exists($inputFileName)) {
+                try {
+                    $transaction = Yii::$app->db->beginTransaction();
+      
+                    $inputFileType = \PHPExcel_IOFactory::identify($uploadPath.$model->name);
+                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+                    $objPHPExcel = $objReader->load($inputFileName);
+                    
+                    //  Get worksheet dimensions
+                    $sheet = $objPHPExcel->getSheet(0); 
+                    $highestRow = $sheet->getHighestRow(); 
+                    $highestColumn = $sheet->getHighestColumn();
+                    
+                    for ($row = 1; $row <= $highestRow; ++ $row) 
+                    {
+                        $rowsData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row, NULL,TRUE,FALSE);
+                        if($row == 1)
+                        {
+                            continue;
+                        }
+                        $programModel = new Program();
+                        $programModel->name = $rowsData[0][0];
+                        $programModel->short_name = $rowsData[0][1];
+                        $programModel->description = $rowsData[0][2];
+                        $programModel->status = $rowsData[0][3] == 'Active'?1:0;
+                        $programModel->save();
+                    }
+                    $transaction->commit();
+                }catch(Exception $error){
+                    print_r($error);
+                    $transaction->rollback();
+                }
+            }   
+        }
+        return $this->render('file-upload', [
+            'model' => $model
+        ]);
+    }
+    
+    public function actionDownload()
+    {
+        $path = Yii::getAlias('@webroot').'/uploads/masterFile/program/';
+        $file = $path . '/program.xlsx';
+
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
+        }
     }
 }

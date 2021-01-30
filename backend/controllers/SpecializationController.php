@@ -12,6 +12,8 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use common\models\TopRecruiters;
 use common\models\SpecializationRecruiters;
+use common\models\MasterFileUpload;
+use yii\helpers\FileHelper;
 
 /**
  * SpecializationController implements the CRUD actions for Specialization model.
@@ -196,5 +198,80 @@ class SpecializationController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionMasterCourseFileUpload() {
+        
+        $model = new MasterFileUpload();
+        if ($model->load(Yii::$app->request->post())) {  
+            $filename = time();
+            $urlImage = \yii\web\UploadedFile::getInstance($model, 'name');
+            
+            if(!empty($urlImage))
+            {
+                $model->name = $filename.".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                $model->urlImage = $urlImage->name;
+                if(!$model->save()) {
+                    \Yii::$app->getSession()->setFlash('error', "Unable to saveMaster Upload data");
+                }
+            }
+            $uploadPath = Yii::$app->myhelper->getUploadPath(3,@Yii::$app->params['uID'])."specialization/";
+           
+            FileHelper::createDirectory($uploadPath,0775,true);
+            
+            $urlImage->saveAs($uploadPath.$model->name);
+            
+            require_once dirname(__FILE__) . '/../../vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
+            
+            $inputFileName = $uploadPath.$model->name;
+            if(file_exists($inputFileName)) {
+                try {
+                    $transaction = Yii::$app->db->beginTransaction();
+      
+                    $inputFileType = \PHPExcel_IOFactory::identify($uploadPath.$model->name);
+                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+                    $objPHPExcel = $objReader->load($inputFileName);
+                    
+                    //  Get worksheet dimensions
+                    $sheet = $objPHPExcel->getSheet(0); 
+                    $highestRow = $sheet->getHighestRow(); 
+                    $highestColumn = $sheet->getHighestColumn();
+                    
+                    for ($row = 1; $row <= $highestRow; ++ $row) 
+                    {
+                        $rowsData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row, NULL,TRUE,FALSE);
+                        if($row == 1)
+                        {
+                            continue;
+                        }
+                        $specModel = new Specialization();
+                        $specModel->name = $rowsData[0][0];
+                        $specModel->specialisation_short_name = $rowsData[0][1];
+                        $specModel->specialisation_type = $rowsData[0][2] == 'Single Specialisation' ?1:2;
+                        $specModel->course_overview = $rowsData[0][3];
+                        $specModel->job_profile = $rowsData[0][4];
+                        $specModel->status = $rowsData[0][5];
+                        $specModel->save();
+                    }
+                    $transaction->commit();
+                }catch(Exception $error){
+                    print_r($error);
+                    $transaction->rollback();
+                }
+            }   
+        }
+        return $this->render('file-upload', [
+            'model' => $model
+        ]);
+    }
+    
+    public function actionDownload()
+    {
+        $path = Yii::getAlias('@webroot').'/uploads/masterFile/specialization/';
+        $file = $path . '/specialisation.xlsx';
+
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
+        }
     }
 }

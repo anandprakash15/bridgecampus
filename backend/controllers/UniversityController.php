@@ -45,6 +45,7 @@ use common\models\DepartmentUniversity;
 use common\models\search\DepartmentSearch;
 use common\models\search\DepartmentCourseSearch;
 use yii\base\Model;
+use common\models\MasterFileUpload;
 
 
 /**
@@ -314,7 +315,6 @@ class UniversityController extends Controller
                 $model->urlImage = $urlImage->name;
             }
             if($model->save()){
-                
                 FileHelper::createDirectory($uploadPath,0777,true);
                 if(!empty($urlImage))
                 {
@@ -1232,5 +1232,118 @@ class UniversityController extends Controller
             'courses'=>$courses,
             'ucmodel' => $ucmodel,
         ]);
+    }
+    
+    public function actionMasterCourseFileUpload() {
+        
+        $model = new MasterFileUpload();
+        if ($model->load(Yii::$app->request->post())) {  
+            $filename = time();
+            $urlImage = \yii\web\UploadedFile::getInstance($model, 'name');
+            
+            if(!empty($urlImage))
+            {
+                $model->name = $filename.".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                $model->urlImage = $urlImage->name;
+                if(!$model->save()) {
+                    \Yii::$app->getSession()->setFlash('error', "Unable to saveMaster Upload data");
+                }
+            }
+            $uploadPath = Yii::$app->myhelper->getUploadPath(3,@Yii::$app->params['uID'])."university/";
+           
+            FileHelper::createDirectory($uploadPath,0775,true);
+            
+            $urlImage->saveAs($uploadPath.$model->name);
+            
+            require_once dirname(__FILE__) . '/../../vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
+            
+            $inputFileName = $uploadPath.$model->name;
+            if(file_exists($inputFileName)) {
+                try {
+                    $transaction = Yii::$app->db->beginTransaction();
+      
+                    $inputFileType = \PHPExcel_IOFactory::identify($uploadPath.$model->name);
+                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+                    $objPHPExcel = $objReader->load($inputFileName);
+                    
+                    //  Get worksheet dimensions
+                    $sheet = $objPHPExcel->getSheet(0); 
+                    $highestRow = $sheet->getHighestRow(); 
+                    $highestColumn = $sheet->getHighestColumn();
+                    
+                    for ($row = 1; $row <= $highestRow; ++ $row) 
+                    {
+                        $rowsData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row, NULL,TRUE,FALSE);
+                        if($row == 1)
+                        {
+                            continue;
+                        }
+                        $courseModel = new University();
+                        $courseModel->name = $rowsData[0][0];
+                        $courseModel->short_name = $rowsData[0][1];
+                        $courseModel->also_known_as = $rowsData[0][2];
+                        $courseModel->utype = $rowsData[0][3];
+                        $courseModel->address = $rowsData[0][4];
+                        $courseModel->area = $rowsData[0][5];
+                        $courseModel->taluka = $rowsData[0][6];
+                        $courseModel->district = $rowsData[0][7];
+                        $courseModel->countryID = $rowsData[0][8];
+                        $courseModel->stateID = $rowsData[0][9];
+                        $courseModel->cityID = $rowsData[0][10];
+                        $courseModel->pincode = $rowsData[0][11];
+                        $courseModel->isd_codesID = $rowsData[0][12];
+                        $courseModel->std_code = $rowsData[0][13];
+                        $courseModel->contact = $rowsData[0][14];
+                        $courseModel->fax = $rowsData[0][15];
+                        $courseModel->email = $rowsData[0][16];
+                        $courseModel->websiteurl = $rowsData[0][17];
+                        $courseModel->establish_year = $rowsData[0][18];
+                        $courseModel->about = $rowsData[0][19];
+                        $courseModel->vision= $rowsData[0][20];
+                        $courseModel->mission = $rowsData[0][21];
+                        $courseModel->motto = $rowsData[0][22];
+                        $courseModel->founder = $rowsData[0][23];
+                        $courseModel->chancellor = $rowsData[0][24];
+                        $courseModel->vice_chancellor = $rowsData[0][25];
+                        $courseModel->director = $rowsData[0][26];
+                        $courseModel->principal = $rowsData[0][27];
+                        $courseModel->dean = $rowsData[0][28];
+                        $courseModel->placementOfficer = $rowsData[0][29];
+                        $courseModel->registrar = $rowsData[0][30];
+                        $courseModel->campus_size = $rowsData[0][31];
+                        $courseModel->university_rating = $rowsData[0][32];
+                        $courseModel->affiliate_to = $rowsData[0][33];
+                        $courseModel->approving_government_authority = $rowsData[0][34];
+                        $courseModel->approved_by = $rowsData[0][35];
+                        $courseModel->accredited_by = $rowsData[0][36];
+                        $courseModel->grade = $rowsData[0][37];
+                        $courseModel->naac_cgpa = $rowsData[0][38];
+                        $courseModel->naac_validity_date = $rowsData[0][39];
+                        $courseModel->bannerImg = $rowsData[0][40];
+                        $courseModel->longitude = $rowsData[0][41];
+                        $courseModel->latitude = $rowsData[0][42];
+                        $courseModel->status = strtolower($rowsData[0][43])== 'active' ? 1:0;
+                        $courseModel->save();
+                    }
+                    $transaction->commit();
+                }catch(Exception $error){
+                    print_r($error);
+                    $transaction->rollback();
+                }
+            }   
+        }
+        return $this->render('file-upload', [
+            'model' => $model
+        ]);
+    }
+    
+    public function actionDownload()
+    {
+        $path = Yii::getAlias('@webroot').'/uploads/masterFile/university/';
+        $file = $path . '/university.xlsx';
+
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
+        }
     }
 }

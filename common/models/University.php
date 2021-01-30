@@ -65,12 +65,7 @@ class University extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $bannerImg;
-    public $logoImg;
-//    public $director;
-//    public $principal;
-//    public $dean;        
-//    public $placementOfficer;        
-//    public $registrar;        
+    public $logoImg;      
     
     public static function tableName()
     {
@@ -88,7 +83,7 @@ class University extends \yii\db\ActiveRecord
             
             [['cityID', 'stateID', 'countryID', 'status', 'createdBy', 'updatedBy','isd_codesID'], 'integer'],
             [['about','utype', 'vision', 'mission', 'motto', 'colours','also_known_as'], 'string'],
-            [['createdDate', 'updatedDate','short_name', 'university_rating','bannerURL','area','approved_by', 'isd_codesID','accredited_by', 'std_code', 'affiliate_to', 'approving_government_authority', 'naac_cgpa', 'naac_validity_date','campus_size'], 'safe'],
+            [['createdDate', 'updatedDate','short_name', 'university_rating','bannerURL','area','approved_by', 'isd_codesID','accredited_by', 'std_code', 'affiliate_to', 'approving_government_authority', 'naac_cgpa', 'naac_validity_date','campus_size', 'registrar', 'director', 'principal', 'dean', 'placementOfficer'], 'safe'],
 
             [['name'], 'string', 'max' => 300],
             [['pincode', 'establish_year'], 'string', 'max' => 20],

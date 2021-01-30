@@ -19,6 +19,8 @@ use common\models\CourseSpecialization;
 use common\models\CourseRecruiters;
 use common\models\TopRecruiters;
 use common\models\Exam;
+use common\models\MasterFileUpload;
+use yii\helpers\FileHelper;
 
 /**
  * CoursesController implements the CRUD actions for Courses model.
@@ -303,6 +305,87 @@ class CoursesController extends Controller
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             return ActiveForm::validate($model);
+        }
+    }
+    
+    public function actionMasterCourseFileUpload() {
+        
+        $model = new MasterFileUpload();
+        if ($model->load(Yii::$app->request->post())) {  
+            $filename = time();
+            $urlImage = \yii\web\UploadedFile::getInstance($model, 'name');
+            
+            if(!empty($urlImage))
+            {
+                $model->name = $filename.".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                $model->urlImage = $urlImage->name;
+                if(!$model->save()) {
+                    \Yii::$app->getSession()->setFlash('error', "Unable to saveMaster Upload data");
+                }
+            }
+            $uploadPath = Yii::$app->myhelper->getUploadPath(3,@Yii::$app->params['uID'])."courses/";
+           
+            FileHelper::createDirectory($uploadPath,0775,true);
+            
+            $urlImage->saveAs($uploadPath.$model->name);
+            
+            require_once dirname(__FILE__) . '/../../vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
+            
+            $inputFileName = $uploadPath.$model->name;
+            if(file_exists($inputFileName)) {
+                try {
+                    $transaction = Yii::$app->db->beginTransaction();
+      
+                    $inputFileType = \PHPExcel_IOFactory::identify($uploadPath.$model->name);
+                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+                    $objPHPExcel = $objReader->load($inputFileName);
+                    
+                    //  Get worksheet dimensions
+                    $sheet = $objPHPExcel->getSheet(0); 
+                    $highestRow = $sheet->getHighestRow(); 
+                    $highestColumn = $sheet->getHighestColumn();
+                    
+                    for ($row = 1; $row <= $highestRow; ++ $row) 
+                    {
+                        $rowsData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row, NULL,TRUE,FALSE);
+                        if($row == 1)
+                        {
+                            continue;
+                        }
+                        $courseModel = new Courses();
+                        $courseModel->programID = Yii::$app->myhelper->getProgramNameByName($rowsData[0][0]);
+                        $courseModel->name = $rowsData[0][1];
+                        $courseModel->short_name = $rowsData[0][2];
+                        $courseModel->certification_type = Yii::$app->myhelper->getCertificationTypeByName($rowsData[0][3]); 
+                        $courseModel->qualification_type = Yii::$app->myhelper->getQualificationTypeByName($rowsData[0][4]);
+                        $courseModel->full_part_time = (strtolower($rowsData[0][5]) == 'fulltime')?1:2;
+                        $courseModel->courseType = $rowsData[0][6] == 'Autonomous' ? 1:2;
+                        $courseModel->duration = Yii::$app->myhelper->getCourseDurationTypeByName($rowsData[0][7]);
+                        $courseModel->medium_of_teaching = Yii::$app->myhelper->getCourseMediumTeachingByName($rowsData[0][8]);
+                        $courseModel->required_skillset = $rowsData[0][9];
+                        $courseModel->course_high_lights = $rowsData[0][10];
+                        $courseModel->status = $rowsData[0][11];
+                        $courseModel->save();
+                    }
+                    $transaction->commit();
+                }catch(Exception $error){
+                    print_r($error);
+                    $transaction->rollback();
+                }
+            }   
+        }
+        return $this->render('file-upload', [
+            'model' => $model
+        ]);
+    }
+    
+    public function actionDownload()
+    {
+        $path = Yii::getAlias('@webroot').'/uploads/masterFile/courses/';
+        $file = $path . '/courses.xlsx';
+
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
         }
     }
 

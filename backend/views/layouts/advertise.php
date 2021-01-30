@@ -147,7 +147,8 @@ $this->registerCss('
 
               $menuItems = [];
               foreach ($advertiseList as $key => $value) {
-                    $menuItems[] = ['label' => $value , 'url' =>  str_replace(" ", "-", strtolower($value))];
+                        $url = Url::to(['advertise-banner/index','id'=>@Yii::$app->params['uID'],'rid'=>$key]);
+                            $menuItems[] = ['label' => $value , 'url' => $url];
                 }
 
             echo Menu::widget([

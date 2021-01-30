@@ -51,8 +51,7 @@ echo Yii::$app->message->display();
                             return $gtype[$model['gtype']];
                         }
                     ],
-                    [
-                        'attribute' => 'status',
+                    [                        'attribute' => 'status',
                         'filter' => $status,
                         'value' => function($model)use($status){
                             return $status[$model['status']];
