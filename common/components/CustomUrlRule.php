@@ -81,10 +81,6 @@ class CustomUrlRule extends yii\web\UrlRule
             //decrypt the given text, string, number
             $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
         }
-        echo "<pre>";
-        print_r($output);
-        echo "</pre>";
-        exit;
         return $output;
     }
 

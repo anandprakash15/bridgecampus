@@ -28,6 +28,7 @@ use Yii;
  */
 class AdvertiseVideoAds extends \yii\db\ActiveRecord
 {
+    public $gtype;
     /**
      * {@inheritdoc}
      */
