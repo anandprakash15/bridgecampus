@@ -27,6 +27,7 @@ use Yii;
  */
 class AdvertiseBanner extends \yii\db\ActiveRecord
 {
+    public $gtype;
     /**
      * {@inheritdoc}
      */
