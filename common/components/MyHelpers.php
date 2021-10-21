@@ -977,7 +977,6 @@ class MyHelpers extends Component{
             ->andWhere('name LIKE :query')
             ->addParams([':query'=>'%'.$name.'%'])
             ->orderBy([ 'name' => SORT_ASC])
-            ->orderBy([ 'name' => SORT_ASC])
             ->one();
         if(!empty($model)){
             return $model['id'];
@@ -990,7 +989,6 @@ class MyHelpers extends Component{
             ->where(['status'=>1])
             ->andWhere('name LIKE :query')
             ->addParams([':query'=>'%'.$name.'%'])
-            ->orderBy([ 'name' => SORT_ASC])
             ->orderBy([ 'name' => SORT_ASC])
             ->one();
         if(!empty($model)){
@@ -1005,6 +1003,18 @@ class MyHelpers extends Component{
             ->andWhere('name LIKE :query')
             ->addParams([':query'=>'%'.$name.'%'])
             ->orderBy([ 'name' => SORT_ASC])
+            ->one();
+        if(!empty($model)){
+            return $model['id'];
+        }
+    }
+    
+    public function getOwnerShipDataByName($name) {
+        $model = \common\models\CollegeOwnership::find()
+         ->select('id')    
+            ->where(['status'=>1])
+            ->andWhere('name LIKE :query')
+            ->addParams([':query'=>'%'.$name.'%'])
             ->orderBy([ 'name' => SORT_ASC])
             ->one();
         if(!empty($model)){

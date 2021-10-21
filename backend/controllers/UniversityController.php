@@ -1234,7 +1234,8 @@ class UniversityController extends Controller
         ]);
     }
     
-    public function actionMasterCourseFileUpload() {
+    public function actionMasterUniversityFileUpload() {
+		
         
         $model = new MasterFileUpload();
         if ($model->load(Yii::$app->request->post())) {  

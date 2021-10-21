@@ -101,7 +101,8 @@ use yii\widgets\Menu;
                         ['label' => 'Courses', 'url' => ['/courses/master-course-file-upload']],
                         ['label' => 'Program', 'url' => ['/program/master-course-file-upload']],
                         ['label' => 'Specilization', 'url' => ['/specialization/master-course-file-upload']],
-//                        ['label' => 'University', 'url' => ['/university/master-course-file-upload']],
+                        ['label' => 'University', 'url' => ['/university/master-university-file-upload']],
+                        ['label' => 'College', 'url' => ['/college/master-college-file-upload']],
                     ]
                   ],
                   [

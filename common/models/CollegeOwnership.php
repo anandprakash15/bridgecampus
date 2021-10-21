@@ -70,8 +70,8 @@ class CollegeOwnership extends \yii\db\ActiveRecord
     }
 
      public static function getCollegeOwnerShip(){
-        $affiliateData= CollegeOwnership::find()->all();
-        $listData= \yii\helpers\ArrayHelper::map($affiliateData,'id','ownership_name');
+        $ownershipData= CollegeOwnership::find()->where(['status'=>1])->all();
+        $listData= \yii\helpers\ArrayHelper::map($ownershipData,'id','ownership_name');
         return $listData;
     }
 }

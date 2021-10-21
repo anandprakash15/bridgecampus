@@ -201,7 +201,6 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
                 'allowClear' => true
         ]]);
         ?>
-      ?>
 
         <?php echo $form->field($model, 'rating')->widget(StarRating::classname(), [
             'pluginOptions' => ['size'=>'md']
@@ -433,7 +432,7 @@ $validateUrl = ($model->isNewRecord)?Url::to(['college/validate']):Url::to(['col
 
           <?= $form->field($model, 'longitude')->textInput(['maxlength' => true]) ?>
 
-          <?= $form->field($model, 'longitude')->textInput(['maxlength' => true]) ?>
+          <?= $form->field($model, 'latitude')->textInput(['maxlength' => true]) ?>
 
       <?= $form->field($model, 'status')->dropDownList(Yii::$app->myhelper->getActiveInactive(),['class'=>'form-control'])?>
 

@@ -138,7 +138,7 @@ $this->registerCss('
          <div class="box box-solid">
           <div class="box-header with-border">
             <!-- <h3 class="box-title">University: <?= @Yii::$app->params['uTitle'] ?></h3> -->
-            <h3 class="box-title"> <?= 'Display Ads:' ?></h3>
+            <h3 class="box-title"> <?= 'Advertise Classified Display Ads Location' ?></h3>
           </div>
           <div class="box-body no-padding">
             <?php 

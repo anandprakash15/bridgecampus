@@ -37,6 +37,7 @@ use common\models\search\CollegeUniversityAdvpurposeSearch;
 use common\models\CourseSpecialization;
 use common\models\UniversityCollegeCourseSpecialization;
 use common\models\Exam;
+use common\models\MasterFileUpload;
 use common\models\FacilityGallery;
 use yii\base\Model;
 
@@ -933,6 +934,134 @@ public function actionTestimonialCreate($id,$fid = null)
             
             $data = array('id' => $id, 'status' =>$status);
             print_r(json_encode($data));
+        }
+    }
+    
+    public function actionMasterCollegeFileUpload() {
+       
+        $model = new MasterFileUpload();
+        if ($model->load(Yii::$app->request->post())) {
+            $filename = time();
+            $urlImage = \yii\web\UploadedFile::getInstance($model, 'name');
+
+            if(!empty($urlImage))
+            {
+                $model->name = $filename.".".pathinfo($urlImage->name, PATHINFO_EXTENSION);
+                $model->urlImage = $urlImage->name;
+                if(!$model->save()) {
+                    \Yii::$app->getSession()->setFlash('error', "Unable to save Master Upload data");
+                }
+            }
+            $uploadPath = Yii::$app->myhelper->getUploadPath(3,@Yii::$app->params['uID'])."college/";
+           
+            FileHelper::createDirectory($uploadPath,0775,true);
+            
+            $urlImage->saveAs($uploadPath.$model->name);
+            
+            require_once dirname(__FILE__) . '/../../vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
+            
+            $inputFileName = $uploadPath.$model->name;
+            if(file_exists($inputFileName)) {
+                try {
+                    $transaction = Yii::$app->db->beginTransaction();
+      
+                    $inputFileType = \PHPExcel_IOFactory::identify($uploadPath.$model->name);
+                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+                    $objPHPExcel = $objReader->load($inputFileName);
+                    
+                    //  Get worksheet dimensions
+                    $sheet = $objPHPExcel->getSheet(0); 
+                    $highestRow = $sheet->getHighestRow(); 
+                    $highestColumn = $sheet->getHighestColumn();
+                    
+                    for ($row = 1; $row <= $highestRow; ++ $row) 
+                    {
+                        $rowsData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row, NULL,TRUE,FALSE);
+                        
+                        if($row == 1)
+                        {
+                            continue;
+                        }
+                        $collModel = new College();
+                        $collModel->name = $rowsData[0][0];
+                        $collModel->short_name = $rowsData[0][1];
+                        $collModel->also_known_as = $rowsData[0][2];
+                        
+                        $collModel->college_type = $rowsData[0][3];
+                        
+                        $collModel->address = $rowsData[0][4];
+                        $collModel->area = $rowsData[0][5];
+                        $collModel->taluka = $rowsData[0][6];
+                        $collModel->district = $rowsData[0][7];
+                        
+                        $collModel->countryID = $rowsData[0][8];
+                        $collModel->stateID = $rowsData[0][9];
+                        $collModel->cityID = $rowsData[0][10];
+                        
+                        
+                        $collModel->pincode = $rowsData[0][11];
+                        //ISD code
+                        $collModel->isd_code = $rowsData[0][12];
+                        
+                        $collModel->contact = $rowsData[0][13];
+                        $collModel->fax = $rowsData[0][14];
+                        $collModel->email = $rowsData[0][15];
+                        $collModel->websiteurl = $rowsData[0][16];
+                        $collModel->establish_year = $rowsData[0][17];
+                        //here also
+                        $collModel->approved_by = $rowsData[0][18];
+                        $collModel->accredited_by = $rowsData[0][19];
+                        $collModel->affiliate_to = $rowsData[0][20];
+                        $collModel->app_government_auth = $rowsData[0][21];
+                        
+                        $collModel->rating = $rowsData[0][22];
+                        $collModel->about = $rowsData[0][23];
+                        $collModel->vission = $rowsData[0][24];
+                        $collModel->mission = $rowsData[0][25];
+                        $collModel->motto = $rowsData[0][26];
+                        $collModel->founder = $rowsData[0][27];
+                        $collModel->chancellor = $rowsData[0][28];
+                        $collModel->vice_chancellor = $rowsData[0][29];
+                        $collModel->chairman = $rowsData[0][30];
+                        
+                        $collModel->director = $rowsData[0][31];
+                        $collModel->principal = $rowsData[0][32];
+                        $collModel->dean = $rowsData[0][33];
+                        $collModel->register_name = $rowsData[0][34];
+                        $collModel->campus_size = $rowsData[0][35];
+                        $collModel->placement_details = $rowsData[0][36];
+                        $collModel->ownership = Yii::$app->myhelper->getOwnerShipDataByName($rowsData[0][37]);
+                        $collModel->naac_grade = $rowsData[0][38];
+                        $collModel->naac_cgpa = $rowsData[0][39];
+                        $collModel->naac_validity_date = $rowsData[0][40];
+                        $collModel->bannerImg = $rowsData[0][41];
+                        $collModel->brochureFile = $rowsData[0][42];
+                        $collModel->logoImg = $rowsData[0][43];
+                        $collModel->longitude = $rowsData[0][44];
+                        $collModel->latitude = $rowsData[0][45];
+                        $collModel->satus = $rowsData[0][46]== 'Active'?1:0;
+                        
+                        $collModel->save();
+                    }
+                    $transaction->commit();
+                }catch(Exception $error){
+                    print_r($error);
+                    $transaction->rollback();
+                }
+            }   
+        }
+        return $this->render('file_upload', [
+            'model' => $model
+        ]);
+    }
+    
+    public function actionDownload()
+    {
+        $path = Yii::getAlias('@webroot').'/uploads/masterFile/courses/';
+        $file = $path . '/college.xlsx';
+
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
         }
     }
 }
